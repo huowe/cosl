@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.PersonGaitMapper">
+    
+    <resultMap type="PersonGait" id="PersonGaitResult">
+        <result property="id"    column="id"    />
+        <result property="personId"    column="person_id"    />
+        <result property="cameraId"    column="camera_id"    />
+        <result property="gaitImageUrl"    column="gait_image_url"    />
+        <result property="silhouetteUrl"    column="silhouette_url"    />
+        <result property="captureTime"    column="capture_time"    />
+    </resultMap>
+
+    <sql id="selectPersonGaitVo">
+        select id, person_id, camera_id, gait_image_url, silhouette_url, capture_time from person_gait
+    </sql>
+
+    <select id="selectPersonGaitList" parameterType="PersonGait" resultMap="PersonGaitResult">
+        <include refid="selectPersonGaitVo"/>
+        <where>  
+            <if test="personId != null "> and person_id = #{personId}</if>
+            <if test="cameraId != null "> and camera_id = #{cameraId}</if>
+            <if test="gaitImageUrl != null  and gaitImageUrl != ''"> and gait_image_url like concat('%', #{gaitImageUrl}, '%')</if>
+            <if test="silhouetteUrl != null  and silhouetteUrl != ''"> and silhouette_url like concat('%', #{silhouetteUrl}, '%')</if>
+            <if test="beginCaptureTime != null and beginCaptureTime != ''"><!-- 开始抓拍时间 -->
+                and date_format(capture_time,'%Y-%m-%d %H:%i:%s') &gt;= date_format(#{beginCaptureTime},'%Y-%m-%d %H:%i:%s')
+            </if>
+            <if test="endCaptureTime != null and endCaptureTime != ''"><!-- 结束抓拍时间 -->
+                and date_format(capture_time,'%Y-%m-%d %H:%i:%s') &lt;= date_format(#{endCaptureTime},'%Y-%m-%d %H:%i:%s')
+            </if>
+        </where>
+        order by capture_time desc
+    </select>
+    
+    <select id="selectPersonGaitById" parameterType="Long" resultMap="PersonGaitResult">
+        <include refid="selectPersonGaitVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPersonGait" parameterType="PersonGait" useGeneratedKeys="true" keyProperty="id">
+        insert into person_gait
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="personId != null">person_id,</if>
+            <if test="cameraId != null">camera_id,</if>
+            <if test="gaitImageUrl != null">gait_image_url,</if>
+            <if test="silhouetteUrl != null">silhouette_url,</if>
+            <if test="captureTime != null">capture_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="personId != null">#{personId},</if>
+            <if test="cameraId != null">#{cameraId},</if>
+            <if test="gaitImageUrl != null">#{gaitImageUrl},</if>
+            <if test="silhouetteUrl != null">#{silhouetteUrl},</if>
+            <if test="captureTime != null">#{captureTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePersonGait" parameterType="PersonGait">
+        update person_gait
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="personId != null">person_id = #{personId},</if>
+            <if test="cameraId != null">camera_id = #{cameraId},</if>
+            <if test="gaitImageUrl != null">gait_image_url = #{gaitImageUrl},</if>
+            <if test="silhouetteUrl != null">silhouette_url = #{silhouetteUrl},</if>
+            <if test="captureTime != null">capture_time = #{captureTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePersonGaitById" parameterType="Long">
+        delete from person_gait where id = #{id}
+    </delete>
+
+    <delete id="deletePersonGaitByIds" parameterType="String">
+        delete from person_gait where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>批量更新人员房间信息 - 使用示例</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            border-bottom: 2px solid #1890ff;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #1890ff;
+            margin-top: 30px;
+        }
+        .example-box {
+            background-color: #f9f9f9;
+            border-left: 4px solid #1890ff;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .code-block {
+            background-color: #282c34;
+            color: #abb2bf;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 10px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        .button {
+            background-color: #1890ff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px 0;
+        }
+        .button:hover {
+            background-color: #40a9ff;
+        }
+        .result-box {
+            background-color: #e6f7ff;
+            border: 1px solid #91d5ff;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 4px;
+            display: none;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        table th {
+            background-color: #fafafa;
+            font-weight: bold;
+        }
+        .note {
+            background-color: #fffbe6;
+            border: 1px solid #ffe58f;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .note-title {
+            font-weight: bold;
+            color: #faad14;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>批量更新人员房间信息 - 使用示例</h1>
+        
+        <div class="note">
+            <div class="note-title">📋 说明</div>
+            <p>本页面展示了如何使用批量更新人员房间信息的 API 接口。以下是多个实际场景的示例代码和演示。</p>
+        </div>
+
+        <h2>接口基本信息</h2>
+        <table>
+            <tr>
+                <th>属性</th>
+                <th>值</th>
+            </tr>
+            <tr>
+                <td>接口地址</td>
+                <td><code>POST /cosl/api/person/batchUpdateRoomInfo</code></td>
+            </tr>
+            <tr>
+                <td>Content-Type</td>
+                <td><code>application/json</code></td>
+            </tr>
+            <tr>
+                <td>所需权限</td>
+                <td><code>system:person:edit</code></td>
+            </tr>
+        </table>
+
+        <h2>示例 1: 批量分配房间给新上船人员</h2>
+        <div class="example-box">
+            <p><strong>场景描述：</strong>5 名新船员上船，需要为他们分配房间和床位</p>
+            
+            <button class="button" onclick="showExample1()">查看请求数据</button>
+            <button class="button" onclick="simulateExample1()">模拟发送请求</button>
+            
+            <div id="example1-data" class="result-box">
+                <h4>请求 JSON 数据：</h4>
+                <div class="code-block">[
+  {
+    "id": 1,
+    "roomId": 101,
+    "bedId": 201,
+    "status": "ONBOARD"
+  },
+  {
+    "id": 2,
+    "roomId": 101,
+    "bedId": 202,
+    "status": "ONBOARD"
+  },
+  {
+    "id": 3,
+    "roomId": 102,
+    "bedId": 203,
+    "status": "ONBOARD"
+  },
+  {
+    "id": 4,
+    "roomId": 102,
+    "bedId": 204,
+    "status": "ONBOARD"
+  },
+  {
+    "id": 5,
+    "roomId": 103,
+    "bedId": 205,
+    "status": "ONBOARD"
+  }
+]</div>
+            </div>
+            
+            <div id="example1-result" class="result-box">
+                <h4>模拟响应结果：</h4>
+                <div class="code-block">{
+  "msg": "成功更新 5 条记录",
+  "code": 0
+}</div>
+            </div>
+        </div>
+
+        <h2>示例 2: 批量调整房间</h2>
+        <div class="example-box">
+            <p><strong>场景描述：</strong>因房间维修，需要将 A101 房间的人员调整到 A201 房间</p>
+            
+            <button class="button" onclick="showExample2()">查看请求数据</button>
+            <button class="button" onclick="simulateExample2()">模拟发送请求</button>
+            
+            <div id="example2-data" class="result-box">
+                <h4>请求 JSON 数据：</h4>
+                <div class="code-block">[
+  {
+    "id": 1,
+    "roomId": 201,
+    "bedId": 301
+  },
+  {
+    "id": 2,
+    "roomId": 201,
+    "bedId": 302
+  }
+]</div>
+            </div>
+            
+            <div id="example2-result" class="result-box">
+                <h4>模拟响应结果：</h4>
+                <div class="code-block">{
+  "msg": "成功更新 2 条记录",
+  "code": 0
+}</div>
+            </div>
+        </div>
+
+        <h2>示例 3: 批量更新人员状态</h2>
+        <div class="example-box">
+            <p><strong>场景描述：</strong>一批人员转船，需要更新状态为 TRANSFER</p>
+            
+            <button class="button" onclick="showExample3()">查看请求数据</button>
+            <button class="button" onclick="simulateExample3()">模拟发送请求</button>
+            
+            <div id="example3-data" class="result-box">
+                <h4>请求 JSON 数据：</h4>
+                <div class="code-block">[
+  {
+    "id": 1,
+    "status": "TRANSFER"
+  },
+  {
+    "id": 2,
+    "status": "TRANSFER"
+  },
+  {
+    "id": 3,
+    "status": "TRANSFER"
+  }
+]</div>
+                <p><strong>说明：</strong>只更新状态字段，不改变房间和床位信息</p>
+            </div>
+            
+            <div id="example3-result" class="result-box">
+                <h4>模拟响应结果：</h4>
+                <div class="code-block">{
+  "msg": "成功更新 3 条记录",
+  "code": 0
+}</div>
+            </div>
+        </div>
+
+        <h2>示例 4: JavaScript AJAX 调用示例</h2>
+        <div class="example-box">
+            <p>以下是使用原生 JavaScript 发起批量更新请求的代码：</p>
+            
+            <div class="code-block">
+// 批量更新人员房间信息
+async function batchUpdateRoomInfo(persons) {
+  try {
+    const response = await fetch('/cosl/api/person/batchUpdateRoomInfo', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(persons)
+    });
+    
+    const result = await response.json();
+    
+    if (result.code === 0) {
+      console.log('批量更新成功:', result.msg);
+      alert('批量更新成功！');
+      return true;
+    } else {
+      console.error('批量更新失败:', result.msg);
+      alert('批量更新失败：' + result.msg);
+      return false;
+    }
+  } catch (error) {
+    console.error('请求错误:', error);
+    alert('网络错误：' + error.message);
+    return false;
+  }
+}
+
+// 使用示例
+const personsToUpdate = [
+  { id: 1, roomId: 101, bedId: 201, status: 'ONBOARD' },
+  { id: 2, roomId: 101, bedId: 202, status: 'ONBOARD' },
+  { id: 3, roomId: 102, bedId: 203, status: 'ONBOARD' }
+];
+
+// 调用函数
+batchUpdateRoomInfo(personsToUpdate);
+            </div>
+        </div>
+
+        <h2>示例 5: Vue.js 调用示例</h2>
+        <div class="example-box">
+            <p>以下是使用 Vue.js + Axios 发起批量更新请求的代码：</p>
+            
+            <div class="code-block">
+&lt;template&gt;
+  &lt;div&gt;
+    &lt;el-button type="primary" @click="handleBatchAssign"&gt;批量分配房间&lt;/el-button&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+export default {
+  data() {
+    return {
+      persons: [
+        { id: 1, roomId: 101, bedId: 201 },
+        { id: 2, roomId: 101, bedId: 202 },
+        { id: 3, roomId: 102, bedId: 203 }
+      ]
+    };
+  },
+  methods: {
+    async handleBatchAssign() {
+      try {
+        const { data } = await this.$axios.post(
+          '/cosl/api/person/batchUpdateRoomInfo',
+          this.persons
+        );
+        
+        if (data.code === 0) {
+          this.$message.success(data.msg);
+        } else {
+          this.$message.error(data.msg);
+        }
+      } catch (error) {
+        this.$message.error('批量更新失败：' + error.message);
+      }
+    }
+  }
+};
+&lt;/script&gt;
+            </div>
+        </div>
+
+        <h2>示例 6: React 调用示例</h2>
+        <div class="example-box">
+            <p>以下是使用 React + Axios 发起批量更新请求的代码：</p>
+            
+            <div class="code-block">
+import React, { useState } from 'react';
+import axios from 'axios';
+import { Button, message } from 'antd';
+
+const PersonBatchUpdate = () => {
+  const [loading, setLoading] = useState(false);
+
+  const handleBatchUpdate = async () => {
+    const persons = [
+      { id: 1, roomId: 101, bedId: 201, status: 'ONBOARD' },
+      { id: 2, roomId: 101, bedId: 202, status: 'ONBOARD' },
+      { id: 3, roomId: 102, bedId: 203, status: 'ONBOARD' }
+    ];
+
+    setLoading(true);
+    try {
+      const response = await axios.post(
+        '/cosl/api/person/batchUpdateRoomInfo',
+        persons
+      );
+
+      if (response.data.code === 0) {
+        message.success(response.data.msg);
+      } else {
+        message.error(response.data.msg);
+      }
+    } catch (error) {
+      message.error('批量更新失败：' + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    &lt;Button 
+      type="primary" 
+      onClick={handleBatchUpdate}
+      loading={loading}
+    &gt;
+      批量更新房间
+    &lt;/Button&gt;
+  );
+};
+
+export default PersonBatchUpdate;
+            </div>
+        </div>
+
+        <div class="note">
+            <div class="note-title">⚠️ 注意事项</div>
+            <ul>
+                <li><strong>必填字段：</strong>每个人员对象必须包含 <code>id</code> 字段</li>
+                <li><strong>可选字段：</strong><code>roomId</code>、<code>bedId</code>、<code>lifeboatId</code>、<code>status</code> 都是可选的，只提供需要更新的字段</li>
+                <li><strong>事务性：</strong>所有更新操作在同一个事务中执行，任何一条记录失败将全部回滚</li>
+                <li><strong>权限要求：</strong>需要 <code>system:person:edit</code> 权限</li>
+                <li><strong>数据验证：</strong>建议在前端先验证房间和床位的存在性和可用性</li>
+            </ul>
+        </div>
+
+        <h2>常见错误处理</h2>
+        <div class="example-box">
+            <table>
+                <tr>
+                    <th>错误信息</th>
+                    <th>原因</th>
+                    <th>解决方案</th>
+                </tr>
+                <tr>
+                    <td>批量更新数据不能为空</td>
+                    <td>请求体为空数组或 null</td>
+                    <td>确保请求体包含至少一个人员对象</td>
+                </tr>
+                <tr>
+                    <td>人员 ID 不能为空</td>
+                    <td>人员对象缺少 id 字段</td>
+                    <td>检查每个人员对象都包含有效的 id</td>
+                </tr>
+                <tr>
+                    <td>401 Unauthorized</td>
+                    <td>未登录或 token 过期</td>
+                    <td>重新登录获取 token</td>
+                </tr>
+                <tr>
+                    <td>403 Forbidden</td>
+                    <td>没有编辑权限</td>
+                    <td>联系管理员分配 system:person:edit 权限</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function showExample1() {
+            document.getElementById('example1-data').style.display = 'block';
+        }
+
+        function simulateExample1() {
+            document.getElementById('example1-data').style.display = 'none';
+            document.getElementById('example1-result').style.display = 'block';
+        }
+
+        function showExample2() {
+            document.getElementById('example2-data').style.display = 'block';
+        }
+
+        function simulateExample2() {
+            document.getElementById('example2-data').style.display = 'none';
+            document.getElementById('example2-result').style.display = 'block';
+        }
+
+        function showExample3() {
+            document.getElementById('example3-data').style.display = 'block';
+        }
+
+        function simulateExample3() {
+            document.getElementById('example3-data').style.display = 'none';
+            document.getElementById('example3-result').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

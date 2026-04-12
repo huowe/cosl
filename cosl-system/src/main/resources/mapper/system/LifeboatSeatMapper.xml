@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.LifeboatSeatMapper">
+    
+    <resultMap type="LifeboatSeat" id="LifeboatSeatResult">
+        <result property="id"    column="id"    />
+        <result property="lifeboatId"    column="lifeboat_id"    />
+        <result property="seatNo"    column="seat_no"    />
+        <result property="status"    column="status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectLifeboatSeatVo">
+        select id, lifeboat_id, seat_no, status, create_time, update_time from lifeboat_seat
+    </sql>
+
+    <select id="selectLifeboatSeatList" parameterType="LifeboatSeat" resultMap="LifeboatSeatResult">
+        <include refid="selectLifeboatSeatVo"/>
+        <where>  
+            <if test="lifeboatId != null "> and lifeboat_id = #{lifeboatId}</if>
+            <if test="seatNo != null  and seatNo != ''"> and seat_no like concat('%', #{seatNo}, '%')</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+        order by create_time desc
+    </select>
+    
+    <select id="selectLifeboatSeatById" parameterType="Long" resultMap="LifeboatSeatResult">
+        <include refid="selectLifeboatSeatVo"/>
+        where id = #{id}
+    </select>
+        
+    <select id="checkSeatNoUnique" parameterType="map" resultMap="LifeboatSeatResult">
+        <include refid="selectLifeboatSeatVo"/>
+        where lifeboat_id = #{lifeboatId} and seat_no = #{seatNo} limit 1
+    </select>
+
+    <select id="selectSeatsByLifeboatId" parameterType="Long" resultMap="LifeboatSeatResult">
+        <include refid="selectLifeboatSeatVo"/>
+        where lifeboat_id = #{lifeboatId}
+    </select>
+
+    <select id="countFreeSeats" parameterType="Long" resultType="int">
+        select count(*) from lifeboat_seat where lifeboat_id = #{lifeboatId} and status = 'FREE'
+    </select>
+    
+    <insert id="insertLifeboatSeat" parameterType="LifeboatSeat" useGeneratedKeys="true" keyProperty="id">
+        insert into lifeboat_seat
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="lifeboatId != null">lifeboat_id,</if>
+            <if test="seatNo != null and seatNo != ''">seat_no,</if>
+            <if test="status != null">status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="lifeboatId != null">#{lifeboatId},</if>
+            <if test="seatNo != null and seatNo != ''">#{seatNo},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateLifeboatSeat" parameterType="LifeboatSeat">
+        update lifeboat_seat
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="lifeboatId != null">lifeboat_id = #{lifeboatId},</if>
+            <if test="seatNo != null and seatNo != ''">seat_no = #{seatNo},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteLifeboatSeatById" parameterType="Long">
+        delete from lifeboat_seat where id = #{id}
+    </delete>
+
+    <delete id="deleteLifeboatSeatByIds" parameterType="String">
+        delete from lifeboat_seat where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

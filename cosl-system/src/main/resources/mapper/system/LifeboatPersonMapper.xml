@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.LifeboatPersonMapper">
+    
+    <resultMap type="LifeboatPerson" id="LifeboatPersonResult">
+        <result property="id"    column="id"    />
+        <result property="personId"    column="person_id"    />
+        <result property="lifeboatId"    column="lifeboat_id"    />
+        <result property="seatId"    column="seat_id"    />
+        <result property="assignTime"    column="assign_time"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectLifeboatPersonVo">
+        select id, person_id, lifeboat_id, seat_id, assign_time, create_time, update_time from lifeboat_person
+    </sql>
+
+    <select id="selectLifeboatPersonList" parameterType="LifeboatPerson" resultMap="LifeboatPersonResult">
+        <include refid="selectLifeboatPersonVo"/>
+        <where>  
+            <if test="personId != null "> and person_id = #{personId}</if>
+            <if test="lifeboatId != null "> and lifeboat_id = #{lifeboatId}</if>
+            <if test="seatId != null "> and seat_id = #{seatId}</if>
+        </where>
+        order by create_time desc
+    </select>
+    
+    <select id="selectLifeboatPersonById" parameterType="Long" resultMap="LifeboatPersonResult">
+        <include refid="selectLifeboatPersonVo"/>
+        where id = #{id}
+    </select>
+        
+    <select id="selectByPersonId" parameterType="Long" resultMap="LifeboatPersonResult">
+        <include refid="selectLifeboatPersonVo"/>
+        where person_id = #{personId} limit 1
+    </select>
+
+    <select id="selectPersonsByLifeboatId" parameterType="Long" resultMap="LifeboatPersonResult">
+        <include refid="selectLifeboatPersonVo"/>
+        where lifeboat_id = #{lifeboatId}
+    </select>
+
+    <select id="checkPersonAssigned" parameterType="Long" resultMap="LifeboatPersonResult">
+        <include refid="selectLifeboatPersonVo"/>
+        where person_id = #{personId} limit 1
+    </select>
+
+    <select id="countPersonsByLifeboatId" parameterType="Long" resultType="int">
+        select count(*) from lifeboat_person where lifeboat_id = #{lifeboatId}
+    </select>
+    
+    <insert id="insertLifeboatPerson" parameterType="LifeboatPerson" useGeneratedKeys="true" keyProperty="id">
+        insert into lifeboat_person
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="personId != null">person_id,</if>
+            <if test="lifeboatId != null">lifeboat_id,</if>
+            <if test="seatId != null">seat_id,</if>
+            <if test="assignTime != null">assign_time,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="personId != null">#{personId},</if>
+            <if test="lifeboatId != null">#{lifeboatId},</if>
+            <if test="seatId != null">#{seatId},</if>
+            <if test="assignTime != null">#{assignTime},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateLifeboatPerson" parameterType="LifeboatPerson">
+        update lifeboat_person
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="personId != null">person_id = #{personId},</if>
+            <if test="lifeboatId != null">lifeboat_id = #{lifeboatId},</if>
+            <if test="seatId != null">seat_id = #{seatId},</if>
+            <if test="assignTime != null">assign_time = #{assignTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteLifeboatPersonById" parameterType="Long">
+        delete from lifeboat_person where id = #{id}
+    </delete>
+
+    <delete id="deleteLifeboatPersonByIds" parameterType="String">
+        delete from lifeboat_person where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

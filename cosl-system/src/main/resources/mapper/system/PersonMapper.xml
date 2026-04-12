@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.PersonMapper">
+
+    <resultMap type="Person" id="PersonResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="mtsCardNo"    column="mts_card_no"    />
+        <result property="idCard"    column="id_card"    />
+        <result property="company"    column="company"    />
+        <result property="position"    column="position"    />
+        <result property="certificateExpireDate"    column="certificate_expire_date"    />
+        <result property="onboardDate"    column="onboard_date"    />
+        <result property="leaveDate"    column="leave_date"    />
+        <result property="roomId"    column="room_id"    />
+        <result property="bedId"    column="bed_id"    />
+        <result property="lifeboatId"    column="lifeboat_id"    />
+        <result property="status"    column="status"    />
+        <result property="blacklistFlag"    column="blacklist_flag"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deleted"    column="deleted"    />
+    </resultMap>
+
+    <sql id="selectPersonVo">
+        select id, name, mts_card_no, id_card, company, position, certificate_expire_date, onboard_date, leave_date, room_id, bed_id, lifeboat_id, status, blacklist_flag, create_time, update_time, deleted
+        from person
+    </sql>
+
+    <select id="selectPersonList" parameterType="Person" resultMap="PersonResult">
+        <include refid="selectPersonVo"/>
+        where deleted = 0
+        <if test="name != null and name != ''">
+            AND name like concat('%', #{name}, '%')
+        </if>
+        <if test="mtsCardNo != null and mtsCardNo != ''">
+            AND mts_card_no like concat('%', #{mtsCardNo}, '%')
+        </if>
+        <if test="idCard != null and idCard != ''">
+            AND id_card like concat('%', #{idCard}, '%')
+        </if>
+        <if test="company != null and company != ''">
+            AND company like concat('%', #{company}, '%')
+        </if>
+        <if test="status != null and status != ''">
+            AND status = #{status}
+        </if>
+        <if test="bedId != null">
+            AND bed_id = #{bedId}
+        </if>
+        <if test="blacklistFlag != null">
+            AND blacklist_flag = #{blacklistFlag}
+        </if>
+        <if test="positions !=null and positions.size>0">
+            AND position IN
+            <foreach item="item" collection="positions" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+
+    </select>
+
+    <select id="selectPersonById" parameterType="Long" resultMap="PersonResult">
+        <include refid="selectPersonVo"/>
+        where id = #{id} and deleted = 0
+    </select>
+
+    <select id="checkMtsCardNoUnique" parameterType="String" resultMap="PersonResult">
+        select id, mts_card_no from person where mts_card_no = #{mtsCardNo} and deleted = 0 limit 1
+    </select>
+
+    <select id="checkIdCardUnique" parameterType="String" resultMap="PersonResult">
+        select id, id_card from person where id_card = #{idCard} and deleted = 0 limit 1
+    </select>
+
+    <insert id="insertPerson" parameterType="Person" useGeneratedKeys="true" keyProperty="id">
+        insert into person
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">name,</if>
+            <if test="mtsCardNo != null and mtsCardNo != ''">mts_card_no,</if>
+            <if test="idCard != null">id_card,</if>
+            <if test="company != null">company,</if>
+            <if test="position != null">position,</if>
+            <if test="certificateExpireDate != null">certificate_expire_date,</if>
+            <if test="onboardDate != null">onboard_date,</if>
+            <if test="leaveDate != null">leave_date,</if>
+            <if test="roomId != null">room_id,</if>
+            <if test="bedId != null">bed_id,</if>
+            <if test="lifeboatId != null">lifeboat_id,</if>
+            <if test="status != null">status,</if>
+            <if test="blacklistFlag != null">blacklist_flag,</if>
+
+            create_time,
+
+            update_time,
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="mtsCardNo != null and mtsCardNo != ''">#{mtsCardNo},</if>
+            <if test="idCard != null">#{idCard},</if>
+            <if test="company != null">#{company},</if>
+            <if test="position != null">#{position},</if>
+            <if test="certificateExpireDate != null">#{certificateExpireDate},</if>
+            <if test="onboardDate != null">#{onboardDate},</if>
+            <if test="leaveDate != null">#{leaveDate},</if>
+            <if test="roomId != null">#{roomId},</if>
+            <if test="bedId != null">#{bedId},</if>
+            <if test="lifeboatId != null">#{lifeboatId},</if>
+            <if test="status != null">#{status},</if>
+            <if test="blacklistFlag != null">#{blacklistFlag},</if>
+
+            sysdate(),
+
+            sysdate(),
+        </trim>
+    </insert>
+
+    <update id="updatePerson" parameterType="Person">
+        update person
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="mtsCardNo != null and mtsCardNo != ''">mts_card_no = #{mtsCardNo},</if>
+            <if test="idCard != null">id_card = #{idCard},</if>
+            <if test="company != null">company = #{company},</if>
+            <if test="position != null">position = #{position},</if>
+            <if test="certificateExpireDate != null">certificate_expire_date = #{certificateExpireDate},</if>
+            <if test="onboardDate != null">onboard_date = #{onboardDate},</if>
+            <if test="leaveDate != null">leave_date = #{leaveDate},</if>
+            <if test="roomId != null">room_id = #{roomId},</if>
+            <if test="bedId != null">bed_id = #{bedId},</if>
+            <if test="lifeboatId != null">lifeboat_id = #{lifeboatId},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="blacklistFlag != null">blacklist_flag = #{blacklistFlag},</if>
+
+            update_time = sysdate(),
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePersonById" parameterType="Long">
+        update person set deleted = 1, update_time = sysdate() where id = #{id}
+    </delete>
+
+    <delete id="deletePersonByIds" parameterType="String">
+        update person set deleted = 1, update_time = sysdate() where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!-- 批量更新人员房间信息 -->
+    <update id="batchUpdateRoomInfo">
+        <foreach collection="list" item="person" separator=";">
+            update person
+            <trim prefix="SET" suffixOverrides=",">
+                <if test="person.roomId != null">room_id = #{person.roomId},</if>
+                <if test="person.bedId != null">bed_id = #{person.bedId},</if>
+                <if test="person.lifeboatId != null">lifeboat_id = #{person.lifeboatId},</if>
+                <if test="person.status != null and person.status != ''">status = #{person.status},</if>
+                update_time = sysdate()
+            </trim>
+            where id = #{person.id}
+        </foreach>
+    </update>
+
+    <!-- 统计人员总数 -->
+    <select id="countPersonTotal" resultType="int">
+        select count(*) from person where deleted = 0
+    </select>
+
+    <!-- 统计当前在船人员数 -->
+    <select id="countPersonCurrent" resultType="int">
+        select count(*) from person where deleted = 0 and status = 'ONBOARD'
+    </select>
+
+    <!-- 统计今日进入人员数 -->
+    <select id="countPersonEnter" resultType="int">
+        select count(*) from person 
+        where deleted = 0 
+        and DATE(onboard_date) = CURDATE()
+    </select>
+
+    <!-- 统计今日离开人员数 -->
+    <select id="countPersonLeave" resultType="int">
+        select count(*) from person 
+        where deleted = 0 
+        and DATE(leave_date) = CURDATE()
+    </select>
+
+    <!-- 查询即将到期的证书人员列表（30天内） -->
+    <select id="selectExpiringSoonPersons" resultMap="PersonResult">
+        <include refid="selectPersonVo"/>
+        where deleted = 0 
+        and certificate_expire_date IS NOT NULL
+        and certificate_expire_date > CURDATE()
+        and certificate_expire_date &lt;= DATE_ADD(CURDATE(), INTERVAL 30 DAY)
+        order by certificate_expire_date ASC
+    </select>
+
+    <!-- 查询已过期的证书人员列表 -->
+    <select id="selectExpiredPersons" resultMap="PersonResult">
+        <include refid="selectPersonVo"/>
+        where deleted = 0 
+        and certificate_expire_date IS NOT NULL
+        and certificate_expire_date &lt; CURDATE()
+        order by certificate_expire_date ASC
+    </select>
+
+    <!-- 统计即将到期的证书人数（30天内） -->
+    <select id="countExpiringSoonPersons" resultType="int">
+        select count(*) from person 
+        where deleted = 0 
+        and certificate_expire_date IS NOT NULL
+        and certificate_expire_date > CURDATE()
+        and certificate_expire_date &lt;= DATE_ADD(CURDATE(), INTERVAL 30 DAY)
+    </select>
+
+    <!-- 统计已过期的证书人数 -->
+    <select id="countExpiredPersons" resultType="int">
+        select count(*) from person 
+        where deleted = 0 
+        and certificate_expire_date IS NOT NULL
+        and certificate_expire_date &lt; CURDATE()
+    </select>
+
+
+</mapper>

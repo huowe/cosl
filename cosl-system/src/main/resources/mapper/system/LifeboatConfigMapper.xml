@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.LifeboatConfigMapper">
+    
+    <resultMap type="LifeboatConfig" id="LifeboatConfigResult">
+        <result property="id"    column="id"    />
+        <result property="boatNo"    column="boat_no"    />
+        <result property="boatName"    column="boat_name"    />
+        <result property="maxCapacity"    column="max_capacity"    />
+        <result property="evacuationPointId"    column="evacuation_point_id"    />
+        <result property="status"    column="status"    />
+        <result property="remark"    column="remark"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deleted"    column="deleted"    />
+    </resultMap>
+
+    <sql id="selectLifeboatConfigVo">
+        select id, boat_no, boat_name, max_capacity, evacuation_point_id, status, remark, create_time, update_time, deleted from lifeboat_config
+    </sql>
+
+    <select id="selectLifeboatConfigList" parameterType="LifeboatConfig" resultMap="LifeboatConfigResult">
+        <include refid="selectLifeboatConfigVo"/>
+        <where>  
+            deleted = 0
+            <if test="boatNo != null  and boatNo != ''"> and boat_no like concat('%', #{boatNo}, '%')</if>
+            <if test="boatName != null  and boatName != ''"> and boat_name like concat('%', #{boatName}, '%')</if>
+            <if test="evacuationPointId != null "> and evacuation_point_id = #{evacuationPointId}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+        order by create_time desc
+    </select>
+    
+    <select id="selectLifeboatConfigById" parameterType="Long" resultMap="LifeboatConfigResult">
+        <include refid="selectLifeboatConfigVo"/>
+        where id = #{id} and deleted = 0
+    </select>
+        
+    <select id="checkBoatNoUnique" parameterType="String" resultMap="LifeboatConfigResult">
+        <include refid="selectLifeboatConfigVo"/>
+        where boat_no = #{boatNo} and deleted = 0 limit 1
+    </select>
+
+    <select id="selectLifeboatConfigsByPointId" parameterType="Long" resultMap="LifeboatConfigResult">
+        <include refid="selectLifeboatConfigVo"/>
+        where evacuation_point_id = #{evacuationPointId} and deleted = 0
+    </select>
+    
+    <insert id="insertLifeboatConfig" parameterType="LifeboatConfig" useGeneratedKeys="true" keyProperty="id">
+        insert into lifeboat_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="boatNo != null and boatNo != ''">boat_no,</if>
+            <if test="boatName != null">boat_name,</if>
+            <if test="maxCapacity != null">max_capacity,</if>
+            <if test="evacuationPointId != null">evacuation_point_id,</if>
+            <if test="status != null">status,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="deleted != null">deleted,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="boatNo != null and boatNo != ''">#{boatNo},</if>
+            <if test="boatName != null">#{boatName},</if>
+            <if test="maxCapacity != null">#{maxCapacity},</if>
+            <if test="evacuationPointId != null">#{evacuationPointId},</if>
+            <if test="status != null">#{status},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="deleted != null">#{deleted},</if>
+         </trim>
+    </insert>
+
+    <update id="updateLifeboatConfig" parameterType="LifeboatConfig">
+        update lifeboat_config
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="boatNo != null and boatNo != ''">boat_no = #{boatNo},</if>
+            <if test="boatName != null">boat_name = #{boatName},</if>
+            <if test="maxCapacity != null">max_capacity = #{maxCapacity},</if>
+            <if test="evacuationPointId != null">evacuation_point_id = #{evacuationPointId},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="deleted != null">deleted = #{deleted},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteLifeboatConfigById" parameterType="Long">
+        update lifeboat_config set deleted = 1 where id = #{id}
+    </delete>
+
+    <delete id="deleteLifeboatConfigByIds" parameterType="String">
+        update lifeboat_config set deleted = 1 where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!-- 统计救生艇总数 -->
+    <select id="countLifeboatTotal" resultType="int">
+        select count(*) from lifeboat_config where deleted = 0
+    </select>
+
+    <!-- 统计空闲救生艇数 -->
+    <select id="countLifeboatFree" resultType="int">
+        select count(*) from lifeboat_config where deleted = 0 and status = 'FREE'
+    </select>
+    
+</mapper>

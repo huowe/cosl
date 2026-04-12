@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.EvacuationMapper">
+    
+    <resultMap type="Evacuation" id="EvacuationResult">
+        <id     property="id"           column="id"          />
+        <result property="name"         column="name"        />
+        <result property="type"         column="type"        />
+        <result property="alarmLevel"   column="alarm_level" />
+        <result property="startTime"    column="start_time"  />
+        <result property="endTime"      column="end_time"    />
+        <result property="expectedCount" column="expected_count" />
+        <result property="actualCount"  column="actual_count" />
+        <result property="assemblyPoint" column="assembly_point" />
+        <result property="status"       column="status"      />
+        <result property="remark"       column="remark"      />
+        <result property="createTime"   column="create_time" />
+        <result property="updateBy"     column="update_by"   />
+        <result property="updateTime"   column="update_time" />
+    </resultMap>
+
+    <resultMap type="EvacuationRecord" id="EvacuationRecordResult">
+        <id     property="id"           column="id"          />
+        <result property="evacuationId" column="evacuation_id" />
+        <result property="personId"     column="person_id"   />
+        <result property="personName"   column="person_name" />
+        <result property="lifeboatId"   column="lifeboat_id" />
+        <result property="lifeboatNo"   column="lifeboat_no" />
+        <result property="seatNo"       column="seat_no"     />
+        <result property="arriveTime"   column="arrive_time" />
+        <result property="boardTime"    column="board_time"  />
+        <result property="status"       column="status"      />
+        <result property="remark"       column="remark"      />
+    </resultMap>
+    
+    <sql id="selectEvacuationVo">
+        select id, name, type, alarm_level, start_time, end_time, expected_count, actual_count, 
+               assembly_point, status, remark, create_time, update_by, update_time
+		from evacuation
+    </sql>
+    
+    <!-- 查询条件 -->
+	<sql id="sqlwhereSearch">
+		<where>
+            <if test="id !=null">
+                and id = #{id}
+            </if>
+            <if test="name != null and name != ''">
+                and name like concat('%', #{name}, '%')
+            </if>
+            <if test="type != null and type != ''">
+                and type = #{type}
+            </if>
+            <if test="alarmLevel != null and alarmLevel != ''">
+                and alarm_level = #{alarmLevel}
+            </if>
+            <if test="status != null and status != ''">
+                and status = #{status}
+            </if>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+				and date_format(create_time,'%Y%m%d') &gt;= date_format(#{params.beginTime},'%Y%m%d')
+			</if>
+			<if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+				and date_format(create_time,'%Y%m%d') &lt;= date_format(#{params.endTime},'%Y%m%d')
+			</if>
+		</where>
+	</sql>
+    
+    <select id="selectEvacuationById" parameterType="Long" resultMap="EvacuationResult">
+        <include refid="selectEvacuationVo"/>
+        where id = #{id}
+    </select>
+    
+    <select id="selectEvacuationList" parameterType="Evacuation" resultMap="EvacuationResult">
+        <include refid="selectEvacuationVo"/>
+        <include refid="sqlwhereSearch"/>
+    </select>
+    
+    <insert id="insertEvacuation" parameterType="Evacuation" useGeneratedKeys="true" keyProperty="id">
+        insert into evacuation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">name,</if>
+            <if test="type != null and type != ''">type,</if>
+            <if test="alarmLevel != null and alarmLevel != ''">alarm_level,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="expectedCount != null">expected_count,</if>
+            <if test="actualCount != null">actual_count,</if>
+            <if test="assemblyPoint != null and assemblyPoint != ''">assembly_point,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="remark != null and remark != ''">remark,</if>
+ 			create_time,
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="type != null and type != ''">#{type},</if>
+            <if test="alarmLevel != null and alarmLevel != ''">#{alarmLevel},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="expectedCount != null">#{expectedCount},</if>
+            <if test="actualCount != null">#{actualCount},</if>
+            <if test="assemblyPoint != null and assemblyPoint != ''">#{assemblyPoint},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="remark != null and remark != ''">#{remark},</if>
+ 			sysdate(),
+        </trim>
+    </insert>
+	 
+    <update id="updateEvacuation" parameterType="Evacuation">
+        update evacuation
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="type != null and type != ''">type = #{type},</if>
+            <if test="alarmLevel != null and alarmLevel != ''">alarm_level = #{alarmLevel},</if>
+            <if test="startTime != null">start_time = #{startTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="expectedCount != null">expected_count = #{expectedCount},</if>
+            <if test="actualCount != null">actual_count = #{actualCount},</if>
+            <if test="assemblyPoint != null and assemblyPoint != ''">assembly_point = #{assemblyPoint},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="remark != null and remark != ''">remark = #{remark},</if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = sysdate()</if>
+        </trim>
+        where id = #{id}
+    </update>
+	
+    <delete id="deleteEvacuationById" parameterType="Long">
+        delete from evacuation where id = #{id}
+    </delete>
+	
+    <delete id="deleteEvacuationByIds" parameterType="String">
+        delete from evacuation where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!-- 撤离人员记录相关 SQL -->
+    <select id="checkEvacuationRecordExist" parameterType="EvacuationRecord" resultType="EvacuationRecord">
+        select id, evacuation_id, person_id, person_name, lifeboat_id, lifeboat_no, seat_no, 
+               arrive_time, board_time, status, remark
+        from evacuation_record
+        where evacuation_id = #{evacuationId} and person_id = #{personId}
+    </select>
+
+    <insert id="insertEvacuationRecord" parameterType="EvacuationRecord" useGeneratedKeys="true" keyProperty="id">
+        insert into evacuation_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="evacuationId != null">evacuation_id,</if>
+            <if test="personId != null">person_id,</if>
+            <if test="personName != null and personName != ''">person_name,</if>
+            <if test="lifeboatId != null">lifeboat_id,</if>
+            <if test="lifeboatNo != null and lifeboatNo != ''">lifeboat_no,</if>
+            <if test="seatNo != null">seat_no,</if>
+            <if test="arriveTime != null">arrive_time,</if>
+            <if test="boardTime != null">board_time,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="remark != null and remark != ''">remark,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="evacuationId != null">#{evacuationId},</if>
+            <if test="personId != null">#{personId},</if>
+            <if test="personName != null and personName != ''">#{personName},</if>
+            <if test="lifeboatId != null">#{lifeboatId},</if>
+            <if test="lifeboatNo != null and lifeboatNo != ''">#{lifeboatNo},</if>
+            <if test="seatNo != null">#{seatNo},</if>
+            <if test="arriveTime != null">#{arriveTime},</if>
+            <if test="boardTime != null">#{boardTime},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="remark != null and remark != ''">#{remark},</if>
+        </trim>
+    </insert>
+
+    <update id="updateEvacuationRecord" parameterType="EvacuationRecord">
+        update evacuation_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="evacuationId != null">evacuation_id = #{evacuationId},</if>
+            <if test="personId != null">person_id = #{personId},</if>
+            <if test="personName != null and personName != ''">person_name = #{personName},</if>
+            <if test="lifeboatId != null">lifeboat_id = #{lifeboatId},</if>
+            <if test="lifeboatNo != null and lifeboatNo != ''">lifeboat_no = #{lifeboatNo},</if>
+            <if test="seatNo != null">seat_no = #{seatNo},</if>
+            <if test="arriveTime != null">arrive_time = #{arriveTime},</if>
+            <if test="boardTime != null">board_time = #{boardTime},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="remark != null and remark != ''">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <select id="selectEvacuationRecordsByEvacuationId" parameterType="Long" resultMap="EvacuationRecordResult">
+        select id, evacuation_id, person_id, person_name, lifeboat_id, lifeboat_no, seat_no,
+               arrive_time, board_time, status, remark
+        from evacuation_record
+        where evacuation_id = #{evacuationId}
+    </select>
+
+    <delete id="deleteEvacuationRecordById" parameterType="Long">
+        delete from evacuation_record where id = #{id}
+    </delete>
+
+    <delete id="deleteEvacuationRecordByIds" parameterType="Long">
+        delete from evacuation_record where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

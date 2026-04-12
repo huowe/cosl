@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.RoomBedMapper">
+
+    <resultMap type="RoomBed" id="RoomBedResult">
+        <result property="id"    column="id"    />
+        <result property="roomId"    column="room_id"    />
+        <result property="bedNo"    column="bed_no"    />
+        <result property="status"    column="status"    />
+
+    </resultMap>
+
+    <sql id="selectRoomBedVo">
+        select id, room_id, bed_no, status
+        from room_bed
+    </sql>
+
+    <select id="selectRoomBedList" parameterType="RoomBed" resultMap="RoomBedResult">
+        <include refid="selectRoomBedVo"/>
+        <where>  
+            <if test="roomId != null">
+                AND room_id = #{roomId}
+            </if>
+            <if test="bedNo != null and bedNo != ''">
+                AND bed_no like concat('%', #{bedNo}, '%')
+            </if>
+            <if test="status != null and status != ''">
+                AND status = #{status}
+            </if>
+        </where>
+        order by room_id, bed_no
+    </select>
+
+    <select id="selectRoomBedById" parameterType="Long" resultMap="RoomBedResult">
+        <include refid="selectRoomBedVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="checkRoomBedUnique" parameterType="RoomBed"   resultMap="RoomBedResult">
+        select id, room_id, bed_no from room_bed where room_id = #{roomId} and bed_no = #{bedNo} limit 1
+    </select>
+
+    <select id="selectRoomBedsByRoomId" parameterType="Long" resultMap="RoomBedResult">
+        <include refid="selectRoomBedVo"/>
+        where room_id = #{roomId}
+        order by bed_no
+    </select>
+
+    <insert id="insertRoomBed" parameterType="RoomBed" useGeneratedKeys="true" keyProperty="id">
+        insert into room_bed
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roomId != null">room_id,</if>
+            <if test="bedNo != null and bedNo != ''">bed_no,</if>
+            <if test="status != null">status</if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roomId != null">#{roomId},</if>
+            <if test="bedNo != null and bedNo != ''">#{bedNo},</if>
+            <if test="status != null">#{status}</if>
+
+        </trim>
+    </insert>
+
+    <update id="updateRoomBed" parameterType="RoomBed">
+        update room_bed
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="roomId != null">room_id = #{roomId},</if>
+            <if test="bedNo != null and bedNo != ''">bed_no = #{bedNo},</if>
+            <if test="status != null">status = #{status}</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRoomBedById" parameterType="Long">
+        delete from room_bed where id = #{id}
+    </delete>
+
+    <delete id="deleteRoomBedByIds" parameterType="String">
+        delete from room_bed where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

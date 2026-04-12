@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.RoomConfigMapper">
+
+    <resultMap type="RoomConfig" id="RoomConfigResult">
+        <result property="id"    column="id"    />
+        <result property="roomNo"    column="room_no"    />
+        <result property="floor"    column="floor"    />
+        <result property="totalBeds"    column="total_beds"    />
+        <result property="status"    column="status"    />
+    </resultMap>
+
+    <sql id="selectRoomConfigVo">
+        select id, room_no, floor, total_beds, status
+        from room_config
+    </sql>
+
+    <select id="selectRoomConfigList" parameterType="RoomConfig" resultMap="RoomConfigResult">
+        <include refid="selectRoomConfigVo"/>
+        <where>  
+            <if test="roomNo != null and roomNo != ''">
+                AND room_no =#{roomNo}
+            </if>
+            <if test="floor != null and floor != ''">
+                AND floor = #{floor}
+            </if>
+            <if test="status != null and status != ''">
+                AND status = #{status}
+            </if>
+        </where>
+        order by room_no
+    </select>
+
+    <select id="selectRoomConfigById" parameterType="Long" resultMap="RoomConfigResult">
+        <include refid="selectRoomConfigVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="checkRoomNoUnique" parameterType="String" resultMap="RoomConfigResult">
+        select id, room_no from room_config where room_no = #{roomNo} limit 1
+    </select>
+
+    <insert id="insertRoomConfig" parameterType="RoomConfig" useGeneratedKeys="true" keyProperty="id">
+        insert into room_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roomNo != null and roomNo != ''">room_no,</if>
+            <if test="floor != null">floor,</if>
+            <if test="totalBeds != null">total_beds,</if>
+
+            <if test="status != null">status,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roomNo != null and roomNo != ''">#{roomNo},</if>
+            <if test="floor != null">#{floor},</if>
+            <if test="totalBeds != null">#{totalBeds},</if>
+
+            <if test="status != null">#{status},</if>
+        </trim>
+    </insert>
+
+    <update id="updateRoomConfig" parameterType="RoomConfig">
+        update room_config
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="roomNo != null and roomNo != ''">room_no = #{roomNo},</if>
+            <if test="floor != null">floor = #{floor},</if>
+            <if test="totalBeds != null">total_beds = #{totalBeds},</if>
+
+            <if test="status != null">status = #{status},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteRoomConfigById" parameterType="Long">
+        delete from room_config where id = #{id}
+    </delete>
+
+    <delete id="deleteRoomConfigByIds" parameterType="String">
+        delete from room_config where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!-- 锁定/解锁房间 -->
+    <update id="toggleLock">
+        update room_config 
+        set status = #{param2} 
+        where id = #{param1}
+    </update>
+
+    <!-- 批量锁定/解锁房间 -->
+    <update id="batchLock">
+        update room_config 
+        set status = #{param2} 
+        where id in
+        <foreach item="id" collection="param1" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+    <!-- 统计房间总数 -->
+    <select id="countRoomTotal" resultType="int">
+        select count(*) from room_config
+    </select>
+
+    <!-- 统计空闲房间数 -->
+    <select id="countRoomFree" resultType="int">
+        select count(*) from room_config where status = 'FREE'
+    </select>
+
+</mapper>
