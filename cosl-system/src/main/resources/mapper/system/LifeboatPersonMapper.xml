@@ -6,6 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <resultMap type="LifeboatPerson" id="LifeboatPersonResult">
         <result property="id"    column="id"    />
+        <result property="platformNo"    column="platform_no"    />
         <result property="personId"    column="person_id"    />
         <result property="lifeboatId"    column="lifeboat_id"    />
         <result property="seatId"    column="seat_id"    />
@@ -15,12 +16,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectLifeboatPersonVo">
-        select id, person_id, lifeboat_id, seat_id, assign_time, create_time, update_time from lifeboat_person
+        select id, platform_no, person_id, lifeboat_id, seat_id, assign_time, create_time, update_time from lifeboat_person
     </sql>
 
     <select id="selectLifeboatPersonList" parameterType="LifeboatPerson" resultMap="LifeboatPersonResult">
         <include refid="selectLifeboatPersonVo"/>
         <where>  
+            <if test="platformNo != null and platformNo != ''"> and platform_no = #{platformNo}</if>
             <if test="personId != null "> and person_id = #{personId}</if>
             <if test="lifeboatId != null "> and lifeboat_id = #{lifeboatId}</if>
             <if test="seatId != null "> and seat_id = #{seatId}</if>
@@ -55,6 +57,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="insertLifeboatPerson" parameterType="LifeboatPerson" useGeneratedKeys="true" keyProperty="id">
         insert into lifeboat_person
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="platformNo != null and platformNo != ''">platform_no,</if>
             <if test="personId != null">person_id,</if>
             <if test="lifeboatId != null">lifeboat_id,</if>
             <if test="seatId != null">seat_id,</if>
@@ -63,6 +66,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateTime != null">update_time,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="platformNo != null and platformNo != ''">#{platformNo},</if>
             <if test="personId != null">#{personId},</if>
             <if test="lifeboatId != null">#{lifeboatId},</if>
             <if test="seatId != null">#{seatId},</if>
@@ -75,6 +79,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updateLifeboatPerson" parameterType="LifeboatPerson">
         update lifeboat_person
         <trim prefix="SET" suffixOverrides=",">
+            <if test="platformNo != null and platformNo != ''">platform_no = #{platformNo},</if>
             <if test="personId != null">person_id = #{personId},</if>
             <if test="lifeboatId != null">lifeboat_id = #{lifeboatId},</if>
             <if test="seatId != null">seat_id = #{seatId},</if>

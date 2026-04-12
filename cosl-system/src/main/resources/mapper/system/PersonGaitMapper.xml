@@ -6,6 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <resultMap type="PersonGait" id="PersonGaitResult">
         <result property="id"    column="id"    />
+        <result property="platformNo"    column="platform_no"    />
         <result property="personId"    column="person_id"    />
         <result property="cameraId"    column="camera_id"    />
         <result property="gaitImageUrl"    column="gait_image_url"    />
@@ -14,12 +15,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectPersonGaitVo">
-        select id, person_id, camera_id, gait_image_url, silhouette_url, capture_time from person_gait
+        select id, platform_no, person_id, camera_id, gait_image_url, silhouette_url, capture_time from person_gait
     </sql>
 
     <select id="selectPersonGaitList" parameterType="PersonGait" resultMap="PersonGaitResult">
         <include refid="selectPersonGaitVo"/>
         <where>  
+            <if test="platformNo != null and platformNo != ''"> and platform_no = #{platformNo}</if>
             <if test="personId != null "> and person_id = #{personId}</if>
             <if test="cameraId != null "> and camera_id = #{cameraId}</if>
             <if test="gaitImageUrl != null  and gaitImageUrl != ''"> and gait_image_url like concat('%', #{gaitImageUrl}, '%')</if>
@@ -42,6 +44,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="insertPersonGait" parameterType="PersonGait" useGeneratedKeys="true" keyProperty="id">
         insert into person_gait
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="platformNo != null and platformNo != ''">platform_no,</if>
             <if test="personId != null">person_id,</if>
             <if test="cameraId != null">camera_id,</if>
             <if test="gaitImageUrl != null">gait_image_url,</if>
@@ -49,6 +52,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="captureTime != null">capture_time,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="platformNo != null and platformNo != ''">#{platformNo},</if>
             <if test="personId != null">#{personId},</if>
             <if test="cameraId != null">#{cameraId},</if>
             <if test="gaitImageUrl != null">#{gaitImageUrl},</if>
@@ -60,6 +64,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updatePersonGait" parameterType="PersonGait">
         update person_gait
         <trim prefix="SET" suffixOverrides=",">
+            <if test="platformNo != null and platformNo != ''">platform_no = #{platformNo},</if>
             <if test="personId != null">person_id = #{personId},</if>
             <if test="cameraId != null">camera_id = #{cameraId},</if>
             <if test="gaitImageUrl != null">gait_image_url = #{gaitImageUrl},</if>

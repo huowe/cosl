@@ -22,6 +22,9 @@ public class PersonTrack extends BaseEntity
     /** ID */
     private Long id;
 
+    /** 钻井平台编号 */
+    private String platformNo;
+
     /** 人员 ID */
     @Excel(name = "人员 ID", cellType = ColumnType.NUMERIC)
     private Long personId;
@@ -92,9 +95,19 @@ public class PersonTrack extends BaseEntity
         return this.xAxis;
     }
 
-    public void setyAxis(BigDecimal yAxis) 
+    public void setyAxis(BigDecimal yAxis)
     {
         this.yAxis = yAxis;
+    }
+    
+    public void setPlatformNo(String platformNo)
+    {
+        this.platformNo = platformNo;
+    }
+    
+    public String getPlatformNo()
+    {
+        return platformNo;
     }
 
     public BigDecimal getyAxis() 

@@ -6,6 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <resultMap type="PersonFace" id="PersonFaceResult">
         <result property="id"    column="id"    />
+        <result property="platformNo"    column="platform_no"    />
         <result property="personId"    column="person_id"    />
         <result property="imageUrl"    column="image_url"    />
         <result property="featureData"    column="feature_data"    />
@@ -13,12 +14,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectPersonFaceVo">
-        select id, person_id, image_url, feature_data, create_time from person_face
+        select id, platform_no, person_id, image_url, feature_data, create_time from person_face
     </sql>
 
     <select id="selectPersonFaceList" parameterType="PersonFace" resultMap="PersonFaceResult">
         <include refid="selectPersonFaceVo"/>
         <where>  
+            <if test="platformNo != null and platformNo != ''"> and platform_no = #{platformNo}</if>
             <if test="personId != null "> and person_id = #{personId}</if>
             <if test="imageUrl != null  and imageUrl != ''"> and image_url like concat('%', #{imageUrl}, '%')</if>
         </where>
@@ -32,12 +34,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="insertPersonFace" parameterType="PersonFace" useGeneratedKeys="true" keyProperty="id">
         insert into person_face
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="platformNo != null and platformNo != ''">platform_no,</if>
             <if test="personId != null">person_id,</if>
             <if test="imageUrl != null">image_url,</if>
             <if test="featureData != null">feature_data,</if>
             <if test="createTime != null">create_time,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="platformNo != null and platformNo != ''">#{platformNo},</if>
             <if test="personId != null">#{personId},</if>
             <if test="imageUrl != null">#{imageUrl},</if>
             <if test="featureData != null">#{featureData},</if>
@@ -48,6 +52,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updatePersonFace" parameterType="PersonFace">
         update person_face
         <trim prefix="SET" suffixOverrides=",">
+            <if test="platformNo != null and platformNo != ''">platform_no = #{platformNo},</if>
             <if test="personId != null">person_id = #{personId},</if>
             <if test="imageUrl != null">image_url = #{imageUrl},</if>
             <if test="featureData != null">feature_data = #{featureData},</if>

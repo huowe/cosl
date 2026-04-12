@@ -6,6 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <resultMap type="FloorConfig" id="FloorConfigResult">
         <result property="id"    column="id"    />
+        <result property="platformNo"    column="platform_no"    />
         <result property="floorNo"    column="floor_no"    />
         <result property="floorName"    column="floor_name"    />
         <result property="sortOrder"    column="sort_order"    />
@@ -19,13 +20,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectFloorConfigVo">
-        select id, floor_no, floor_name, sort_order, status, remark, create_by, create_time, update_by, update_time, deleted from floor_config
+        select id, platform_no, floor_no, floor_name, sort_order, status, remark, create_by, create_time, update_by, update_time, deleted from floor_config
     </sql>
 
     <select id="selectFloorConfigList" parameterType="FloorConfig" resultMap="FloorConfigResult">
         <include refid="selectFloorConfigVo"/>
         <where>  
             deleted = 0
+            <if test="platformNo != null and platformNo != ''"> and platform_no = #{platformNo}</if>
             <if test="floorNo != null and floorNo != ''"> and floor_no = #{floorNo}</if>
             <if test="floorName != null and floorName != ''"> and floor_name like concat('%', #{floorName}, '%')</if>
             <if test="status != null and status != ''"> and status = #{status}</if>
@@ -40,7 +42,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         
     <select id="checkFloorNoUnique" parameterType="String" resultMap="FloorConfigResult">
         <include refid="selectFloorConfigVo"/>
-        where floor_no = #{floorNo} and deleted = 0 limit 1
+        where floor_no = #{floorNo} and platform_no = #{platformNo} and deleted = 0 limit 1
     </select>
 
     <select id="selectActiveFloorList" resultMap="FloorConfigResult">
@@ -52,6 +54,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="insertFloorConfig" parameterType="FloorConfig" useGeneratedKeys="true" keyProperty="id">
         insert into floor_config
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="platformNo != null and platformNo != ''">platform_no,</if>
             <if test="floorNo != null and floorNo != ''">floor_no,</if>
             <if test="floorName != null and floorName != ''">floor_name,</if>
             <if test="sortOrder != null">sort_order,</if>
@@ -64,6 +67,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="deleted != null">deleted,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="platformNo != null and platformNo != ''">#{platformNo},</if>
             <if test="floorNo != null and floorNo != ''">#{floorNo},</if>
             <if test="floorName != null and floorName != ''">#{floorName},</if>
             <if test="sortOrder != null">#{sortOrder},</if>
@@ -80,6 +84,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updateFloorConfig" parameterType="FloorConfig">
         update floor_config
         <trim prefix="SET" suffixOverrides=",">
+            <if test="platformNo != null and platformNo != ''">platform_no = #{platformNo},</if>
             <if test="floorNo != null and floorNo != ''">floor_no = #{floorNo},</if>
             <if test="floorName != null and floorName != ''">floor_name = #{floorName},</if>
             <if test="sortOrder != null">sort_order = #{sortOrder},</if>

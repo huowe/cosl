@@ -21,6 +21,9 @@ public class LifeboatSeat extends BaseEntity
     @Excel(name = "主键", cellType = ColumnType.NUMERIC)
     private Long id;
 
+    /** 钻井平台编号 */
+    private String platformNo;
+
     /** 救生艇 ID */
     @Excel(name = "救生艇 ID", cellType = ColumnType.NUMERIC)
     private Long lifeboatId;
@@ -74,6 +77,16 @@ public class LifeboatSeat extends BaseEntity
     public void setStatus(String status)
     {
         this.status = status;
+    }
+
+    public void setPlatformNo(String platformNo)
+    {
+        this.platformNo = platformNo;
+    }
+
+    public String getPlatformNo()
+    {
+        return platformNo;
     }
 
     @Override

@@ -20,6 +20,9 @@ public class RoomBed extends BaseEntity
     /** ID */
     private Long id;
 
+    /** 钻井平台编号 */
+    private String platformNo;
+
     /** 房间 ID */
     @Excel(name = "房间 ID", cellType = ColumnType.NUMERIC)
     private Long roomId;
@@ -80,6 +83,16 @@ public class RoomBed extends BaseEntity
     public void setStatus(String status) 
     {
         this.status = status;
+    }
+
+    public void setPlatformNo(String platformNo)
+    {
+        this.platformNo = platformNo;
+    }
+
+    public String getPlatformNo()
+    {
+        return platformNo;
     }
 
     @Override

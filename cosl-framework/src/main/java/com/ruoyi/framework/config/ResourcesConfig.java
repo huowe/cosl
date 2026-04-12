@@ -10,6 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import com.ruoyi.common.config.RuoYiConfig;
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.framework.interceptor.RepeatSubmitInterceptor;
+import com.ruoyi.framework.interceptor.PlatformInterceptor;
 
 /**
  * 通用配置
@@ -27,6 +28,9 @@ public class ResourcesConfig implements WebMvcConfigurer
 
     @Autowired
     private RepeatSubmitInterceptor repeatSubmitInterceptor;
+
+    @Autowired
+    private PlatformInterceptor platformInterceptor;
 
     /**
      * 默认首页的设置，当输入域名是可以自动跳转到默认指定的网页
@@ -54,5 +58,7 @@ public class ResourcesConfig implements WebMvcConfigurer
     public void addInterceptors(InterceptorRegistry registry)
     {
         registry.addInterceptor(repeatSubmitInterceptor).addPathPatterns("/**");
+        // 添加平台切换拦截器，对所有API请求生效
+        registry.addInterceptor(platformInterceptor).addPathPatterns("/cosl/api/**");
     }
 }

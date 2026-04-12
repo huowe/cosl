@@ -21,6 +21,9 @@ public class Person implements Serializable
     /** ID */
     private Long id;
 
+    /** 钻井平台编号 */
+    private String platformNo;
+
     /** 姓名 */
     private String name;
 
@@ -262,6 +265,16 @@ public class Person implements Serializable
     public Integer getDeleted()
     {
         return deleted;
+    }
+
+    public void setPlatformNo(String platformNo)
+    {
+        this.platformNo = platformNo;
+    }
+
+    public String getPlatformNo()
+    {
+        return platformNo;
     }
 
     @Override

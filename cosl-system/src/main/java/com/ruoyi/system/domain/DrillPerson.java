@@ -14,6 +14,9 @@ public class DrillPerson extends BaseEntity
     /** ID */
     private Long id;
 
+    /** 钻井平台编号 */
+    private String platformNo;
+
     /** 演练 ID */
     private Long drillId;
 
@@ -35,6 +38,16 @@ public class DrillPerson extends BaseEntity
     
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+
+    public void setPlatformNo(String platformNo)
+    {
+        this.platformNo = platformNo;
+    }
+
+    public String getPlatformNo()
+    {
+        return platformNo;
+    }
 
     @Override
     public String toString() {

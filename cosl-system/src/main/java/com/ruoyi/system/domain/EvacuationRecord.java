@@ -17,6 +17,9 @@ public class EvacuationRecord extends BaseEntity
     /** 主键 ID */
     private Long id;
 
+    /** 钻井平台编号 */
+    private String platformNo;
+
     /** 撤离事件 ID */
     private Long evacuationId;
 
@@ -155,6 +158,16 @@ public class EvacuationRecord extends BaseEntity
     public void setRemark(String remark)
     {
         this.remark = remark;
+    }
+
+    public void setPlatformNo(String platformNo)
+    {
+        this.platformNo = platformNo;
+    }
+
+    public String getPlatformNo()
+    {
+        return platformNo;
     }
 
     @Override

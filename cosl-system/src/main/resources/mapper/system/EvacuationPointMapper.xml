@@ -6,6 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <resultMap type="EvacuationPoint" id="EvacuationPointResult">
         <result property="id"    column="id"    />
+        <result property="platformNo"    column="platform_no"    />
         <result property="pointName"    column="point_name"    />
         <result property="floor"    column="floor"    />
         <result property="xAxis"    column="x_axis"    />
@@ -17,13 +18,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectEvacuationPointVo">
-        select id, point_name, floor, x_axis, y_axis, remark, create_time, update_time, deleted from evacuation_point
+        select id, platform_no, point_name, floor, x_axis, y_axis, remark, create_time, update_time, deleted from evacuation_point
     </sql>
 
     <select id="selectEvacuationPointList" parameterType="EvacuationPoint" resultMap="EvacuationPointResult">
         <include refid="selectEvacuationPointVo"/>
         <where>  
             deleted = 0
+            <if test="platformNo != null and platformNo != ''"> and platform_no = #{platformNo}</if>
             <if test="pointName != null  and pointName != ''"> and point_name like concat('%', #{pointName}, '%')</if>
             <if test="floor != null  and floor != ''"> and floor = #{floor}</if>
         </where>
@@ -37,12 +39,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         
     <select id="checkPointNameUnique" parameterType="String" resultMap="EvacuationPointResult">
         <include refid="selectEvacuationPointVo"/>
-        where point_name = #{pointName} and deleted = 0 limit 1
+        where point_name = #{pointName} and platform_no = #{platformNo} and deleted = 0 limit 1
     </select>
     
     <insert id="insertEvacuationPoint" parameterType="EvacuationPoint" useGeneratedKeys="true" keyProperty="id">
         insert into evacuation_point
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="platformNo != null and platformNo != ''">platform_no,</if>
             <if test="pointName != null and pointName != ''">point_name,</if>
             <if test="floor != null">floor,</if>
             <if test="xAxis != null">x_axis,</if>
@@ -53,6 +56,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="deleted != null">deleted,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="platformNo != null and platformNo != ''">#{platformNo},</if>
             <if test="pointName != null and pointName != ''">#{pointName},</if>
             <if test="floor != null">#{floor},</if>
             <if test="xAxis != null">#{xAxis},</if>
@@ -67,6 +71,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updateEvacuationPoint" parameterType="EvacuationPoint">
         update evacuation_point
         <trim prefix="SET" suffixOverrides=",">
+            <if test="platformNo != null and platformNo != ''">platform_no = #{platformNo},</if>
             <if test="pointName != null and pointName != ''">point_name = #{pointName},</if>
             <if test="floor != null">floor = #{floor},</if>
             <if test="xAxis != null">x_axis = #{xAxis},</if>

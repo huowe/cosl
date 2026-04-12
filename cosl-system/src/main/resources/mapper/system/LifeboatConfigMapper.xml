@@ -6,6 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <resultMap type="LifeboatConfig" id="LifeboatConfigResult">
         <result property="id"    column="id"    />
+        <result property="platformNo"    column="platform_no"    />
         <result property="boatNo"    column="boat_no"    />
         <result property="boatName"    column="boat_name"    />
         <result property="maxCapacity"    column="max_capacity"    />
@@ -18,13 +19,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectLifeboatConfigVo">
-        select id, boat_no, boat_name, max_capacity, evacuation_point_id, status, remark, create_time, update_time, deleted from lifeboat_config
+        select id, platform_no, boat_no, boat_name, max_capacity, evacuation_point_id, status, remark, create_time, update_time, deleted from lifeboat_config
     </sql>
 
     <select id="selectLifeboatConfigList" parameterType="LifeboatConfig" resultMap="LifeboatConfigResult">
         <include refid="selectLifeboatConfigVo"/>
         <where>  
             deleted = 0
+            <if test="platformNo != null and platformNo != ''"> and platform_no = #{platformNo}</if>
             <if test="boatNo != null  and boatNo != ''"> and boat_no like concat('%', #{boatNo}, '%')</if>
             <if test="boatName != null  and boatName != ''"> and boat_name like concat('%', #{boatName}, '%')</if>
             <if test="evacuationPointId != null "> and evacuation_point_id = #{evacuationPointId}</if>
@@ -40,7 +42,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         
     <select id="checkBoatNoUnique" parameterType="String" resultMap="LifeboatConfigResult">
         <include refid="selectLifeboatConfigVo"/>
-        where boat_no = #{boatNo} and deleted = 0 limit 1
+        where boat_no = #{boatNo} and platform_no = #{platformNo} and deleted = 0 limit 1
     </select>
 
     <select id="selectLifeboatConfigsByPointId" parameterType="Long" resultMap="LifeboatConfigResult">
@@ -51,6 +53,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="insertLifeboatConfig" parameterType="LifeboatConfig" useGeneratedKeys="true" keyProperty="id">
         insert into lifeboat_config
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="platformNo != null and platformNo != ''">platform_no,</if>
             <if test="boatNo != null and boatNo != ''">boat_no,</if>
             <if test="boatName != null">boat_name,</if>
             <if test="maxCapacity != null">max_capacity,</if>
@@ -62,6 +65,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="deleted != null">deleted,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="platformNo != null and platformNo != ''">#{platformNo},</if>
             <if test="boatNo != null and boatNo != ''">#{boatNo},</if>
             <if test="boatName != null">#{boatName},</if>
             <if test="maxCapacity != null">#{maxCapacity},</if>
@@ -77,6 +81,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updateLifeboatConfig" parameterType="LifeboatConfig">
         update lifeboat_config
         <trim prefix="SET" suffixOverrides=",">
+            <if test="platformNo != null and platformNo != ''">platform_no = #{platformNo},</if>
             <if test="boatNo != null and boatNo != ''">boat_no = #{boatNo},</if>
             <if test="boatName != null">boat_name = #{boatName},</if>
             <if test="maxCapacity != null">max_capacity = #{maxCapacity},</if>
@@ -102,12 +107,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <!-- 统计救生艇总数 -->
     <select id="countLifeboatTotal" resultType="int">
-        select count(*) from lifeboat_config where deleted = 0
+        select count(*) from lifeboat_config 
+        <where>
+            deleted = 0
+            <if test="platformNo != null and platformNo != ''">
+                and platform_no = #{platformNo}
+            </if>
+        </where>
     </select>
 
     <!-- 统计空闲救生艇数 -->
     <select id="countLifeboatFree" resultType="int">
-        select count(*) from lifeboat_config where deleted = 0 and status = 'FREE'
+        select count(*) from lifeboat_config 
+        <where>
+            deleted = 0 and status = 'FREE'
+            <if test="platformNo != null and platformNo != ''">
+                and platform_no = #{platformNo}
+            </if>
+        </where>
     </select>
     
 </mapper>

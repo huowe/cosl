@@ -20,6 +20,9 @@ public class FloorConfig extends BaseEntity
     @Excel(name = "主键ID", cellType = ColumnType.NUMERIC)
     private Long id;
 
+    /** 钻井平台编号 */
+    private String platformNo;
+
     /** 楼层编号 */
     @Excel(name = "楼层编号")
     private String floorNo;
@@ -117,6 +120,16 @@ public class FloorConfig extends BaseEntity
     public void setDeleted(Integer deleted)
     {
         this.deleted = deleted;
+    }
+
+    public void setPlatformNo(String platformNo)
+    {
+        this.platformNo = platformNo;
+    }
+
+    public String getPlatformNo()
+    {
+        return platformNo;
     }
 
     @Override

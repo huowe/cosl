@@ -6,6 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <resultMap type="Drill" id="DrillResult">
         <id     property="id"           column="id"          />
+        <result property="platformNo"   column="platform_no" />
         <result property="name"         column="name"        />
         <result property="startTime"    column="start_time"  />
         <result property="endTime"      column="end_time"    />
@@ -17,13 +18,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
     
     <sql id="selectDrillVo">
-        select id, name, start_time, end_time, expected_count, actual_count, status, create_time
+        select id, platform_no, name, start_time, end_time, expected_count, actual_count, status, create_time
 		from drill
     </sql>
     
     <!-- 查询条件 -->
 	<sql id="sqlwhereSearch">
 		<where>
+            <if test="platformNo != null and platformNo != ''">
+                and platform_no = #{platformNo}
+            </if>
             <if test="id !=null">
                 and id = #{id}
             </if>
@@ -55,6 +59,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="insertDrill" parameterType="Drill" useGeneratedKeys="true" keyProperty="id">
         insert into drill
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="platformNo != null and platformNo != ''">platform_no,</if>
             <if test="name != null and name != ''">name,</if>
             <if test="startTime != null">start_time,</if>
             <if test="endTime != null">end_time,</if>
@@ -65,6 +70,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			create_time,
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="platformNo != null and platformNo != ''">#{platformNo},</if>
             <if test="name != null and name != ''">#{name},</if>
             <if test="startTime != null">#{startTime},</if>
             <if test="endTime != null">#{endTime},</if>
@@ -79,6 +85,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updateDrill" parameterType="Drill">
         update drill
         <trim prefix="SET" suffixOverrides=",">
+            <if test="platformNo != null and platformNo != ''">platform_no = #{platformNo},</if>
             <if test="name != null and name != ''">name = #{name},</if>
             <if test="startTime != null">start_time = #{startTime},</if>
             <if test="endTime != null">end_time = #{endTime},</if>
@@ -136,12 +143,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <!-- 统计本月演习次数 -->
     <select id="countDrillThisMonth" resultType="int">
         select count(*) from drill 
-        where DATE_FORMAT(create_time, '%Y-%m') = DATE_FORMAT(CURDATE(), '%Y-%m')
+        <where>
+            DATE_FORMAT(create_time, '%Y-%m') = DATE_FORMAT(CURDATE(), '%Y-%m')
+            <if test="platformNo != null and platformNo != ''">
+                and platform_no = #{platformNo}
+            </if>
+        </where>
     </select>
 
     <!-- 统计演习累计次数 -->
     <select id="countDrillTotal" resultType="int">
         select count(*) from drill
+        <where>
+            <if test="platformNo != null and platformNo != ''">
+                platform_no = #{platformNo}
+            </if>
+        </where>
     </select>
     
 </mapper>

@@ -6,6 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <resultMap type="PersonTrack" id="PersonTrackResult">
         <result property="id"    column="id"    />
+        <result property="platformNo"    column="platform_no"    />
         <result property="personId"    column="person_id"    />
         <result property="cameraId"    column="camera_id"    />
         <result property="captureTime"    column="capture_time"    />
@@ -14,13 +15,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectPersonTrackVo">
-        select id, person_id, camera_id, capture_time, x_axis, y_axis
+        select id, platform_no, person_id, camera_id, capture_time, x_axis, y_axis
         from person_track
     </sql>
 
     <select id="selectPersonTrackList" parameterType="PersonTrack" resultMap="PersonTrackResult">
         <include refid="selectPersonTrackVo"/>
         <where>  
+            <if test="platformNo != null and platformNo != ''">
+                AND platform_no = #{platformNo}
+            </if>
             <if test="personId != null">
                 AND person_id = #{personId}
             </if>
@@ -43,6 +47,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="insertPersonTrack" parameterType="PersonTrack" useGeneratedKeys="true" keyProperty="id">
         insert into person_track
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="platformNo != null and platformNo != ''">platform_no,</if>
             <if test="personId != null">person_id,</if>
             <if test="cameraId != null">camera_id,</if>
             <if test="captureTime != null">capture_time,</if>
@@ -50,6 +55,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="yAxis != null">y_axis</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="platformNo != null and platformNo != ''">#{platformNo},</if>
             <if test="personId != null">#{personId},</if>
             <if test="cameraId != null">#{cameraId},</if>
             <if test="captureTime != null">#{captureTime},</if>
@@ -61,6 +67,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updatePersonTrack" parameterType="PersonTrack">
         update person_track
         <trim prefix="SET" suffixOverrides=",">
+            <if test="platformNo != null and platformNo != ''">platform_no = #{platformNo},</if>
             <if test="personId != null">person_id = #{personId},</if>
             <if test="cameraId != null">camera_id = #{cameraId},</if>
             <if test="captureTime != null">capture_time = #{captureTime},</if>

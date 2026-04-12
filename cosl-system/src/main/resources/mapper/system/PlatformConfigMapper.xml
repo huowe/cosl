@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.PlatformConfigMapper">
+    
+    <resultMap type="PlatformConfig" id="PlatformConfigResult">
+        <result property="id"            column="id"              />
+        <result property="platformNo"    column="platform_no"     />
+        <result property="platformName"  column="platform_name"   />
+        <result property="platformType"  column="platform_type"   />
+        <result property="location"      column="location"        />
+        <result property="status"        column="status"          />
+        <result property="sortOrder"     column="sort_order"      />
+        <result property="remark"        column="remark"          />
+        <result property="createBy"      column="create_by"       />
+        <result property="createTime"    column="create_time"     />
+        <result property="updateBy"      column="update_by"       />
+        <result property="updateTime"    column="update_time"     />
+        <result property="deleted"       column="deleted"         />
+    </resultMap>
+
+    <sql id="selectPlatformConfigVo">
+        select id, platform_no, platform_name, platform_type, location, status, sort_order, remark, 
+               create_by, create_time, update_by, update_time, deleted 
+        from platform_config
+    </sql>
+
+    <select id="selectPlatformConfigList" parameterType="PlatformConfig" resultMap="PlatformConfigResult">
+        <include refid="selectPlatformConfigVo"/>
+        <where>  
+            deleted = 0
+            <if test="platformNo != null and platformNo != ''">
+                AND platform_no like concat('%', #{platformNo}, '%')
+            </if>
+            <if test="platformName != null and platformName != ''">
+                AND platform_name like concat('%', #{platformName}, '%')
+            </if>
+            <if test="platformType != null and platformType != ''">
+                AND platform_type = #{platformType}
+            </if>
+            <if test="status != null and status != ''">
+                AND status = #{status}
+            </if>
+            <if test="location != null and location != ''">
+                AND location like concat('%', #{location}, '%')
+            </if>
+        </where>
+        order by sort_order asc, create_time desc
+    </select>
+    
+    <select id="selectPlatformConfigById" parameterType="Long" resultMap="PlatformConfigResult">
+        <include refid="selectPlatformConfigVo"/>
+        where id = #{id} and deleted = 0
+    </select>
+
+    <select id="selectPlatformConfigByNo" parameterType="String" resultMap="PlatformConfigResult">
+        <include refid="selectPlatformConfigVo"/>
+        where platform_no = #{platformNo} and deleted = 0
+    </select>
+
+    <select id="selectActivePlatformList" resultMap="PlatformConfigResult">
+        <include refid="selectPlatformConfigVo"/>
+        where status = 'ACTIVE' and deleted = 0
+        order by sort_order asc
+    </select>
+
+    <select id="checkPlatformNoUnique" parameterType="String" resultMap="PlatformConfigResult">
+        <include refid="selectPlatformConfigVo"/>
+        where platform_no = #{platformNo} and deleted = 0 limit 1
+    </select>
+        
+    <insert id="insertPlatformConfig" parameterType="PlatformConfig" useGeneratedKeys="true" keyProperty="id">
+        insert into platform_config
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="platformNo != null and platformNo != ''">platform_no,</if>
+            <if test="platformName != null and platformName != ''">platform_name,</if>
+            <if test="platformType != null">platform_type,</if>
+            <if test="location != null">location,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="sortOrder != null">sort_order,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null and updateBy != ''">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="deleted != null">deleted,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="platformNo != null and platformNo != ''">#{platformNo},</if>
+            <if test="platformName != null and platformName != ''">#{platformName},</if>
+            <if test="platformType != null">#{platformType},</if>
+            <if test="location != null">#{location},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="sortOrder != null">#{sortOrder},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null and updateBy != ''">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="deleted != null">#{deleted},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePlatformConfig" parameterType="PlatformConfig">
+        update platform_config
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="platformNo != null and platformNo != ''">platform_no = #{platformNo},</if>
+            <if test="platformName != null and platformName != ''">platform_name = #{platformName},</if>
+            <if test="platformType != null">platform_type = #{platformType},</if>
+            <if test="location != null">location = #{location},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="sortOrder != null">sort_order = #{sortOrder},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="deleted != null">deleted = #{deleted},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePlatformConfigById" parameterType="Long">
+        update platform_config set deleted = 1 where id = #{id}
+    </delete>
+
+    <delete id="deletePlatformConfigByIds" parameterType="String">
+        update platform_config set deleted = 1 where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

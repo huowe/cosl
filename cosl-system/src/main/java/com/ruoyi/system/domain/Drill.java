@@ -21,6 +21,9 @@ public class Drill extends BaseEntity
     @Excel(name = "主键", cellType = ColumnType.NUMERIC)
     private Long id;
 
+    /** 钻井平台编号 */
+    private String platformNo;
+
     /** 演练名称 */
     @Excel(name = "演练名称")
     private String name;
@@ -114,6 +117,16 @@ public class Drill extends BaseEntity
     public void setStatus(String status)
     {
         this.status = status;
+    }
+
+    public void setPlatformNo(String platformNo)
+    {
+        this.platformNo = platformNo;
+    }
+
+    public String getPlatformNo()
+    {
+        return platformNo;
     }
 
     @Override

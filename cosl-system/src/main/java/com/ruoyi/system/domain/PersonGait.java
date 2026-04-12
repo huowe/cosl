@@ -21,6 +21,9 @@ public class PersonGait extends BaseEntity
     @Excel(name = "主键", cellType = ColumnType.NUMERIC)
     private Long id;
 
+    /** 钻井平台编号 */
+    private String platformNo;
+
     /** 人员 ID */
     @Excel(name = "人员 ID", cellType = ColumnType.NUMERIC)
     private Long personId;
@@ -101,6 +104,16 @@ public class PersonGait extends BaseEntity
     public void setCaptureTime(Date captureTime)
     {
         this.captureTime = captureTime;
+    }
+
+    public void setPlatformNo(String platformNo)
+    {
+        this.platformNo = platformNo;
+    }
+
+    public String getPlatformNo()
+    {
+        return platformNo;
     }
 
     @Override

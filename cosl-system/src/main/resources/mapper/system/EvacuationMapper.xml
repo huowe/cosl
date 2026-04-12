@@ -6,6 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <resultMap type="Evacuation" id="EvacuationResult">
         <id     property="id"           column="id"          />
+        <result property="platformNo"   column="platform_no" />
         <result property="name"         column="name"        />
         <result property="type"         column="type"        />
         <result property="alarmLevel"   column="alarm_level" />
@@ -36,7 +37,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
     
     <sql id="selectEvacuationVo">
-        select id, name, type, alarm_level, start_time, end_time, expected_count, actual_count, 
+        select id, platform_no, name, type, alarm_level, start_time, end_time, expected_count, actual_count, 
                assembly_point, status, remark, create_time, update_by, update_time
 		from evacuation
     </sql>
@@ -44,6 +45,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <!-- 查询条件 -->
 	<sql id="sqlwhereSearch">
 		<where>
+            <if test="platformNo != null and platformNo != ''">
+                and platform_no = #{platformNo}
+            </if>
             <if test="id !=null">
                 and id = #{id}
             </if>
@@ -81,6 +85,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="insertEvacuation" parameterType="Evacuation" useGeneratedKeys="true" keyProperty="id">
         insert into evacuation
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="platformNo != null and platformNo != ''">platform_no,</if>
             <if test="name != null and name != ''">name,</if>
             <if test="type != null and type != ''">type,</if>
             <if test="alarmLevel != null and alarmLevel != ''">alarm_level,</if>
@@ -94,6 +99,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			create_time,
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="platformNo != null and platformNo != ''">#{platformNo},</if>
             <if test="name != null and name != ''">#{name},</if>
             <if test="type != null and type != ''">#{type},</if>
             <if test="alarmLevel != null and alarmLevel != ''">#{alarmLevel},</if>
@@ -111,6 +117,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updateEvacuation" parameterType="Evacuation">
         update evacuation
         <trim prefix="SET" suffixOverrides=",">
+            <if test="platformNo != null and platformNo != ''">platform_no = #{platformNo},</if>
             <if test="name != null and name != ''">name = #{name},</if>
             <if test="type != null and type != ''">type = #{type},</if>
             <if test="alarmLevel != null and alarmLevel != ''">alarm_level = #{alarmLevel},</if>

@@ -6,6 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <resultMap type="Person" id="PersonResult">
         <result property="id"    column="id"    />
+        <result property="platformNo"    column="platform_no"    />
         <result property="name"    column="name"    />
         <result property="mtsCardNo"    column="mts_card_no"    />
         <result property="idCard"    column="id_card"    />
@@ -25,13 +26,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectPersonVo">
-        select id, name, mts_card_no, id_card, company, position, certificate_expire_date, onboard_date, leave_date, room_id, bed_id, lifeboat_id, status, blacklist_flag, create_time, update_time, deleted
+        select id, platform_no, name, mts_card_no, id_card, company, position, certificate_expire_date, onboard_date, leave_date, room_id, bed_id, lifeboat_id, status, blacklist_flag, create_time, update_time, deleted
         from person
     </sql>
 
     <select id="selectPersonList" parameterType="Person" resultMap="PersonResult">
         <include refid="selectPersonVo"/>
         where deleted = 0
+        <if test="platformNo != null and platformNo != ''">
+            AND platform_no = #{platformNo}
+        </if>
         <if test="name != null and name != ''">
             AND name like concat('%', #{name}, '%')
         </if>
@@ -78,6 +82,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="insertPerson" parameterType="Person" useGeneratedKeys="true" keyProperty="id">
         insert into person
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="platformNo != null and platformNo != ''">platform_no,</if>
             <if test="name != null and name != ''">name,</if>
             <if test="mtsCardNo != null and mtsCardNo != ''">mts_card_no,</if>
             <if test="idCard != null">id_card,</if>
@@ -97,6 +102,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             update_time,
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="platformNo != null and platformNo != ''">#{platformNo},</if>
             <if test="name != null and name != ''">#{name},</if>
             <if test="mtsCardNo != null and mtsCardNo != ''">#{mtsCardNo},</if>
             <if test="idCard != null">#{idCard},</if>
@@ -120,6 +126,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updatePerson" parameterType="Person">
         update person
         <trim prefix="SET" suffixOverrides=",">
+            <if test="platformNo != null and platformNo != ''">platform_no = #{platformNo},</if>
             <if test="name != null and name != ''">name = #{name},</if>
             <if test="mtsCardNo != null and mtsCardNo != ''">mts_card_no = #{mtsCardNo},</if>
             <if test="idCard != null">id_card = #{idCard},</if>
@@ -168,11 +175,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <!-- 统计人员总数 -->
     <select id="countPersonTotal" resultType="int">
         select count(*) from person where deleted = 0
+        <if test="platformNo != null and platformNo != ''">
+            and platform_no = #{platformNo}
+        </if>
     </select>
 
     <!-- 统计当前在船人员数 -->
     <select id="countPersonCurrent" resultType="int">
         select count(*) from person where deleted = 0 and status = 'ONBOARD'
+        <if test="platformNo != null and platformNo != ''">
+            and platform_no = #{platformNo}
+        </if>
     </select>
 
     <!-- 统计今日进入人员数 -->

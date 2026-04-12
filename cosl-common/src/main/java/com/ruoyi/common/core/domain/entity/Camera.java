@@ -23,6 +23,9 @@ public class Camera extends BaseEntity
     /** ID */
     private Long id;
 
+    /** 钻井平台编号 */
+    private String platformNo;
+
     /** 摄像头名称 */
     @Excel(name = "摄像头名称")
     private String name;
@@ -119,6 +122,16 @@ public class Camera extends BaseEntity
     public Double getyAxis()
     {
         return yAxis;
+    }
+
+    public void setPlatformNo(String platformNo)
+    {
+        this.platformNo = platformNo;
+    }
+
+    public String getPlatformNo()
+    {
+        return platformNo;
     }
     @Override
     public String toString() {

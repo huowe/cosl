@@ -6,6 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <resultMap type="RoomBed" id="RoomBedResult">
         <result property="id"    column="id"    />
+        <result property="platformNo"    column="platform_no"    />
         <result property="roomId"    column="room_id"    />
         <result property="bedNo"    column="bed_no"    />
         <result property="status"    column="status"    />
@@ -13,13 +14,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectRoomBedVo">
-        select id, room_id, bed_no, status
+        select id, platform_no, room_id, bed_no, status
         from room_bed
     </sql>
 
     <select id="selectRoomBedList" parameterType="RoomBed" resultMap="RoomBedResult">
         <include refid="selectRoomBedVo"/>
         <where>  
+            <if test="platformNo != null and platformNo != ''">
+                AND platform_no = #{platformNo}
+            </if>
             <if test="roomId != null">
                 AND room_id = #{roomId}
             </if>
@@ -39,7 +43,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <select id="checkRoomBedUnique" parameterType="RoomBed"   resultMap="RoomBedResult">
-        select id, room_id, bed_no from room_bed where room_id = #{roomId} and bed_no = #{bedNo} limit 1
+        select id, room_id, bed_no from room_bed where room_id = #{roomId} and bed_no = #{bedNo} and platform_no = #{platformNo} limit 1
     </select>
 
     <select id="selectRoomBedsByRoomId" parameterType="Long" resultMap="RoomBedResult">
@@ -51,12 +55,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="insertRoomBed" parameterType="RoomBed" useGeneratedKeys="true" keyProperty="id">
         insert into room_bed
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="platformNo != null and platformNo != ''">platform_no,</if>
             <if test="roomId != null">room_id,</if>
             <if test="bedNo != null and bedNo != ''">bed_no,</if>
             <if test="status != null">status</if>
 
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="platformNo != null and platformNo != ''">#{platformNo},</if>
             <if test="roomId != null">#{roomId},</if>
             <if test="bedNo != null and bedNo != ''">#{bedNo},</if>
             <if test="status != null">#{status}</if>
@@ -67,6 +73,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updateRoomBed" parameterType="RoomBed">
         update room_bed
         <trim prefix="SET" suffixOverrides=",">
+            <if test="platformNo != null and platformNo != ''">platform_no = #{platformNo},</if>
             <if test="roomId != null">room_id = #{roomId},</if>
             <if test="bedNo != null and bedNo != ''">bed_no = #{bedNo},</if>
             <if test="status != null">status = #{status}</if>

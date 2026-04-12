@@ -21,6 +21,9 @@ public class Evacuation extends BaseEntity
     @Excel(name = "主键 ID", cellType = ColumnType.NUMERIC)
     private Long id;
 
+    /** 钻井平台编号 */
+    private String platformNo;
+
     /** 撤离事件名称 */
     @Excel(name = "撤离事件名称")
     private String name;
@@ -175,6 +178,16 @@ public class Evacuation extends BaseEntity
     public void setRemark(String remark)
     {
         this.remark = remark;
+    }
+
+    public void setPlatformNo(String platformNo)
+    {
+        this.platformNo = platformNo;
+    }
+
+    public String getPlatformNo()
+    {
+        return platformNo;
     }
 
     @Override

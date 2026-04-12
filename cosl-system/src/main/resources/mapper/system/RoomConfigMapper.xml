@@ -6,6 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <resultMap type="RoomConfig" id="RoomConfigResult">
         <result property="id"    column="id"    />
+        <result property="platformNo"    column="platform_no"    />
         <result property="roomNo"    column="room_no"    />
         <result property="floor"    column="floor"    />
         <result property="totalBeds"    column="total_beds"    />
@@ -13,13 +14,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectRoomConfigVo">
-        select id, room_no, floor, total_beds, status
+        select id, platform_no, room_no, floor, total_beds, status
         from room_config
     </sql>
 
     <select id="selectRoomConfigList" parameterType="RoomConfig" resultMap="RoomConfigResult">
         <include refid="selectRoomConfigVo"/>
         <where>  
+            <if test="platformNo != null and platformNo != ''">
+                AND platform_no = #{platformNo}
+            </if>
             <if test="roomNo != null and roomNo != ''">
                 AND room_no =#{roomNo}
             </if>
@@ -39,12 +43,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <select id="checkRoomNoUnique" parameterType="String" resultMap="RoomConfigResult">
-        select id, room_no from room_config where room_no = #{roomNo} limit 1
+        select id, room_no from room_config where room_no = #{roomNo} and platform_no = #{platformNo} limit 1
     </select>
 
     <insert id="insertRoomConfig" parameterType="RoomConfig" useGeneratedKeys="true" keyProperty="id">
         insert into room_config
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="platformNo != null and platformNo != ''">platform_no,</if>
             <if test="roomNo != null and roomNo != ''">room_no,</if>
             <if test="floor != null">floor,</if>
             <if test="totalBeds != null">total_beds,</if>
@@ -52,6 +57,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="status != null">status,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="platformNo != null and platformNo != ''">#{platformNo},</if>
             <if test="roomNo != null and roomNo != ''">#{roomNo},</if>
             <if test="floor != null">#{floor},</if>
             <if test="totalBeds != null">#{totalBeds},</if>
@@ -63,6 +69,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updateRoomConfig" parameterType="RoomConfig">
         update room_config
         <trim prefix="SET" suffixOverrides=",">
+            <if test="platformNo != null and platformNo != ''">platform_no = #{platformNo},</if>
             <if test="roomNo != null and roomNo != ''">room_no = #{roomNo},</if>
             <if test="floor != null">floor = #{floor},</if>
             <if test="totalBeds != null">total_beds = #{totalBeds},</if>
@@ -103,11 +110,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <!-- 统计房间总数 -->
     <select id="countRoomTotal" resultType="int">
         select count(*) from room_config
+        <where>
+            <if test="platformNo != null and platformNo != ''">
+                platform_no = #{platformNo}
+            </if>
+        </where>
     </select>
 
     <!-- 统计空闲房间数 -->
     <select id="countRoomFree" resultType="int">
-        select count(*) from room_config where status = 'FREE'
+        select count(*) from room_config 
+        <where>
+            status = 'FREE'
+            <if test="platformNo != null and platformNo != ''">
+                and platform_no = #{platformNo}
+            </if>
+        </where>
     </select>
 
 </mapper>

@@ -6,6 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <resultMap type="Camera" id="CameraResult">
         <result property="id"    column="id"    />
+        <result property="platformNo"    column="platform_no"    />
         <result property="name"    column="name"    />
         <result property="ip"    column="ip"    />
         <result property="floor"    column="floor"    />
@@ -16,13 +17,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectCameraVo">
-        select id, name, ip, floor, status, x_axis, y_axis, remark
+        select id, platform_no, name, ip, floor, status, x_axis, y_axis, remark
         from camera
     </sql>
 
     <select id="selectCameraList" parameterType="Camera" resultMap="CameraResult">
         <include refid="selectCameraVo"/>
         <where>  
+            <if test="platformNo != null and platformNo != ''">
+                AND platform_no = #{platformNo}
+            </if>
             <if test="name != null and name != ''">
                 AND name like concat('%', #{name}, '%')
             </if>
@@ -45,7 +49,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <select id="checkIpUnique" parameterType="String" resultMap="CameraResult">
-        select id, ip from camera where ip = #{ip} limit 1
+        select id, ip from camera where ip = #{ip} and platform_no = #{platformNo} limit 1
     </select>
 
     <select id="selectCamerasByFloor" parameterType="String" resultMap="CameraResult">
@@ -57,6 +61,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="insertCamera" parameterType="Camera" useGeneratedKeys="true" keyProperty="id">
         insert into camera
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="platformNo != null and platformNo != ''">platform_no,</if>
             <if test="name != null and name != ''">name,</if>
             <if test="ip != null and ip != ''">ip,</if>
             <if test="floor != null">floor,</if>
@@ -67,6 +72,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="remark != null">remark,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="platformNo != null and platformNo != ''">#{platformNo},</if>
             <if test="name != null and name != ''">#{name},</if>
             <if test="ip != null and ip != ''">#{ip},</if>
             <if test="floor != null">#{floor},</if>
@@ -81,6 +87,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updateCamera" parameterType="Camera">
         update camera
         <trim prefix="SET" suffixOverrides=",">
+            <if test="platformNo != null and platformNo != ''">platform_no = #{platformNo},</if>
             <if test="name != null and name != ''">name = #{name},</if>
             <if test="ip != null and ip != ''">ip = #{ip},</if>
             <if test="floor != null">floor = #{floor},</if>
@@ -107,11 +114,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <!-- 统计摄像头总数 -->
     <select id="countCameraTotal" resultType="int">
         select count(*) from camera
+        <where>
+            <if test="platformNo != null and platformNo != ''">
+                platform_no = #{platformNo}
+            </if>
+        </where>
     </select>
 
     <!-- 统计开启的摄像头数 -->
     <select id="countCameraOnline" resultType="int">
-        select count(*) from camera where status = 'online'
+        select count(*) from camera 
+        <where>
+            status = 'online'
+            <if test="platformNo != null and platformNo != ''">
+                and platform_no = #{platformNo}
+            </if>
+        </where>
     </select>
 
 </mapper>
