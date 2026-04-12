@@ -11,7 +11,7 @@
  Target Server Version : 80045
  File Encoding         : 65001
 
- Date: 06/04/2026 21:15:56
+ Date: 12/04/2026 22:44:29
 */
 
 SET NAMES utf8mb4;
@@ -23,6 +23,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `camera`;
 CREATE TABLE `camera`  (
   `id` bigint(0) NOT NULL AUTO_INCREMENT,
+  `platform_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '钻井平台编号',
   `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
   `ip` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
   `floor` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
@@ -31,14 +32,15 @@ CREATE TABLE `camera`  (
   `y_axis` double(10, 2) NULL DEFAULT NULL,
   `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `uk_ip`(`ip`) USING BTREE
+  UNIQUE INDEX `uk_ip`(`ip`) USING BTREE,
+  INDEX `idx_platform_no`(`platform_no`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of camera
 -- ----------------------------
-INSERT INTO `camera` VALUES (3, 'Camera 3', '192.168.1.186', '1', 'online', 11.50, 22.30, 'Entrance');
-INSERT INTO `camera` VALUES (5, 'Camera 3', '192.168.1.16', '1', 'online', 11.50, 22.30, 'Entrance');
+INSERT INTO `camera` VALUES (3, NULL, 'Camera 3', '192.168.1.186', '1', 'online', 11.50, 22.30, 'Entrance');
+INSERT INTO `camera` VALUES (5, NULL, 'Camera 3', '192.168.1.16', '1', 'online', 11.50, 22.30, 'Entrance');
 
 -- ----------------------------
 -- Table structure for drill
@@ -46,6 +48,7 @@ INSERT INTO `camera` VALUES (5, 'Camera 3', '192.168.1.16', '1', 'online', 11.50
 DROP TABLE IF EXISTS `drill`;
 CREATE TABLE `drill`  (
   `id` bigint(0) NOT NULL AUTO_INCREMENT,
+  `platform_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '钻井平台编号',
   `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
   `start_time` datetime(0) NULL DEFAULT NULL,
   `end_time` datetime(0) NULL DEFAULT NULL,
@@ -54,13 +57,14 @@ CREATE TABLE `drill`  (
   `status` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
   `create_time` datetime(0) NULL DEFAULT NULL,
   `deleted` tinyint(0) NULL DEFAULT 0,
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_platform_no`(`platform_no`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of drill
 -- ----------------------------
-INSERT INTO `drill` VALUES (1, '春季消防演习', '2026-03-22 21:21:19', '2026-03-22 21:22:12', 50, 48, 'COMPLETED', '2026-03-11 23:03:13', 0);
+INSERT INTO `drill` VALUES (1, NULL, '春季消防演习', '2026-03-22 21:21:19', '2026-03-22 21:22:12', 50, 48, 'COMPLETED', '2026-03-11 23:03:13', 0);
 
 -- ----------------------------
 -- Table structure for drill_person
@@ -68,6 +72,7 @@ INSERT INTO `drill` VALUES (1, '春季消防演习', '2026-03-22 21:21:19', '202
 DROP TABLE IF EXISTS `drill_person`;
 CREATE TABLE `drill_person`  (
   `id` bigint(0) NOT NULL AUTO_INCREMENT COMMENT '主键 ID',
+  `platform_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '钻井平台编号',
   `drill_id` bigint(0) NOT NULL COMMENT '演练 ID',
   `person_id` bigint(0) NOT NULL COMMENT '人员 ID',
   `status` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '签到状态（PRESENT:已签到，ABSENT:缺席）',
@@ -76,13 +81,14 @@ CREATE TABLE `drill_person`  (
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uk_drill_person`(`drill_id`, `person_id`) USING BTREE COMMENT '演练 - 人员唯一索引',
   INDEX `idx_drill_id`(`drill_id`) USING BTREE,
-  INDEX `idx_person_id`(`person_id`) USING BTREE
+  INDEX `idx_person_id`(`person_id`) USING BTREE,
+  INDEX `idx_platform_no`(`platform_no`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '演练人员关联表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of drill_person
 -- ----------------------------
-INSERT INTO `drill_person` VALUES (1, 1, 1, '已签到', NULL, '2026-03-22 21:38:30');
+INSERT INTO `drill_person` VALUES (1, NULL, 1, 1, '已签到', NULL, '2026-03-22 21:38:30');
 
 -- ----------------------------
 -- Table structure for evacuation_point
@@ -90,6 +96,7 @@ INSERT INTO `drill_person` VALUES (1, 1, 1, '已签到', NULL, '2026-03-22 21:38
 DROP TABLE IF EXISTS `evacuation_point`;
 CREATE TABLE `evacuation_point`  (
   `id` bigint(0) NOT NULL AUTO_INCREMENT,
+  `platform_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '钻井平台编号',
   `point_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '撤离点名称',
   `floor` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '楼层',
   `x_axis` decimal(10, 2) NULL DEFAULT NULL COMMENT '地图坐标X',
@@ -98,17 +105,18 @@ CREATE TABLE `evacuation_point`  (
   `create_time` datetime(0) NOT NULL,
   `update_time` datetime(0) NOT NULL,
   `deleted` tinyint(0) NULL DEFAULT 0,
-  PRIMARY KEY (`id`) USING BTREE
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_platform_no`(`platform_no`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of evacuation_point
 -- ----------------------------
-INSERT INTO `evacuation_point` VALUES (1, '撤离点11', '1', 11.50, 22.30, NULL, '2026-04-01 22:12:26', '2026-04-01 22:26:04', 1);
-INSERT INTO `evacuation_point` VALUES (2, '撤离点B', '1', 36.00, 8.00, NULL, '2026-04-01 22:13:15', '2026-04-01 22:13:15', 1);
-INSERT INTO `evacuation_point` VALUES (3, '撤离点c', '1', 45.00, 78.00, NULL, '2026-04-01 22:15:32', '2026-04-01 22:15:32', 0);
-INSERT INTO `evacuation_point` VALUES (4, '撤离点c', '1', 55.00, 69.00, NULL, '2026-04-01 22:15:32', '2026-04-01 22:15:32', 0);
-INSERT INTO `evacuation_point` VALUES (5, '撤离点D', '1', 11.50, 22.30, NULL, '2026-04-01 22:24:53', '2026-04-01 22:24:53', 0);
+INSERT INTO `evacuation_point` VALUES (1, NULL, '撤离点11', '1', 11.50, 22.30, NULL, '2026-04-01 22:12:26', '2026-04-01 22:26:04', 1);
+INSERT INTO `evacuation_point` VALUES (2, NULL, '撤离点B', '1', 36.00, 8.00, NULL, '2026-04-01 22:13:15', '2026-04-01 22:13:15', 1);
+INSERT INTO `evacuation_point` VALUES (3, NULL, '撤离点c', '1', 45.00, 78.00, NULL, '2026-04-01 22:15:32', '2026-04-01 22:15:32', 0);
+INSERT INTO `evacuation_point` VALUES (4, NULL, '撤离点c', '1', 55.00, 69.00, NULL, '2026-04-01 22:15:32', '2026-04-01 22:15:32', 0);
+INSERT INTO `evacuation_point` VALUES (5, NULL, '撤离点D', '1', 11.50, 22.30, NULL, '2026-04-01 22:24:53', '2026-04-01 22:24:53', 0);
 
 -- ----------------------------
 -- Table structure for floor_config
@@ -116,6 +124,7 @@ INSERT INTO `evacuation_point` VALUES (5, '撤离点D', '1', 11.50, 22.30, NULL,
 DROP TABLE IF EXISTS `floor_config`;
 CREATE TABLE `floor_config`  (
   `id` bigint(0) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `platform_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '钻井平台编号',
   `floor_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '楼层编号',
   `floor_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '楼层名称',
   `sort_order` int(0) NULL DEFAULT 0 COMMENT '排序',
@@ -128,17 +137,18 @@ CREATE TABLE `floor_config`  (
   `deleted` tinyint(0) NULL DEFAULT 0 COMMENT '删除标志 0-存在 1-删除',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uk_floor_no`(`floor_no`) USING BTREE COMMENT '楼层编号唯一索引',
-  INDEX `idx_status`(`status`) USING BTREE
+  INDEX `idx_status`(`status`) USING BTREE,
+  INDEX `idx_platform_no`(`platform_no`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '楼层配置表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of floor_config
 -- ----------------------------
-INSERT INTO `floor_config` VALUES (1, '1', 'L1', 1, 'ACTIVE', NULL, 'admin', '2026-04-05 13:38:17', 'admin', '2026-04-05 13:38:17', 0);
-INSERT INTO `floor_config` VALUES (2, '2', 'L2', 2, 'ACTIVE', NULL, 'admin', '2026-04-05 13:38:17', 'admin', '2026-04-05 13:38:17', 0);
-INSERT INTO `floor_config` VALUES (3, '3', 'L3', 3, 'ACTIVE', NULL, 'admin', '2026-04-05 13:38:17', 'admin', '2026-04-05 13:38:17', 0);
-INSERT INTO `floor_config` VALUES (4, '4', 'L4', 4, 'ACTIVE', NULL, 'admin', '2026-04-05 13:38:17', 'admin', '2026-04-05 13:38:17', 0);
-INSERT INTO `floor_config` VALUES (5, '5', 'L5', 5, 'STOP', NULL, 'admin', '2026-04-05 14:18:47', 'admin', '2026-04-05 14:21:00', 1);
+INSERT INTO `floor_config` VALUES (1, NULL, '1', 'L1', 1, 'ACTIVE', NULL, 'admin', '2026-04-05 13:38:17', 'admin', '2026-04-05 13:38:17', 0);
+INSERT INTO `floor_config` VALUES (2, NULL, '2', 'L2', 2, 'ACTIVE', NULL, 'admin', '2026-04-05 13:38:17', 'admin', '2026-04-05 13:38:17', 0);
+INSERT INTO `floor_config` VALUES (3, NULL, '3', 'L3', 3, 'ACTIVE', NULL, 'admin', '2026-04-05 13:38:17', 'admin', '2026-04-05 13:38:17', 0);
+INSERT INTO `floor_config` VALUES (4, NULL, '4', 'L4', 4, 'ACTIVE', NULL, 'admin', '2026-04-05 13:38:17', 'admin', '2026-04-05 13:38:17', 0);
+INSERT INTO `floor_config` VALUES (5, NULL, '5', 'L5', 5, 'STOP', NULL, 'admin', '2026-04-05 14:18:47', 'admin', '2026-04-05 14:21:00', 1);
 
 -- ----------------------------
 -- Table structure for gen_table
@@ -213,6 +223,7 @@ CREATE TABLE `gen_table_column`  (
 DROP TABLE IF EXISTS `lifeboat_config`;
 CREATE TABLE `lifeboat_config`  (
   `id` bigint(0) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `platform_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '钻井平台编号',
   `boat_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '救生艇编号',
   `boat_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '救生艇名称',
   `max_capacity` int(0) NOT NULL COMMENT '最大容量',
@@ -224,15 +235,16 @@ CREATE TABLE `lifeboat_config`  (
   `deleted` tinyint(0) NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uk_boat_no`(`boat_no`) USING BTREE,
-  INDEX `idx_point`(`evacuation_point_id`) USING BTREE
+  INDEX `idx_point`(`evacuation_point_id`) USING BTREE,
+  INDEX `idx_platform_no`(`platform_no`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of lifeboat_config
 -- ----------------------------
-INSERT INTO `lifeboat_config` VALUES (1, NULL, '救生艇A2', 40, 1, 'ACTIVE', NULL, '2026-04-01 22:02:02', '2026-04-01 22:03:27', 1);
-INSERT INTO `lifeboat_config` VALUES (2, NULL, '救生艇A1', 40, 1, 'ACTIVE', NULL, '2026-04-01 22:04:29', '2026-04-01 22:04:29', 1);
-INSERT INTO `lifeboat_config` VALUES (3, NULL, '救生艇A2', 40, 1, 'ACTIVE', NULL, '2026-04-01 22:04:37', '2026-04-05 15:06:15', 0);
+INSERT INTO `lifeboat_config` VALUES (1, NULL, NULL, '救生艇A2', 40, 1, 'ACTIVE', NULL, '2026-04-01 22:02:02', '2026-04-01 22:03:27', 1);
+INSERT INTO `lifeboat_config` VALUES (2, NULL, NULL, '救生艇A1', 40, 1, 'ACTIVE', NULL, '2026-04-01 22:04:29', '2026-04-01 22:04:29', 1);
+INSERT INTO `lifeboat_config` VALUES (3, NULL, NULL, '救生艇A2', 40, 1, 'ACTIVE', NULL, '2026-04-01 22:04:37', '2026-04-05 15:06:15', 0);
 
 -- ----------------------------
 -- Table structure for lifeboat_person
@@ -240,6 +252,7 @@ INSERT INTO `lifeboat_config` VALUES (3, NULL, '救生艇A2', 40, 1, 'ACTIVE', N
 DROP TABLE IF EXISTS `lifeboat_person`;
 CREATE TABLE `lifeboat_person`  (
   `id` bigint(0) NOT NULL AUTO_INCREMENT,
+  `platform_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '钻井平台编号',
   `person_id` bigint(0) NOT NULL,
   `lifeboat_id` bigint(0) NOT NULL,
   `seat_id` bigint(0) NULL DEFAULT NULL COMMENT '座位ID',
@@ -248,7 +261,8 @@ CREATE TABLE `lifeboat_person`  (
   `update_time` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uk_person`(`person_id`) USING BTREE,
-  INDEX `idx_boat`(`lifeboat_id`) USING BTREE
+  INDEX `idx_boat`(`lifeboat_id`) USING BTREE,
+  INDEX `idx_platform_no`(`platform_no`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -261,6 +275,7 @@ CREATE TABLE `lifeboat_person`  (
 DROP TABLE IF EXISTS `lifeboat_seat`;
 CREATE TABLE `lifeboat_seat`  (
   `id` bigint(0) NOT NULL AUTO_INCREMENT,
+  `platform_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '钻井平台编号',
   `lifeboat_id` bigint(0) NOT NULL,
   `seat_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '座位号',
   `status` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT 'FREE' COMMENT 'FREE/OCCUPIED/LOCKED',
@@ -268,7 +283,8 @@ CREATE TABLE `lifeboat_seat`  (
   `update_time` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uk_boat_seat`(`lifeboat_id`, `seat_no`) USING BTREE,
-  INDEX `idx_boat`(`lifeboat_id`) USING BTREE
+  INDEX `idx_boat`(`lifeboat_id`) USING BTREE,
+  INDEX `idx_platform_no`(`platform_no`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -281,6 +297,7 @@ CREATE TABLE `lifeboat_seat`  (
 DROP TABLE IF EXISTS `person`;
 CREATE TABLE `person`  (
   `id` bigint(0) NOT NULL AUTO_INCREMENT,
+  `platform_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '钻井平台编号',
   `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `mts_card_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
   `id_card` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
@@ -301,15 +318,16 @@ CREATE TABLE `person`  (
   UNIQUE INDEX `mts_card_no`(`mts_card_no`) USING BTREE,
   INDEX `idx_status`(`status`) USING BTREE,
   INDEX `idx_onboard_date`(`onboard_date`) USING BTREE,
-  INDEX `idx_certificate_expire`(`certificate_expire_date`) USING BTREE
+  INDEX `idx_certificate_expire`(`certificate_expire_date`) USING BTREE,
+  INDEX `idx_platform_no`(`platform_no`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of person
 -- ----------------------------
-INSERT INTO `person` VALUES (1, '张鱼', 'MTS1234567894', '110101179001011234', 'XX海洋工程有限公司', '轮机长', '2025-12-31', '2023-06-01 08:00:00', NULL, 101, 202, 5, 'ONBOARD', 0, '2026-03-07 13:22:28', '2026-04-05 15:08:37', 0);
-INSERT INTO `person` VALUES (2, '电饭锅', 'MTS1453456789', '110105199001011234', 'XX海洋工程有限公司', '轮机长', '2025-12-31', '2023-06-01 08:00:00', NULL, 101, 202, 5, 'ONBOARD', 0, '2026-03-07 13:53:16', '2026-04-02 22:53:02', 0);
-INSERT INTO `person` VALUES (3, '金银花', 'MTS5566522245', '1234567890', 'XX海杨工程有限公司', '船长', '2026-04-25', '2026-04-01 08:00:00', NULL, 102, 101, 1, 'ONBOARD', 0, '2026-04-05 13:28:47', '2026-04-05 13:28:50', 0);
+INSERT INTO `person` VALUES (1, NULL, '张鱼', 'MTS1234567894', '110101179001011234', 'XX海洋工程有限公司', '轮机长', '2025-12-31', '2023-06-01 08:00:00', NULL, 101, 202, 5, 'ONBOARD', 0, '2026-03-07 13:22:28', '2026-04-05 15:08:37', 0);
+INSERT INTO `person` VALUES (2, NULL, '电饭锅', 'MTS1453456789', '110105199001011234', 'XX海洋工程有限公司', '轮机长', '2025-12-31', '2023-06-01 08:00:00', NULL, 101, 202, 5, 'ONBOARD', 0, '2026-03-07 13:53:16', '2026-04-02 22:53:02', 0);
+INSERT INTO `person` VALUES (3, NULL, '金银花', 'MTS5566522245', '1234567890', 'XX海杨工程有限公司', '船长', '2026-04-25', '2026-04-01 08:00:00', NULL, 102, 101, 1, 'ONBOARD', 0, '2026-04-05 13:28:47', '2026-04-05 13:28:50', 0);
 
 -- ----------------------------
 -- Table structure for person_face
@@ -370,23 +388,56 @@ CREATE TABLE `person_track`  (
 INSERT INTO `person_track` VALUES (1, 1, 5, '2025-03-11 10:30:00', 12.34, 56.78);
 
 -- ----------------------------
+-- Table structure for platform_config
+-- ----------------------------
+DROP TABLE IF EXISTS `platform_config`;
+CREATE TABLE `platform_config`  (
+  `id` bigint(0) NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+  `platform_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '钻井平台编号',
+  `platform_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '钻井平台名称',
+  `platform_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '平台类型（SEMI_SUB:半潜式，JACK_UP:自升式，DRILL_SHIP:钻井船）',
+  `location` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '作业位置',
+  `status` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT 'ACTIVE' COMMENT '状态（ACTIVE:启用，INACTIVE:停用）',
+  `sort_order` int(0) NULL DEFAULT 0 COMMENT '排序',
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '备注',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT '' COMMENT '创建者',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT '' COMMENT '更新者',
+  `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
+  `deleted` tinyint(1) NULL DEFAULT 0 COMMENT '删除标志（0存在 1删除）',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `uk_platform_no`(`platform_no`) USING BTREE COMMENT '平台编号唯一索引',
+  INDEX `idx_status`(`status`) USING BTREE,
+  INDEX `idx_sort_order`(`sort_order`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '钻井平台配置表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of platform_config
+-- ----------------------------
+INSERT INTO `platform_config` VALUES (1, 'PLATFORM-A01', '海洋石油A01号', 'SEMI_SUB', '南海东部海域', 'ACTIVE', 1, '半潜式钻井平台', 'admin', '2026-04-12 21:59:09', 'admin', '2026-04-12 21:59:09', 0);
+INSERT INTO `platform_config` VALUES (2, 'PLATFORM-B02', '海洋石油B02号', 'JACK_UP', '渤海湾海域', 'ACTIVE', 2, '自升式钻井平台', 'admin', '2026-04-12 21:59:09', 'admin', '2026-04-12 21:59:09', 0);
+INSERT INTO `platform_config` VALUES (3, 'PLATFORM-C03', '深海探索者号', 'DRILL_SHIP', '南海西部海域', 'ACTIVE', 3, '深水钻井船', 'admin', '2026-04-12 21:59:09', 'admin', '2026-04-12 21:59:09', 0);
+
+-- ----------------------------
 -- Table structure for room_bed
 -- ----------------------------
 DROP TABLE IF EXISTS `room_bed`;
 CREATE TABLE `room_bed`  (
   `id` bigint(0) NOT NULL AUTO_INCREMENT,
+  `platform_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '钻井平台编号',
   `room_id` bigint(0) NULL DEFAULT NULL,
   `bed_no` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
   `status` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT 'FREE/OCCUPIED/LOCKED',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `uk_room_bed`(`room_id`, `bed_no`) USING BTREE
+  UNIQUE INDEX `uk_room_bed`(`room_id`, `bed_no`) USING BTREE,
+  INDEX `idx_platform_no`(`platform_no`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of room_bed
 -- ----------------------------
-INSERT INTO `room_bed` VALUES (1, 2, 'B', 'LOCKED');
-INSERT INTO `room_bed` VALUES (2, 2, 'A', 'LOCKED');
+INSERT INTO `room_bed` VALUES (1, NULL, 2, 'B', 'LOCKED');
+INSERT INTO `room_bed` VALUES (2, NULL, 2, 'A', 'LOCKED');
 
 -- ----------------------------
 -- Table structure for room_config
@@ -394,20 +445,22 @@ INSERT INTO `room_bed` VALUES (2, 2, 'A', 'LOCKED');
 DROP TABLE IF EXISTS `room_config`;
 CREATE TABLE `room_config`  (
   `id` bigint(0) NOT NULL AUTO_INCREMENT,
+  `platform_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '钻井平台编号',
   `room_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
   `floor` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
   `total_beds` int(0) NULL DEFAULT NULL,
   `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `room_no`(`room_no`) USING BTREE
+  UNIQUE INDEX `room_no`(`room_no`) USING BTREE,
+  INDEX `idx_platform_no`(`platform_no`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of room_config
 -- ----------------------------
-INSERT INTO `room_config` VALUES (2, 'A101', '1', 4, 'OCCUPIED');
-INSERT INTO `room_config` VALUES (3, 'A102', '1', 4, NULL);
-INSERT INTO `room_config` VALUES (6, 'A202', '2', 4, NULL);
+INSERT INTO `room_config` VALUES (2, NULL, 'A101', '1', 4, 'OCCUPIED');
+INSERT INTO `room_config` VALUES (3, NULL, 'A102', '1', 4, NULL);
+INSERT INTO `room_config` VALUES (6, NULL, 'A202', '2', 4, NULL);
 
 -- ----------------------------
 -- Table structure for sys_config
@@ -630,7 +683,7 @@ CREATE TABLE `sys_logininfor`  (
   PRIMARY KEY (`info_id`) USING BTREE,
   INDEX `idx_sys_logininfor_s`(`status`) USING BTREE,
   INDEX `idx_sys_logininfor_lt`(`login_time`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 203 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '系统访问记录' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 204 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '系统访问记录' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_logininfor
@@ -738,6 +791,7 @@ INSERT INTO `sys_logininfor` VALUES (199, 'admin', '127.0.0.1', '内网IP', 'Api
 INSERT INTO `sys_logininfor` VALUES (200, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-05 15:01:19');
 INSERT INTO `sys_logininfor` VALUES (201, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-05 15:04:00');
 INSERT INTO `sys_logininfor` VALUES (202, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-05 15:08:09');
+INSERT INTO `sys_logininfor` VALUES (203, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-09 23:24:47');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -1249,7 +1303,7 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 103, 'admin', '管理员', '00', 'ry@163.com', '15888888888', '1', '', '29c67a30398638269fe600f73a054934', '111111', '0', '0', '127.0.0.1', '2026-04-05 15:08:07', NULL, 'admin', '2026-03-05 22:17:41', '', NULL, '管理员');
+INSERT INTO `sys_user` VALUES (1, 103, 'admin', '管理员', '00', 'ry@163.com', '15888888888', '1', '', '29c67a30398638269fe600f73a054934', '111111', '0', '0', '127.0.0.1', '2026-04-09 23:24:47', NULL, 'admin', '2026-03-05 22:17:41', '', NULL, '管理员');
 INSERT INTO `sys_user` VALUES (2, 105, 'ry', '若依', '00', 'ry@qq.com', '15666666666', '1', '', '8e6d98b90472783cc73c17047ddccf36', '222222', '0', '0', '127.0.0.1', NULL, NULL, 'admin', '2026-03-05 22:17:41', '', NULL, '测试员');
 INSERT INTO `sys_user` VALUES (100, NULL, 'test', '测试', '00', '', '13666663333', '0', '', 'ba3191792f8b5c3d255ddae5f78c1b6e', 'be1d7b', '0', '0', '', NULL, '2026-03-07 11:04:15', 'admin', '2026-03-07 11:04:14', '', NULL, NULL);
 INSERT INTO `sys_user` VALUES (101, NULL, 'kaihang', '凯航', '00', '', '13899995555', '0', '', '452d76a1b03d0242da919d993720f9a8', '131523', '0', '0', '', NULL, '2026-03-07 11:08:20', 'admin', '2026-03-07 11:08:19', '', NULL, NULL);
@@ -1279,6 +1333,7 @@ CREATE TABLE `sys_user_online`  (
 -- ----------------------------
 -- Records of sys_user_online
 -- ----------------------------
+INSERT INTO `sys_user_online` VALUES ('fac2a6d2-bc77-4e8e-be3d-21ec1af2947f', 'admin', '研发部门', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', 'on_line', '2026-04-09 23:24:45', '2026-04-09 23:25:32', 1800000);
 
 -- ----------------------------
 -- Table structure for sys_user_post
