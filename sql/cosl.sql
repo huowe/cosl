@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : 127.0.0.1
+ Source Server         : cosl
  Source Server Type    : MySQL
  Source Server Version : 80045
- Source Host           : localhost:3306
+ Source Host           : localhost:3406
  Source Schema         : cosl
 
  Target Server Type    : MySQL
  Target Server Version : 80045
  File Encoding         : 65001
 
- Date: 12/04/2026 22:44:29
+ Date: 13/04/2026 21:36:55
 */
 
 SET NAMES utf8mb4;
@@ -31,6 +31,14 @@ CREATE TABLE `camera`  (
   `x_axis` double(10, 2) NULL DEFAULT NULL,
   `y_axis` double(10, 2) NULL DEFAULT NULL,
   `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
+  `latitude` decimal(10, 4) NULL DEFAULT NULL,
+  `longitude` decimal(10, 4) NULL DEFAULT NULL,
+  `streamURL` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
+  `user_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
+  `user_pwd` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
+  `camera_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
+  `camera_group_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
+  `camera_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uk_ip`(`ip`) USING BTREE,
   INDEX `idx_platform_no`(`platform_no`) USING BTREE
@@ -39,8 +47,8 @@ CREATE TABLE `camera`  (
 -- ----------------------------
 -- Records of camera
 -- ----------------------------
-INSERT INTO `camera` VALUES (3, NULL, 'Camera 3', '192.168.1.186', '1', 'online', 11.50, 22.30, 'Entrance');
-INSERT INTO `camera` VALUES (5, NULL, 'Camera 3', '192.168.1.16', '1', 'online', 11.50, 22.30, 'Entrance');
+INSERT INTO `camera` VALUES (3, 'PLATFORM-A01', 'Camera 3', '192.168.1.186', '1', 'online', 11.50, 22.30, 'Entrance', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `camera` VALUES (5, 'PLATFORM-A01', 'Camera 3', '192.168.1.16', '1', 'online', 11.50, 22.30, 'Entrance', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for drill
@@ -64,7 +72,7 @@ CREATE TABLE `drill`  (
 -- ----------------------------
 -- Records of drill
 -- ----------------------------
-INSERT INTO `drill` VALUES (1, NULL, '春季消防演习', '2026-03-22 21:21:19', '2026-03-22 21:22:12', 50, 48, 'COMPLETED', '2026-03-11 23:03:13', 0);
+INSERT INTO `drill` VALUES (1, 'PLATFORM-A01', '春季消防演习', '2026-03-22 21:21:19', '2026-03-22 21:22:12', 50, 48, 'COMPLETED', '2026-03-11 23:03:13', 0);
 
 -- ----------------------------
 -- Table structure for drill_person
@@ -88,7 +96,7 @@ CREATE TABLE `drill_person`  (
 -- ----------------------------
 -- Records of drill_person
 -- ----------------------------
-INSERT INTO `drill_person` VALUES (1, NULL, 1, 1, '已签到', NULL, '2026-03-22 21:38:30');
+INSERT INTO `drill_person` VALUES (1, 'PLATFORM-A01', 1, 1, '已签到', NULL, '2026-03-22 21:38:30');
 
 -- ----------------------------
 -- Table structure for evacuation_point
@@ -112,11 +120,11 @@ CREATE TABLE `evacuation_point`  (
 -- ----------------------------
 -- Records of evacuation_point
 -- ----------------------------
-INSERT INTO `evacuation_point` VALUES (1, NULL, '撤离点11', '1', 11.50, 22.30, NULL, '2026-04-01 22:12:26', '2026-04-01 22:26:04', 1);
-INSERT INTO `evacuation_point` VALUES (2, NULL, '撤离点B', '1', 36.00, 8.00, NULL, '2026-04-01 22:13:15', '2026-04-01 22:13:15', 1);
-INSERT INTO `evacuation_point` VALUES (3, NULL, '撤离点c', '1', 45.00, 78.00, NULL, '2026-04-01 22:15:32', '2026-04-01 22:15:32', 0);
-INSERT INTO `evacuation_point` VALUES (4, NULL, '撤离点c', '1', 55.00, 69.00, NULL, '2026-04-01 22:15:32', '2026-04-01 22:15:32', 0);
-INSERT INTO `evacuation_point` VALUES (5, NULL, '撤离点D', '1', 11.50, 22.30, NULL, '2026-04-01 22:24:53', '2026-04-01 22:24:53', 0);
+INSERT INTO `evacuation_point` VALUES (1, 'PLATFORM-A01', '撤离点11', '1', 11.50, 22.30, NULL, '2026-04-01 22:12:26', '2026-04-01 22:26:04', 1);
+INSERT INTO `evacuation_point` VALUES (2, 'PLATFORM-A01', '撤离点B', '1', 36.00, 8.00, NULL, '2026-04-01 22:13:15', '2026-04-01 22:13:15', 1);
+INSERT INTO `evacuation_point` VALUES (3, 'PLATFORM-A01', '撤离点c', '1', 45.00, 78.00, NULL, '2026-04-01 22:15:32', '2026-04-01 22:15:32', 0);
+INSERT INTO `evacuation_point` VALUES (4, 'PLATFORM-A01', '撤离点c', '1', 55.00, 69.00, NULL, '2026-04-01 22:15:32', '2026-04-01 22:15:32', 0);
+INSERT INTO `evacuation_point` VALUES (5, 'PLATFORM-A01', '撤离点D', '1', 11.50, 22.30, NULL, '2026-04-01 22:24:53', '2026-04-01 22:24:53', 0);
 
 -- ----------------------------
 -- Table structure for floor_config
@@ -144,11 +152,11 @@ CREATE TABLE `floor_config`  (
 -- ----------------------------
 -- Records of floor_config
 -- ----------------------------
-INSERT INTO `floor_config` VALUES (1, NULL, '1', 'L1', 1, 'ACTIVE', NULL, 'admin', '2026-04-05 13:38:17', 'admin', '2026-04-05 13:38:17', 0);
-INSERT INTO `floor_config` VALUES (2, NULL, '2', 'L2', 2, 'ACTIVE', NULL, 'admin', '2026-04-05 13:38:17', 'admin', '2026-04-05 13:38:17', 0);
-INSERT INTO `floor_config` VALUES (3, NULL, '3', 'L3', 3, 'ACTIVE', NULL, 'admin', '2026-04-05 13:38:17', 'admin', '2026-04-05 13:38:17', 0);
-INSERT INTO `floor_config` VALUES (4, NULL, '4', 'L4', 4, 'ACTIVE', NULL, 'admin', '2026-04-05 13:38:17', 'admin', '2026-04-05 13:38:17', 0);
-INSERT INTO `floor_config` VALUES (5, NULL, '5', 'L5', 5, 'STOP', NULL, 'admin', '2026-04-05 14:18:47', 'admin', '2026-04-05 14:21:00', 1);
+INSERT INTO `floor_config` VALUES (1, 'PLATFORM-A01', '1', 'L1', 1, 'ACTIVE', NULL, 'admin', '2026-04-05 13:38:17', 'admin', '2026-04-05 13:38:17', 0);
+INSERT INTO `floor_config` VALUES (2, 'PLATFORM-A01', '2', 'L2', 2, 'ACTIVE', NULL, 'admin', '2026-04-05 13:38:17', 'admin', '2026-04-05 13:38:17', 0);
+INSERT INTO `floor_config` VALUES (3, 'PLATFORM-A01', '3', 'L3', 3, 'ACTIVE', NULL, 'admin', '2026-04-05 13:38:17', 'admin', '2026-04-05 13:38:17', 0);
+INSERT INTO `floor_config` VALUES (4, 'PLATFORM-A01', '4', 'L4', 4, 'ACTIVE', NULL, 'admin', '2026-04-05 13:38:17', 'admin', '2026-04-05 13:38:17', 0);
+INSERT INTO `floor_config` VALUES (5, 'PLATFORM-A01', '5', 'L5', 5, 'STOP', NULL, 'admin', '2026-04-05 14:18:47', 'admin', '2026-04-05 14:21:00', 1);
 
 -- ----------------------------
 -- Table structure for gen_table
@@ -242,9 +250,9 @@ CREATE TABLE `lifeboat_config`  (
 -- ----------------------------
 -- Records of lifeboat_config
 -- ----------------------------
-INSERT INTO `lifeboat_config` VALUES (1, NULL, NULL, '救生艇A2', 40, 1, 'ACTIVE', NULL, '2026-04-01 22:02:02', '2026-04-01 22:03:27', 1);
-INSERT INTO `lifeboat_config` VALUES (2, NULL, NULL, '救生艇A1', 40, 1, 'ACTIVE', NULL, '2026-04-01 22:04:29', '2026-04-01 22:04:29', 1);
-INSERT INTO `lifeboat_config` VALUES (3, NULL, NULL, '救生艇A2', 40, 1, 'ACTIVE', NULL, '2026-04-01 22:04:37', '2026-04-05 15:06:15', 0);
+INSERT INTO `lifeboat_config` VALUES (1, 'PLATFORM-A01', NULL, '救生艇A2', 40, 1, 'ACTIVE', NULL, '2026-04-01 22:02:02', '2026-04-01 22:03:27', 1);
+INSERT INTO `lifeboat_config` VALUES (2, 'PLATFORM-A01', NULL, '救生艇A1', 40, 1, 'ACTIVE', NULL, '2026-04-01 22:04:29', '2026-04-01 22:04:29', 1);
+INSERT INTO `lifeboat_config` VALUES (3, 'PLATFORM-A01', NULL, '救生艇A2', 40, 1, 'ACTIVE', NULL, '2026-04-01 22:04:37', '2026-04-05 15:06:15', 0);
 
 -- ----------------------------
 -- Table structure for lifeboat_person
@@ -325,9 +333,9 @@ CREATE TABLE `person`  (
 -- ----------------------------
 -- Records of person
 -- ----------------------------
-INSERT INTO `person` VALUES (1, NULL, '张鱼', 'MTS1234567894', '110101179001011234', 'XX海洋工程有限公司', '轮机长', '2025-12-31', '2023-06-01 08:00:00', NULL, 101, 202, 5, 'ONBOARD', 0, '2026-03-07 13:22:28', '2026-04-05 15:08:37', 0);
-INSERT INTO `person` VALUES (2, NULL, '电饭锅', 'MTS1453456789', '110105199001011234', 'XX海洋工程有限公司', '轮机长', '2025-12-31', '2023-06-01 08:00:00', NULL, 101, 202, 5, 'ONBOARD', 0, '2026-03-07 13:53:16', '2026-04-02 22:53:02', 0);
-INSERT INTO `person` VALUES (3, NULL, '金银花', 'MTS5566522245', '1234567890', 'XX海杨工程有限公司', '船长', '2026-04-25', '2026-04-01 08:00:00', NULL, 102, 101, 1, 'ONBOARD', 0, '2026-04-05 13:28:47', '2026-04-05 13:28:50', 0);
+INSERT INTO `person` VALUES (1, 'PLATFORM-A01', '张鱼', 'MTS1234567894', '110101179001011234', 'XX海洋工程有限公司', '轮机长', '2025-12-31', '2023-06-01 08:00:00', NULL, 101, 202, 5, 'ONBOARD', 0, '2026-03-07 13:22:28', '2026-04-05 15:08:37', 0);
+INSERT INTO `person` VALUES (2, 'PLATFORM-A01', '电饭锅', 'MTS1453456789', '110105199001011234', 'XX海洋工程有限公司', '轮机长', '2025-12-31', '2023-06-01 08:00:00', NULL, 101, 202, 5, 'ONBOARD', 0, '2026-03-07 13:53:16', '2026-04-02 22:53:02', 0);
+INSERT INTO `person` VALUES (3, 'PLATFORM-A01', '金银花', 'MTS5566522245', '1234567890', 'XX海杨工程有限公司', '船长', '2026-04-25', '2026-04-01 08:00:00', NULL, 102, 101, 1, 'ONBOARD', 0, '2026-04-05 13:28:47', '2026-04-05 13:28:50', 0);
 
 -- ----------------------------
 -- Table structure for person_face
@@ -436,8 +444,8 @@ CREATE TABLE `room_bed`  (
 -- ----------------------------
 -- Records of room_bed
 -- ----------------------------
-INSERT INTO `room_bed` VALUES (1, NULL, 2, 'B', 'LOCKED');
-INSERT INTO `room_bed` VALUES (2, NULL, 2, 'A', 'LOCKED');
+INSERT INTO `room_bed` VALUES (1, 'PLATFORM-A01', 2, 'B', 'LOCKED');
+INSERT INTO `room_bed` VALUES (2, 'PLATFORM-A01', 2, 'A', 'LOCKED');
 
 -- ----------------------------
 -- Table structure for room_config
@@ -458,9 +466,9 @@ CREATE TABLE `room_config`  (
 -- ----------------------------
 -- Records of room_config
 -- ----------------------------
-INSERT INTO `room_config` VALUES (2, NULL, 'A101', '1', 4, 'OCCUPIED');
-INSERT INTO `room_config` VALUES (3, NULL, 'A102', '1', 4, NULL);
-INSERT INTO `room_config` VALUES (6, NULL, 'A202', '2', 4, NULL);
+INSERT INTO `room_config` VALUES (2, 'PLATFORM-A01', 'A101', '1', 4, 'OCCUPIED');
+INSERT INTO `room_config` VALUES (3, 'PLATFORM-A01', 'A102', '1', 4, NULL);
+INSERT INTO `room_config` VALUES (6, 'PLATFORM-A01', 'A202', '2', 4, NULL);
 
 -- ----------------------------
 -- Table structure for sys_config
@@ -550,41 +558,42 @@ CREATE TABLE `sys_dict_data`  (
   `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT '' COMMENT '更新者',
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '备注',
+  `platform_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '钻井平台编号',
   PRIMARY KEY (`dict_code`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '字典数据表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_dict_data
 -- ----------------------------
-INSERT INTO `sys_dict_data` VALUES (1, 1, '男', '0', 'sys_user_sex', '', '', 'Y', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '性别男');
-INSERT INTO `sys_dict_data` VALUES (2, 2, '女', '1', 'sys_user_sex', '', '', 'N', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '性别女');
-INSERT INTO `sys_dict_data` VALUES (3, 3, '未知', '2', 'sys_user_sex', '', '', 'N', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '性别未知');
-INSERT INTO `sys_dict_data` VALUES (4, 1, '显示', '0', 'sys_show_hide', '', 'primary', 'Y', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '显示菜单');
-INSERT INTO `sys_dict_data` VALUES (5, 2, '隐藏', '1', 'sys_show_hide', '', 'danger', 'N', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '隐藏菜单');
-INSERT INTO `sys_dict_data` VALUES (6, 1, '正常', '0', 'sys_normal_disable', '', 'primary', 'Y', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '正常状态');
-INSERT INTO `sys_dict_data` VALUES (7, 2, '停用', '1', 'sys_normal_disable', '', 'danger', 'N', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '停用状态');
-INSERT INTO `sys_dict_data` VALUES (8, 1, '正常', '0', 'sys_job_status', '', 'primary', 'Y', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '正常状态');
-INSERT INTO `sys_dict_data` VALUES (9, 2, '暂停', '1', 'sys_job_status', '', 'danger', 'N', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '停用状态');
-INSERT INTO `sys_dict_data` VALUES (10, 1, '默认', 'DEFAULT', 'sys_job_group', '', '', 'Y', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '默认分组');
-INSERT INTO `sys_dict_data` VALUES (11, 2, '系统', 'SYSTEM', 'sys_job_group', '', '', 'N', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '系统分组');
-INSERT INTO `sys_dict_data` VALUES (12, 1, '是', 'Y', 'sys_yes_no', '', 'primary', 'Y', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '系统默认是');
-INSERT INTO `sys_dict_data` VALUES (13, 2, '否', 'N', 'sys_yes_no', '', 'danger', 'N', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '系统默认否');
-INSERT INTO `sys_dict_data` VALUES (14, 1, '通知', '1', 'sys_notice_type', '', 'warning', 'Y', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '通知');
-INSERT INTO `sys_dict_data` VALUES (15, 2, '公告', '2', 'sys_notice_type', '', 'success', 'N', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '公告');
-INSERT INTO `sys_dict_data` VALUES (16, 1, '正常', '0', 'sys_notice_status', '', 'primary', 'Y', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '正常状态');
-INSERT INTO `sys_dict_data` VALUES (17, 2, '关闭', '1', 'sys_notice_status', '', 'danger', 'N', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '关闭状态');
-INSERT INTO `sys_dict_data` VALUES (18, 99, '其他', '0', 'sys_oper_type', '', 'info', 'N', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '其他操作');
-INSERT INTO `sys_dict_data` VALUES (19, 1, '新增', '1', 'sys_oper_type', '', 'info', 'N', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '新增操作');
-INSERT INTO `sys_dict_data` VALUES (20, 2, '修改', '2', 'sys_oper_type', '', 'info', 'N', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '修改操作');
-INSERT INTO `sys_dict_data` VALUES (21, 3, '删除', '3', 'sys_oper_type', '', 'danger', 'N', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '删除操作');
-INSERT INTO `sys_dict_data` VALUES (22, 4, '授权', '4', 'sys_oper_type', '', 'primary', 'N', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '授权操作');
-INSERT INTO `sys_dict_data` VALUES (23, 5, '导出', '5', 'sys_oper_type', '', 'warning', 'N', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '导出操作');
-INSERT INTO `sys_dict_data` VALUES (24, 6, '导入', '6', 'sys_oper_type', '', 'warning', 'N', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '导入操作');
-INSERT INTO `sys_dict_data` VALUES (25, 7, '强退', '7', 'sys_oper_type', '', 'danger', 'N', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '强退操作');
-INSERT INTO `sys_dict_data` VALUES (26, 8, '生成代码', '8', 'sys_oper_type', '', 'warning', 'N', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '生成操作');
-INSERT INTO `sys_dict_data` VALUES (27, 9, '清空数据', '9', 'sys_oper_type', '', 'danger', 'N', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '清空操作');
-INSERT INTO `sys_dict_data` VALUES (28, 1, '成功', '0', 'sys_common_status', '', 'primary', 'N', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '正常状态');
-INSERT INTO `sys_dict_data` VALUES (29, 2, '失败', '1', 'sys_common_status', '', 'danger', 'N', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '停用状态');
+INSERT INTO `sys_dict_data` VALUES (1, 1, '男', '0', 'sys_user_sex', '', '', 'Y', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '性别男', 'PLATFORM-A01');
+INSERT INTO `sys_dict_data` VALUES (2, 2, '女', '1', 'sys_user_sex', '', '', 'N', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '性别女', 'PLATFORM-A01');
+INSERT INTO `sys_dict_data` VALUES (3, 3, '未知', '2', 'sys_user_sex', '', '', 'N', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '性别未知', 'PLATFORM-A01');
+INSERT INTO `sys_dict_data` VALUES (4, 1, '显示', '0', 'sys_show_hide', '', 'primary', 'Y', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '显示菜单', 'PLATFORM-A01');
+INSERT INTO `sys_dict_data` VALUES (5, 2, '隐藏', '1', 'sys_show_hide', '', 'danger', 'N', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '隐藏菜单', 'PLATFORM-A01');
+INSERT INTO `sys_dict_data` VALUES (6, 1, '正常', '0', 'sys_normal_disable', '', 'primary', 'Y', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '正常状态', 'PLATFORM-A01');
+INSERT INTO `sys_dict_data` VALUES (7, 2, '停用', '1', 'sys_normal_disable', '', 'danger', 'N', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '停用状态', 'PLATFORM-A01');
+INSERT INTO `sys_dict_data` VALUES (8, 1, '正常', '0', 'sys_job_status', '', 'primary', 'Y', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '正常状态', 'PLATFORM-A01');
+INSERT INTO `sys_dict_data` VALUES (9, 2, '暂停', '1', 'sys_job_status', '', 'danger', 'N', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '停用状态', 'PLATFORM-A01');
+INSERT INTO `sys_dict_data` VALUES (10, 1, '默认', 'DEFAULT', 'sys_job_group', '', '', 'Y', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '默认分组', 'PLATFORM-A01');
+INSERT INTO `sys_dict_data` VALUES (11, 2, '系统', 'SYSTEM', 'sys_job_group', '', '', 'N', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '系统分组', 'PLATFORM-A01');
+INSERT INTO `sys_dict_data` VALUES (12, 1, '是', 'Y', 'sys_yes_no', '', 'primary', 'Y', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '系统默认是', 'PLATFORM-A01');
+INSERT INTO `sys_dict_data` VALUES (13, 2, '否', 'N', 'sys_yes_no', '', 'danger', 'N', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '系统默认否', 'PLATFORM-A01');
+INSERT INTO `sys_dict_data` VALUES (14, 1, '通知', '1', 'sys_notice_type', '', 'warning', 'Y', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '通知', 'PLATFORM-A01');
+INSERT INTO `sys_dict_data` VALUES (15, 2, '公告', '2', 'sys_notice_type', '', 'success', 'N', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '公告', 'PLATFORM-A01');
+INSERT INTO `sys_dict_data` VALUES (16, 1, '正常', '0', 'sys_notice_status', '', 'primary', 'Y', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '正常状态', 'PLATFORM-A01');
+INSERT INTO `sys_dict_data` VALUES (17, 2, '关闭', '1', 'sys_notice_status', '', 'danger', 'N', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '关闭状态', 'PLATFORM-A01');
+INSERT INTO `sys_dict_data` VALUES (18, 99, '其他', '0', 'sys_oper_type', '', 'info', 'N', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '其他操作', 'PLATFORM-A01');
+INSERT INTO `sys_dict_data` VALUES (19, 1, '新增', '1', 'sys_oper_type', '', 'info', 'N', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '新增操作', 'PLATFORM-A01');
+INSERT INTO `sys_dict_data` VALUES (20, 2, '修改', '2', 'sys_oper_type', '', 'info', 'N', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '修改操作', 'PLATFORM-A01');
+INSERT INTO `sys_dict_data` VALUES (21, 3, '删除', '3', 'sys_oper_type', '', 'danger', 'N', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '删除操作', 'PLATFORM-A01');
+INSERT INTO `sys_dict_data` VALUES (22, 4, '授权', '4', 'sys_oper_type', '', 'primary', 'N', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '授权操作', 'PLATFORM-A01');
+INSERT INTO `sys_dict_data` VALUES (23, 5, '导出', '5', 'sys_oper_type', '', 'warning', 'N', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '导出操作', 'PLATFORM-A01');
+INSERT INTO `sys_dict_data` VALUES (24, 6, '导入', '6', 'sys_oper_type', '', 'warning', 'N', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '导入操作', 'PLATFORM-A01');
+INSERT INTO `sys_dict_data` VALUES (25, 7, '强退', '7', 'sys_oper_type', '', 'danger', 'N', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '强退操作', 'PLATFORM-A01');
+INSERT INTO `sys_dict_data` VALUES (26, 8, '生成代码', '8', 'sys_oper_type', '', 'warning', 'N', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '生成操作', 'PLATFORM-A01');
+INSERT INTO `sys_dict_data` VALUES (27, 9, '清空数据', '9', 'sys_oper_type', '', 'danger', 'N', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '清空操作', 'PLATFORM-A01');
+INSERT INTO `sys_dict_data` VALUES (28, 1, '成功', '0', 'sys_common_status', '', 'primary', 'N', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '正常状态', 'PLATFORM-A01');
+INSERT INTO `sys_dict_data` VALUES (29, 2, '失败', '1', 'sys_common_status', '', 'danger', 'N', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '停用状态', 'PLATFORM-A01');
 
 -- ----------------------------
 -- Table structure for sys_dict_type
@@ -600,6 +609,7 @@ CREATE TABLE `sys_dict_type`  (
   `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT '' COMMENT '更新者',
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '备注',
+  `platform_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '钻井平台编号',
   PRIMARY KEY (`dict_id`) USING BTREE,
   UNIQUE INDEX `dict_type`(`dict_type`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '字典类型表' ROW_FORMAT = Dynamic;
@@ -607,16 +617,16 @@ CREATE TABLE `sys_dict_type`  (
 -- ----------------------------
 -- Records of sys_dict_type
 -- ----------------------------
-INSERT INTO `sys_dict_type` VALUES (1, '用户性别', 'sys_user_sex', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '用户性别列表');
-INSERT INTO `sys_dict_type` VALUES (2, '菜单状态', 'sys_show_hide', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '菜单状态列表');
-INSERT INTO `sys_dict_type` VALUES (3, '系统开关', 'sys_normal_disable', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '系统开关列表');
-INSERT INTO `sys_dict_type` VALUES (4, '任务状态', 'sys_job_status', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '任务状态列表');
-INSERT INTO `sys_dict_type` VALUES (5, '任务分组', 'sys_job_group', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '任务分组列表');
-INSERT INTO `sys_dict_type` VALUES (6, '系统是否', 'sys_yes_no', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '系统是否列表');
-INSERT INTO `sys_dict_type` VALUES (7, '通知类型', 'sys_notice_type', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '通知类型列表');
-INSERT INTO `sys_dict_type` VALUES (8, '通知状态', 'sys_notice_status', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '通知状态列表');
-INSERT INTO `sys_dict_type` VALUES (9, '操作类型', 'sys_oper_type', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '操作类型列表');
-INSERT INTO `sys_dict_type` VALUES (10, '系统状态', 'sys_common_status', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '登录状态列表');
+INSERT INTO `sys_dict_type` VALUES (1, '用户性别', 'sys_user_sex', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '用户性别列表', 'PLATFORM-A01');
+INSERT INTO `sys_dict_type` VALUES (2, '菜单状态', 'sys_show_hide', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '菜单状态列表', 'PLATFORM-A01');
+INSERT INTO `sys_dict_type` VALUES (3, '系统开关', 'sys_normal_disable', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '系统开关列表', 'PLATFORM-A01');
+INSERT INTO `sys_dict_type` VALUES (4, '任务状态', 'sys_job_status', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '任务状态列表', 'PLATFORM-A01');
+INSERT INTO `sys_dict_type` VALUES (5, '任务分组', 'sys_job_group', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '任务分组列表', 'PLATFORM-A01');
+INSERT INTO `sys_dict_type` VALUES (6, '系统是否', 'sys_yes_no', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '系统是否列表', 'PLATFORM-A01');
+INSERT INTO `sys_dict_type` VALUES (7, '通知类型', 'sys_notice_type', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '通知类型列表', 'PLATFORM-A01');
+INSERT INTO `sys_dict_type` VALUES (8, '通知状态', 'sys_notice_status', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '通知状态列表', 'PLATFORM-A01');
+INSERT INTO `sys_dict_type` VALUES (9, '操作类型', 'sys_oper_type', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '操作类型列表', 'PLATFORM-A01');
+INSERT INTO `sys_dict_type` VALUES (10, '系统状态', 'sys_common_status', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '登录状态列表', 'PLATFORM-A01');
 
 -- ----------------------------
 -- Table structure for sys_job
@@ -680,6 +690,7 @@ CREATE TABLE `sys_logininfor`  (
   `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT '0' COMMENT '登录状态（0成功 1失败）',
   `msg` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT '' COMMENT '提示消息',
   `login_time` datetime(0) NULL DEFAULT NULL COMMENT '访问时间',
+  `platform_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '钻井平台编号',
   PRIMARY KEY (`info_id`) USING BTREE,
   INDEX `idx_sys_logininfor_s`(`status`) USING BTREE,
   INDEX `idx_sys_logininfor_lt`(`login_time`) USING BTREE
@@ -688,110 +699,116 @@ CREATE TABLE `sys_logininfor`  (
 -- ----------------------------
 -- Records of sys_logininfor
 -- ----------------------------
-INSERT INTO `sys_logininfor` VALUES (100, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '1', '验证码错误', '2026-03-05 22:33:53');
-INSERT INTO `sys_logininfor` VALUES (101, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '1', '验证码错误', '2026-03-05 22:37:19');
-INSERT INTO `sys_logininfor` VALUES (102, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '1', '验证码错误', '2026-03-05 22:38:08');
-INSERT INTO `sys_logininfor` VALUES (103, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '1', '验证码错误', '2026-03-05 22:52:08');
-INSERT INTO `sys_logininfor` VALUES (104, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '1', '验证码错误', '2026-03-05 22:52:50');
-INSERT INTO `sys_logininfor` VALUES (105, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '1', '验证码错误', '2026-03-05 22:53:19');
-INSERT INTO `sys_logininfor` VALUES (106, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-05 22:55:35');
-INSERT INTO `sys_logininfor` VALUES (107, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-06 21:36:29');
-INSERT INTO `sys_logininfor` VALUES (108, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-06 21:36:48');
-INSERT INTO `sys_logininfor` VALUES (109, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-06 21:37:39');
-INSERT INTO `sys_logininfor` VALUES (110, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-06 21:37:54');
-INSERT INTO `sys_logininfor` VALUES (111, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-06 22:06:24');
-INSERT INTO `sys_logininfor` VALUES (112, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 10:53:02');
-INSERT INTO `sys_logininfor` VALUES (113, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 11:12:14');
-INSERT INTO `sys_logininfor` VALUES (114, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 11:19:09');
-INSERT INTO `sys_logininfor` VALUES (115, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 11:22:07');
-INSERT INTO `sys_logininfor` VALUES (116, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 11:36:55');
-INSERT INTO `sys_logininfor` VALUES (117, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 11:37:56');
-INSERT INTO `sys_logininfor` VALUES (118, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 11:39:12');
-INSERT INTO `sys_logininfor` VALUES (119, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 11:40:11');
-INSERT INTO `sys_logininfor` VALUES (120, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 11:41:56');
-INSERT INTO `sys_logininfor` VALUES (121, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 11:45:17');
-INSERT INTO `sys_logininfor` VALUES (122, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 11:55:17');
-INSERT INTO `sys_logininfor` VALUES (123, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 12:02:11');
-INSERT INTO `sys_logininfor` VALUES (124, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 12:15:02');
-INSERT INTO `sys_logininfor` VALUES (125, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 12:24:12');
-INSERT INTO `sys_logininfor` VALUES (126, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 12:28:57');
-INSERT INTO `sys_logininfor` VALUES (127, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 12:46:16');
-INSERT INTO `sys_logininfor` VALUES (128, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 12:46:18');
-INSERT INTO `sys_logininfor` VALUES (129, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 13:21:11');
-INSERT INTO `sys_logininfor` VALUES (130, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 13:22:28');
-INSERT INTO `sys_logininfor` VALUES (131, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 13:25:56');
-INSERT INTO `sys_logininfor` VALUES (132, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 13:30:51');
-INSERT INTO `sys_logininfor` VALUES (133, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 13:35:02');
-INSERT INTO `sys_logininfor` VALUES (134, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 13:36:47');
-INSERT INTO `sys_logininfor` VALUES (135, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 13:44:53');
-INSERT INTO `sys_logininfor` VALUES (136, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 13:53:15');
-INSERT INTO `sys_logininfor` VALUES (137, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 14:39:02');
-INSERT INTO `sys_logininfor` VALUES (138, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 14:43:09');
-INSERT INTO `sys_logininfor` VALUES (139, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 14:53:18');
-INSERT INTO `sys_logininfor` VALUES (140, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 14:57:02');
-INSERT INTO `sys_logininfor` VALUES (141, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-09 21:12:01');
-INSERT INTO `sys_logininfor` VALUES (142, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-09 21:19:26');
-INSERT INTO `sys_logininfor` VALUES (143, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-09 21:22:43');
-INSERT INTO `sys_logininfor` VALUES (144, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-09 21:24:42');
-INSERT INTO `sys_logininfor` VALUES (145, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-09 21:41:42');
-INSERT INTO `sys_logininfor` VALUES (146, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-09 22:07:24');
-INSERT INTO `sys_logininfor` VALUES (147, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-10 22:33:19');
-INSERT INTO `sys_logininfor` VALUES (148, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-10 22:36:38');
-INSERT INTO `sys_logininfor` VALUES (149, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-10 22:43:05');
-INSERT INTO `sys_logininfor` VALUES (150, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-10 22:53:16');
-INSERT INTO `sys_logininfor` VALUES (151, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-10 22:54:22');
-INSERT INTO `sys_logininfor` VALUES (152, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-10 22:58:18');
-INSERT INTO `sys_logininfor` VALUES (153, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-11 22:12:45');
-INSERT INTO `sys_logininfor` VALUES (154, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-11 22:14:51');
-INSERT INTO `sys_logininfor` VALUES (155, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-11 23:02:54');
-INSERT INTO `sys_logininfor` VALUES (156, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-11 23:15:32');
-INSERT INTO `sys_logininfor` VALUES (157, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-15 12:00:22');
-INSERT INTO `sys_logininfor` VALUES (158, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-16 22:41:51');
-INSERT INTO `sys_logininfor` VALUES (159, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '退出成功', '2026-03-16 22:42:15');
-INSERT INTO `sys_logininfor` VALUES (160, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-16 22:42:39');
-INSERT INTO `sys_logininfor` VALUES (161, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '退出成功', '2026-03-16 22:42:50');
-INSERT INTO `sys_logininfor` VALUES (162, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '退出成功', '2026-03-16 22:43:08');
-INSERT INTO `sys_logininfor` VALUES (163, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-16 22:47:44');
-INSERT INTO `sys_logininfor` VALUES (164, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-16 22:52:26');
-INSERT INTO `sys_logininfor` VALUES (165, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-16 23:08:31');
-INSERT INTO `sys_logininfor` VALUES (166, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-16 23:22:32');
-INSERT INTO `sys_logininfor` VALUES (167, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-16 23:26:05');
-INSERT INTO `sys_logininfor` VALUES (168, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-22 19:53:16');
-INSERT INTO `sys_logininfor` VALUES (169, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-22 20:53:50');
-INSERT INTO `sys_logininfor` VALUES (170, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-22 21:18:07');
-INSERT INTO `sys_logininfor` VALUES (171, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-22 21:21:14');
-INSERT INTO `sys_logininfor` VALUES (172, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-22 21:31:32');
-INSERT INTO `sys_logininfor` VALUES (173, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-22 21:33:57');
-INSERT INTO `sys_logininfor` VALUES (174, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-22 21:35:53');
-INSERT INTO `sys_logininfor` VALUES (175, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-22 21:37:28');
-INSERT INTO `sys_logininfor` VALUES (176, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-22 21:38:30');
-INSERT INTO `sys_logininfor` VALUES (177, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-30 21:54:46');
-INSERT INTO `sys_logininfor` VALUES (178, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-30 22:07:29');
-INSERT INTO `sys_logininfor` VALUES (179, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-30 22:32:13');
-INSERT INTO `sys_logininfor` VALUES (180, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-30 22:36:55');
-INSERT INTO `sys_logininfor` VALUES (181, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-30 22:38:19');
-INSERT INTO `sys_logininfor` VALUES (182, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-31 21:25:45');
-INSERT INTO `sys_logininfor` VALUES (183, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-31 21:34:10');
-INSERT INTO `sys_logininfor` VALUES (184, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-31 21:43:51');
-INSERT INTO `sys_logininfor` VALUES (185, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-01 22:00:06');
-INSERT INTO `sys_logininfor` VALUES (186, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-01 22:07:46');
-INSERT INTO `sys_logininfor` VALUES (187, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-01 22:23:32');
-INSERT INTO `sys_logininfor` VALUES (188, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-02 21:08:58');
-INSERT INTO `sys_logininfor` VALUES (189, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-02 21:14:21');
-INSERT INTO `sys_logininfor` VALUES (190, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-02 22:42:50');
-INSERT INTO `sys_logininfor` VALUES (191, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-02 22:52:57');
-INSERT INTO `sys_logininfor` VALUES (192, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-04 19:55:00');
-INSERT INTO `sys_logininfor` VALUES (193, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-05 13:08:09');
-INSERT INTO `sys_logininfor` VALUES (194, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-05 13:12:33');
-INSERT INTO `sys_logininfor` VALUES (195, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-05 13:20:06');
-INSERT INTO `sys_logininfor` VALUES (196, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-05 13:25:54');
-INSERT INTO `sys_logininfor` VALUES (197, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-05 13:39:20');
-INSERT INTO `sys_logininfor` VALUES (198, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-05 13:41:08');
-INSERT INTO `sys_logininfor` VALUES (199, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-05 14:57:01');
-INSERT INTO `sys_logininfor` VALUES (200, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-05 15:01:19');
-INSERT INTO `sys_logininfor` VALUES (201, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-05 15:04:00');
-INSERT INTO `sys_logininfor` VALUES (202, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-05 15:08:09');
-INSERT INTO `sys_logininfor` VALUES (203, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-09 23:24:47');
+INSERT INTO `sys_logininfor` VALUES (100, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '1', '验证码错误', '2026-03-05 22:33:53', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (101, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '1', '验证码错误', '2026-03-05 22:37:19', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (102, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '1', '验证码错误', '2026-03-05 22:38:08', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (103, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '1', '验证码错误', '2026-03-05 22:52:08', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (104, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '1', '验证码错误', '2026-03-05 22:52:50', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (105, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '1', '验证码错误', '2026-03-05 22:53:19', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (106, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-05 22:55:35', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (107, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-06 21:36:29', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (108, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-06 21:36:48', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (109, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-06 21:37:39', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (110, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-06 21:37:54', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (111, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-06 22:06:24', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (112, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 10:53:02', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (113, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 11:12:14', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (114, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 11:19:09', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (115, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 11:22:07', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (116, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 11:36:55', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (117, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 11:37:56', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (118, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 11:39:12', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (119, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 11:40:11', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (120, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 11:41:56', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (121, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 11:45:17', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (122, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 11:55:17', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (123, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 12:02:11', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (124, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 12:15:02', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (125, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 12:24:12', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (126, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 12:28:57', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (127, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 12:46:16', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (128, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 12:46:18', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (129, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 13:21:11', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (130, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 13:22:28', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (131, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 13:25:56', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (132, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 13:30:51', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (133, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 13:35:02', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (134, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 13:36:47', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (135, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 13:44:53', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (136, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 13:53:15', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (137, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 14:39:02', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (138, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 14:43:09', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (139, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 14:53:18', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (140, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-07 14:57:02', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (141, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-09 21:12:01', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (142, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-09 21:19:26', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (143, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-09 21:22:43', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (144, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-09 21:24:42', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (145, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-09 21:41:42', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (146, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-09 22:07:24', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (147, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-10 22:33:19', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (148, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-10 22:36:38', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (149, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-10 22:43:05', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (150, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-10 22:53:16', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (151, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-10 22:54:22', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (152, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-10 22:58:18', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (153, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-11 22:12:45', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (154, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-11 22:14:51', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (155, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-11 23:02:54', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (156, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-11 23:15:32', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (157, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-15 12:00:22', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (158, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-16 22:41:51', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (159, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '退出成功', '2026-03-16 22:42:15', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (160, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-16 22:42:39', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (161, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '退出成功', '2026-03-16 22:42:50', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (162, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '退出成功', '2026-03-16 22:43:08', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (163, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-16 22:47:44', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (164, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-16 22:52:26', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (165, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-16 23:08:31', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (166, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-16 23:22:32', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (167, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-16 23:26:05', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (168, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-22 19:53:16', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (169, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-22 20:53:50', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (170, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-22 21:18:07', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (171, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-22 21:21:14', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (172, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-22 21:31:32', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (173, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-22 21:33:57', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (174, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-22 21:35:53', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (175, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-22 21:37:28', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (176, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-22 21:38:30', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (177, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-30 21:54:46', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (178, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-30 22:07:29', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (179, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-30 22:32:13', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (180, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-30 22:36:55', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (181, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-30 22:38:19', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (182, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-31 21:25:45', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (183, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-31 21:34:10', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (184, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-03-31 21:43:51', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (185, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-01 22:00:06', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (186, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-01 22:07:46', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (187, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-01 22:23:32', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (188, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-02 21:08:58', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (189, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-02 21:14:21', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (190, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-02 22:42:50', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (191, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-02 22:52:57', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (192, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-04 19:55:00', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (193, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-05 13:08:09', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (194, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-05 13:12:33', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (195, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-05 13:20:06', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (196, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-05 13:25:54', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (197, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-05 13:39:20', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (198, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-05 13:41:08', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (199, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-05 14:57:01', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (200, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-05 15:01:19', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (201, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-05 15:04:00', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (202, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-05 15:08:09', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (203, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-09 23:24:47', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (204, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-13 14:30:09', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (205, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-13 14:46:03', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (206, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-13 14:50:06', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (207, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-13 18:08:33', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (208, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-13 18:09:00', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (209, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-13 18:12:24', 'PLATFORM-A01');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -814,97 +831,98 @@ CREATE TABLE `sys_menu`  (
   `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT '' COMMENT '更新者',
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT '' COMMENT '备注',
+  `platform_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '钻井平台编号',
   PRIMARY KEY (`menu_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2000 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '菜单权限表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_menu
 -- ----------------------------
-INSERT INTO `sys_menu` VALUES (1, '系统管理', 0, 1, '#', '', 'M', '0', '1', '', 'fa fa-gear', 'admin', '2026-03-05 22:17:41', '', NULL, '系统管理目录');
-INSERT INTO `sys_menu` VALUES (2, '系统监控', 0, 2, '#', '', 'M', '0', '1', '', 'fa fa-video-camera', 'admin', '2026-03-05 22:17:41', '', NULL, '系统监控目录');
-INSERT INTO `sys_menu` VALUES (3, '系统工具', 0, 3, '#', '', 'M', '0', '1', '', 'fa fa-bars', 'admin', '2026-03-05 22:17:41', '', NULL, '系统工具目录');
-INSERT INTO `sys_menu` VALUES (4, '若依官网', 0, 4, 'http://ruoyi.vip', 'menuBlank', 'C', '0', '1', '', 'fa fa-location-arrow', 'admin', '2026-03-05 22:17:41', '', NULL, '若依官网地址');
-INSERT INTO `sys_menu` VALUES (100, '用户管理', 1, 1, '/system/user', '', 'C', '0', '1', 'system:user:view', 'fa fa-user-o', 'admin', '2026-03-05 22:17:41', '', NULL, '用户管理菜单');
-INSERT INTO `sys_menu` VALUES (101, '角色管理', 1, 2, '/system/role', '', 'C', '0', '1', 'system:role:view', 'fa fa-user-secret', 'admin', '2026-03-05 22:17:41', '', NULL, '角色管理菜单');
-INSERT INTO `sys_menu` VALUES (102, '菜单管理', 1, 3, '/system/menu', '', 'C', '0', '1', 'system:menu:view', 'fa fa-th-list', 'admin', '2026-03-05 22:17:41', '', NULL, '菜单管理菜单');
-INSERT INTO `sys_menu` VALUES (103, '部门管理', 1, 4, '/system/dept', '', 'C', '0', '1', 'system:dept:view', 'fa fa-outdent', 'admin', '2026-03-05 22:17:41', '', NULL, '部门管理菜单');
-INSERT INTO `sys_menu` VALUES (104, '岗位管理', 1, 5, '/system/post', '', 'C', '0', '1', 'system:post:view', 'fa fa-address-card-o', 'admin', '2026-03-05 22:17:41', '', NULL, '岗位管理菜单');
-INSERT INTO `sys_menu` VALUES (105, '字典管理', 1, 6, '/system/dict', '', 'C', '0', '1', 'system:dict:view', 'fa fa-bookmark-o', 'admin', '2026-03-05 22:17:41', '', NULL, '字典管理菜单');
-INSERT INTO `sys_menu` VALUES (106, '参数设置', 1, 7, '/system/config', '', 'C', '0', '1', 'system:config:view', 'fa fa-sun-o', 'admin', '2026-03-05 22:17:41', '', NULL, '参数设置菜单');
-INSERT INTO `sys_menu` VALUES (107, '通知公告', 1, 8, '/system/notice', '', 'C', '0', '1', 'system:notice:view', 'fa fa-bullhorn', 'admin', '2026-03-05 22:17:41', '', NULL, '通知公告菜单');
-INSERT INTO `sys_menu` VALUES (108, '日志管理', 1, 9, '#', '', 'M', '0', '1', '', 'fa fa-pencil-square-o', 'admin', '2026-03-05 22:17:41', '', NULL, '日志管理菜单');
-INSERT INTO `sys_menu` VALUES (109, '在线用户', 2, 1, '/monitor/online', '', 'C', '0', '1', 'monitor:online:view', 'fa fa-user-circle', 'admin', '2026-03-05 22:17:41', '', NULL, '在线用户菜单');
-INSERT INTO `sys_menu` VALUES (110, '定时任务', 2, 2, '/monitor/job', '', 'C', '0', '1', 'monitor:job:view', 'fa fa-tasks', 'admin', '2026-03-05 22:17:41', '', NULL, '定时任务菜单');
-INSERT INTO `sys_menu` VALUES (111, '数据监控', 2, 3, '/monitor/data', '', 'C', '0', '1', 'monitor:data:view', 'fa fa-bug', 'admin', '2026-03-05 22:17:41', '', NULL, '数据监控菜单');
-INSERT INTO `sys_menu` VALUES (112, '服务监控', 2, 4, '/monitor/server', '', 'C', '0', '1', 'monitor:server:view', 'fa fa-server', 'admin', '2026-03-05 22:17:41', '', NULL, '服务监控菜单');
-INSERT INTO `sys_menu` VALUES (113, '缓存监控', 2, 5, '/monitor/cache', '', 'C', '0', '1', 'monitor:cache:view', 'fa fa-cube', 'admin', '2026-03-05 22:17:41', '', NULL, '缓存监控菜单');
-INSERT INTO `sys_menu` VALUES (114, '表单构建', 3, 1, '/tool/build', '', 'C', '0', '1', 'tool:build:view', 'fa fa-wpforms', 'admin', '2026-03-05 22:17:41', '', NULL, '表单构建菜单');
-INSERT INTO `sys_menu` VALUES (115, '代码生成', 3, 2, '/tool/gen', '', 'C', '0', '1', 'tool:gen:view', 'fa fa-code', 'admin', '2026-03-05 22:17:41', '', NULL, '代码生成菜单');
-INSERT INTO `sys_menu` VALUES (116, '系统接口', 3, 3, '/tool/swagger', '', 'C', '0', '1', 'tool:swagger:view', 'fa fa-gg', 'admin', '2026-03-05 22:17:41', '', NULL, '系统接口菜单');
-INSERT INTO `sys_menu` VALUES (500, '操作日志', 108, 1, '/monitor/operlog', '', 'C', '0', '1', 'monitor:operlog:view', 'fa fa-address-book', 'admin', '2026-03-05 22:17:41', '', NULL, '操作日志菜单');
-INSERT INTO `sys_menu` VALUES (501, '登录日志', 108, 2, '/monitor/logininfor', '', 'C', '0', '1', 'monitor:logininfor:view', 'fa fa-file-image-o', 'admin', '2026-03-05 22:17:41', '', NULL, '登录日志菜单');
-INSERT INTO `sys_menu` VALUES (1000, '用户查询', 100, 1, '#', '', 'F', '0', '1', 'system:user:list', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1001, '用户新增', 100, 2, '#', '', 'F', '0', '1', 'system:user:add', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1002, '用户修改', 100, 3, '#', '', 'F', '0', '1', 'system:user:edit', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1003, '用户删除', 100, 4, '#', '', 'F', '0', '1', 'system:user:remove', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1004, '用户导出', 100, 5, '#', '', 'F', '0', '1', 'system:user:export', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1005, '用户导入', 100, 6, '#', '', 'F', '0', '1', 'system:user:import', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1006, '重置密码', 100, 7, '#', '', 'F', '0', '1', 'system:user:resetPwd', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1007, '角色查询', 101, 1, '#', '', 'F', '0', '1', 'system:role:list', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1008, '角色新增', 101, 2, '#', '', 'F', '0', '1', 'system:role:add', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1009, '角色修改', 101, 3, '#', '', 'F', '0', '1', 'system:role:edit', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1010, '角色删除', 101, 4, '#', '', 'F', '0', '1', 'system:role:remove', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1011, '角色导出', 101, 5, '#', '', 'F', '0', '1', 'system:role:export', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1012, '菜单查询', 102, 1, '#', '', 'F', '0', '1', 'system:menu:list', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1013, '菜单新增', 102, 2, '#', '', 'F', '0', '1', 'system:menu:add', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1014, '菜单修改', 102, 3, '#', '', 'F', '0', '1', 'system:menu:edit', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1015, '菜单删除', 102, 4, '#', '', 'F', '0', '1', 'system:menu:remove', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1016, '部门查询', 103, 1, '#', '', 'F', '0', '1', 'system:dept:list', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1017, '部门新增', 103, 2, '#', '', 'F', '0', '1', 'system:dept:add', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1018, '部门修改', 103, 3, '#', '', 'F', '0', '1', 'system:dept:edit', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1019, '部门删除', 103, 4, '#', '', 'F', '0', '1', 'system:dept:remove', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1020, '岗位查询', 104, 1, '#', '', 'F', '0', '1', 'system:post:list', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1021, '岗位新增', 104, 2, '#', '', 'F', '0', '1', 'system:post:add', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1022, '岗位修改', 104, 3, '#', '', 'F', '0', '1', 'system:post:edit', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1023, '岗位删除', 104, 4, '#', '', 'F', '0', '1', 'system:post:remove', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1024, '岗位导出', 104, 5, '#', '', 'F', '0', '1', 'system:post:export', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1025, '字典查询', 105, 1, '#', '', 'F', '0', '1', 'system:dict:list', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1026, '字典新增', 105, 2, '#', '', 'F', '0', '1', 'system:dict:add', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1027, '字典修改', 105, 3, '#', '', 'F', '0', '1', 'system:dict:edit', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1028, '字典删除', 105, 4, '#', '', 'F', '0', '1', 'system:dict:remove', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1029, '字典导出', 105, 5, '#', '', 'F', '0', '1', 'system:dict:export', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1030, '参数查询', 106, 1, '#', '', 'F', '0', '1', 'system:config:list', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1031, '参数新增', 106, 2, '#', '', 'F', '0', '1', 'system:config:add', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1032, '参数修改', 106, 3, '#', '', 'F', '0', '1', 'system:config:edit', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1033, '参数删除', 106, 4, '#', '', 'F', '0', '1', 'system:config:remove', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1034, '参数导出', 106, 5, '#', '', 'F', '0', '1', 'system:config:export', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1035, '公告查询', 107, 1, '#', '', 'F', '0', '1', 'system:notice:list', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1036, '公告新增', 107, 2, '#', '', 'F', '0', '1', 'system:notice:add', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1037, '公告修改', 107, 3, '#', '', 'F', '0', '1', 'system:notice:edit', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1038, '公告删除', 107, 4, '#', '', 'F', '0', '1', 'system:notice:remove', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1039, '操作查询', 500, 1, '#', '', 'F', '0', '1', 'monitor:operlog:list', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1040, '操作删除', 500, 2, '#', '', 'F', '0', '1', 'monitor:operlog:remove', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1041, '详细信息', 500, 3, '#', '', 'F', '0', '1', 'monitor:operlog:detail', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1042, '日志导出', 500, 4, '#', '', 'F', '0', '1', 'monitor:operlog:export', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1043, '登录查询', 501, 1, '#', '', 'F', '0', '1', 'monitor:logininfor:list', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1044, '登录删除', 501, 2, '#', '', 'F', '0', '1', 'monitor:logininfor:remove', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1045, '日志导出', 501, 3, '#', '', 'F', '0', '1', 'monitor:logininfor:export', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1046, '账户解锁', 501, 4, '#', '', 'F', '0', '1', 'monitor:logininfor:unlock', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1047, '在线查询', 109, 1, '#', '', 'F', '0', '1', 'monitor:online:list', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1048, '批量强退', 109, 2, '#', '', 'F', '0', '1', 'monitor:online:batchForceLogout', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1049, '单条强退', 109, 3, '#', '', 'F', '0', '1', 'monitor:online:forceLogout', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1050, '任务查询', 110, 1, '#', '', 'F', '0', '1', 'monitor:job:list', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1051, '任务新增', 110, 2, '#', '', 'F', '0', '1', 'monitor:job:add', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1052, '任务修改', 110, 3, '#', '', 'F', '0', '1', 'monitor:job:edit', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1053, '任务删除', 110, 4, '#', '', 'F', '0', '1', 'monitor:job:remove', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1054, '状态修改', 110, 5, '#', '', 'F', '0', '1', 'monitor:job:changeStatus', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1055, '任务详细', 110, 6, '#', '', 'F', '0', '1', 'monitor:job:detail', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1056, '任务导出', 110, 7, '#', '', 'F', '0', '1', 'monitor:job:export', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1057, '生成查询', 115, 1, '#', '', 'F', '0', '1', 'tool:gen:list', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1058, '生成修改', 115, 2, '#', '', 'F', '0', '1', 'tool:gen:edit', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1059, '生成删除', 115, 3, '#', '', 'F', '0', '1', 'tool:gen:remove', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1060, '预览代码', 115, 4, '#', '', 'F', '0', '1', 'tool:gen:preview', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1061, '生成代码', 115, 5, '#', '', 'F', '0', '1', 'tool:gen:code', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1, '系统管理', 0, 1, '#', '', 'M', '0', '1', '', 'fa fa-gear', 'admin', '2026-03-05 22:17:41', '', NULL, '系统管理目录', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (2, '系统监控', 0, 2, '#', '', 'M', '0', '1', '', 'fa fa-video-camera', 'admin', '2026-03-05 22:17:41', '', NULL, '系统监控目录', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (3, '系统工具', 0, 3, '#', '', 'M', '0', '1', '', 'fa fa-bars', 'admin', '2026-03-05 22:17:41', '', NULL, '系统工具目录', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (4, '若依官网', 0, 4, 'http://ruoyi.vip', 'menuBlank', 'C', '0', '1', '', 'fa fa-location-arrow', 'admin', '2026-03-05 22:17:41', '', NULL, '若依官网地址', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (100, '用户管理', 1, 1, '/system/user', '', 'C', '0', '1', 'system:user:view', 'fa fa-user-o', 'admin', '2026-03-05 22:17:41', '', NULL, '用户管理菜单', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (101, '角色管理', 1, 2, '/system/role', '', 'C', '0', '1', 'system:role:view', 'fa fa-user-secret', 'admin', '2026-03-05 22:17:41', '', NULL, '角色管理菜单', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (102, '菜单管理', 1, 3, '/system/menu', '', 'C', '0', '1', 'system:menu:view', 'fa fa-th-list', 'admin', '2026-03-05 22:17:41', '', NULL, '菜单管理菜单', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (103, '部门管理', 1, 4, '/system/dept', '', 'C', '0', '1', 'system:dept:view', 'fa fa-outdent', 'admin', '2026-03-05 22:17:41', '', NULL, '部门管理菜单', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (104, '岗位管理', 1, 5, '/system/post', '', 'C', '0', '1', 'system:post:view', 'fa fa-address-card-o', 'admin', '2026-03-05 22:17:41', '', NULL, '岗位管理菜单', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (105, '字典管理', 1, 6, '/system/dict', '', 'C', '0', '1', 'system:dict:view', 'fa fa-bookmark-o', 'admin', '2026-03-05 22:17:41', '', NULL, '字典管理菜单', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (106, '参数设置', 1, 7, '/system/config', '', 'C', '0', '1', 'system:config:view', 'fa fa-sun-o', 'admin', '2026-03-05 22:17:41', '', NULL, '参数设置菜单', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (107, '通知公告', 1, 8, '/system/notice', '', 'C', '0', '1', 'system:notice:view', 'fa fa-bullhorn', 'admin', '2026-03-05 22:17:41', '', NULL, '通知公告菜单', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (108, '日志管理', 1, 9, '#', '', 'M', '0', '1', '', 'fa fa-pencil-square-o', 'admin', '2026-03-05 22:17:41', '', NULL, '日志管理菜单', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (109, '在线用户', 2, 1, '/monitor/online', '', 'C', '0', '1', 'monitor:online:view', 'fa fa-user-circle', 'admin', '2026-03-05 22:17:41', '', NULL, '在线用户菜单', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (110, '定时任务', 2, 2, '/monitor/job', '', 'C', '0', '1', 'monitor:job:view', 'fa fa-tasks', 'admin', '2026-03-05 22:17:41', '', NULL, '定时任务菜单', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (111, '数据监控', 2, 3, '/monitor/data', '', 'C', '0', '1', 'monitor:data:view', 'fa fa-bug', 'admin', '2026-03-05 22:17:41', '', NULL, '数据监控菜单', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (112, '服务监控', 2, 4, '/monitor/server', '', 'C', '0', '1', 'monitor:server:view', 'fa fa-server', 'admin', '2026-03-05 22:17:41', '', NULL, '服务监控菜单', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (113, '缓存监控', 2, 5, '/monitor/cache', '', 'C', '0', '1', 'monitor:cache:view', 'fa fa-cube', 'admin', '2026-03-05 22:17:41', '', NULL, '缓存监控菜单', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (114, '表单构建', 3, 1, '/tool/build', '', 'C', '0', '1', 'tool:build:view', 'fa fa-wpforms', 'admin', '2026-03-05 22:17:41', '', NULL, '表单构建菜单', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (115, '代码生成', 3, 2, '/tool/gen', '', 'C', '0', '1', 'tool:gen:view', 'fa fa-code', 'admin', '2026-03-05 22:17:41', '', NULL, '代码生成菜单', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (116, '系统接口', 3, 3, '/tool/swagger', '', 'C', '0', '1', 'tool:swagger:view', 'fa fa-gg', 'admin', '2026-03-05 22:17:41', '', NULL, '系统接口菜单', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (500, '操作日志', 108, 1, '/monitor/operlog', '', 'C', '0', '1', 'monitor:operlog:view', 'fa fa-address-book', 'admin', '2026-03-05 22:17:41', '', NULL, '操作日志菜单', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (501, '登录日志', 108, 2, '/monitor/logininfor', '', 'C', '0', '1', 'monitor:logininfor:view', 'fa fa-file-image-o', 'admin', '2026-03-05 22:17:41', '', NULL, '登录日志菜单', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1000, '用户查询', 100, 1, '#', '', 'F', '0', '1', 'system:user:list', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1001, '用户新增', 100, 2, '#', '', 'F', '0', '1', 'system:user:add', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1002, '用户修改', 100, 3, '#', '', 'F', '0', '1', 'system:user:edit', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1003, '用户删除', 100, 4, '#', '', 'F', '0', '1', 'system:user:remove', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1004, '用户导出', 100, 5, '#', '', 'F', '0', '1', 'system:user:export', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1005, '用户导入', 100, 6, '#', '', 'F', '0', '1', 'system:user:import', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1006, '重置密码', 100, 7, '#', '', 'F', '0', '1', 'system:user:resetPwd', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1007, '角色查询', 101, 1, '#', '', 'F', '0', '1', 'system:role:list', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1008, '角色新增', 101, 2, '#', '', 'F', '0', '1', 'system:role:add', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1009, '角色修改', 101, 3, '#', '', 'F', '0', '1', 'system:role:edit', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1010, '角色删除', 101, 4, '#', '', 'F', '0', '1', 'system:role:remove', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1011, '角色导出', 101, 5, '#', '', 'F', '0', '1', 'system:role:export', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1012, '菜单查询', 102, 1, '#', '', 'F', '0', '1', 'system:menu:list', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1013, '菜单新增', 102, 2, '#', '', 'F', '0', '1', 'system:menu:add', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1014, '菜单修改', 102, 3, '#', '', 'F', '0', '1', 'system:menu:edit', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1015, '菜单删除', 102, 4, '#', '', 'F', '0', '1', 'system:menu:remove', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1016, '部门查询', 103, 1, '#', '', 'F', '0', '1', 'system:dept:list', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1017, '部门新增', 103, 2, '#', '', 'F', '0', '1', 'system:dept:add', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1018, '部门修改', 103, 3, '#', '', 'F', '0', '1', 'system:dept:edit', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1019, '部门删除', 103, 4, '#', '', 'F', '0', '1', 'system:dept:remove', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1020, '岗位查询', 104, 1, '#', '', 'F', '0', '1', 'system:post:list', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1021, '岗位新增', 104, 2, '#', '', 'F', '0', '1', 'system:post:add', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1022, '岗位修改', 104, 3, '#', '', 'F', '0', '1', 'system:post:edit', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1023, '岗位删除', 104, 4, '#', '', 'F', '0', '1', 'system:post:remove', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1024, '岗位导出', 104, 5, '#', '', 'F', '0', '1', 'system:post:export', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1025, '字典查询', 105, 1, '#', '', 'F', '0', '1', 'system:dict:list', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1026, '字典新增', 105, 2, '#', '', 'F', '0', '1', 'system:dict:add', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1027, '字典修改', 105, 3, '#', '', 'F', '0', '1', 'system:dict:edit', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1028, '字典删除', 105, 4, '#', '', 'F', '0', '1', 'system:dict:remove', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1029, '字典导出', 105, 5, '#', '', 'F', '0', '1', 'system:dict:export', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1030, '参数查询', 106, 1, '#', '', 'F', '0', '1', 'system:config:list', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1031, '参数新增', 106, 2, '#', '', 'F', '0', '1', 'system:config:add', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1032, '参数修改', 106, 3, '#', '', 'F', '0', '1', 'system:config:edit', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1033, '参数删除', 106, 4, '#', '', 'F', '0', '1', 'system:config:remove', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1034, '参数导出', 106, 5, '#', '', 'F', '0', '1', 'system:config:export', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1035, '公告查询', 107, 1, '#', '', 'F', '0', '1', 'system:notice:list', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1036, '公告新增', 107, 2, '#', '', 'F', '0', '1', 'system:notice:add', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1037, '公告修改', 107, 3, '#', '', 'F', '0', '1', 'system:notice:edit', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1038, '公告删除', 107, 4, '#', '', 'F', '0', '1', 'system:notice:remove', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1039, '操作查询', 500, 1, '#', '', 'F', '0', '1', 'monitor:operlog:list', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1040, '操作删除', 500, 2, '#', '', 'F', '0', '1', 'monitor:operlog:remove', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1041, '详细信息', 500, 3, '#', '', 'F', '0', '1', 'monitor:operlog:detail', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1042, '日志导出', 500, 4, '#', '', 'F', '0', '1', 'monitor:operlog:export', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1043, '登录查询', 501, 1, '#', '', 'F', '0', '1', 'monitor:logininfor:list', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1044, '登录删除', 501, 2, '#', '', 'F', '0', '1', 'monitor:logininfor:remove', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1045, '日志导出', 501, 3, '#', '', 'F', '0', '1', 'monitor:logininfor:export', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1046, '账户解锁', 501, 4, '#', '', 'F', '0', '1', 'monitor:logininfor:unlock', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1047, '在线查询', 109, 1, '#', '', 'F', '0', '1', 'monitor:online:list', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1048, '批量强退', 109, 2, '#', '', 'F', '0', '1', 'monitor:online:batchForceLogout', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1049, '单条强退', 109, 3, '#', '', 'F', '0', '1', 'monitor:online:forceLogout', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1050, '任务查询', 110, 1, '#', '', 'F', '0', '1', 'monitor:job:list', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1051, '任务新增', 110, 2, '#', '', 'F', '0', '1', 'monitor:job:add', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1052, '任务修改', 110, 3, '#', '', 'F', '0', '1', 'monitor:job:edit', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1053, '任务删除', 110, 4, '#', '', 'F', '0', '1', 'monitor:job:remove', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1054, '状态修改', 110, 5, '#', '', 'F', '0', '1', 'monitor:job:changeStatus', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1055, '任务详细', 110, 6, '#', '', 'F', '0', '1', 'monitor:job:detail', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1056, '任务导出', 110, 7, '#', '', 'F', '0', '1', 'monitor:job:export', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1057, '生成查询', 115, 1, '#', '', 'F', '0', '1', 'tool:gen:list', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1058, '生成修改', 115, 2, '#', '', 'F', '0', '1', 'tool:gen:edit', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1059, '生成删除', 115, 3, '#', '', 'F', '0', '1', 'tool:gen:remove', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1060, '预览代码', 115, 4, '#', '', 'F', '0', '1', 'tool:gen:preview', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_menu` VALUES (1061, '生成代码', 115, 5, '#', '', 'F', '0', '1', 'tool:gen:code', '#', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
 
 -- ----------------------------
 -- Table structure for sys_notice
@@ -953,6 +971,7 @@ CREATE TABLE `sys_oper_log`  (
   `error_msg` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT '' COMMENT '错误消息',
   `oper_time` datetime(0) NULL DEFAULT NULL COMMENT '操作时间',
   `cost_time` bigint(0) NULL DEFAULT 0 COMMENT '消耗时间',
+  `platform_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '钻井平台编号',
   PRIMARY KEY (`oper_id`) USING BTREE,
   INDEX `idx_sys_oper_log_bt`(`business_type`) USING BTREE,
   INDEX `idx_sys_oper_log_s`(`status`) USING BTREE,
@@ -962,146 +981,149 @@ CREATE TABLE `sys_oper_log`  (
 -- ----------------------------
 -- Records of sys_oper_log
 -- ----------------------------
-INSERT INTO `sys_oper_log` VALUES (100, '代码生成', 8, 'com.ruoyi.generator.controller.GenController.genCode()', 'GET', 1, 'admin', '研发部门', '/cosl/tool/gen/genCode/person', '127.0.0.1', '内网IP', '\"person\" ', '{\"msg\":\"【系统预设】不允许生成文件覆盖到本地\",\"code\":500}', 0, NULL, '2026-03-06 22:02:41', 48);
-INSERT INTO `sys_oper_log` VALUES (101, '代码生成', 8, 'com.ruoyi.generator.controller.GenController.genCode()', 'GET', 1, 'admin', '研发部门', '/cosl/tool/gen/genCode/person', '127.0.0.1', '内网IP', '\"person\" ', NULL, 1, 'java.lang.NullPointerException\r\n	at com.ruoyi.generator.service.impl.GenTableServiceImpl.setSubTable(GenTableServiceImpl.java:487)\r\n	at com.ruoyi.generator.service.impl.GenTableServiceImpl.generatorCode(GenTableServiceImpl.java:261)\r\n	at com.ruoyi.generator.service.impl.GenTableServiceImpl$$FastClassBySpringCGLIB$$49da1c7c.invoke(<generated>)\r\n	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)\r\n	at org.springframework.aop.framework.CglibAopProxy.invokeMethod(CglibAopProxy.java:386)\r\n	at org.springframework.aop.framework.CglibAopProxy.access$000(CglibAopProxy.java:85)\r\n	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:703)\r\n	at com.ruoyi.generator.service.impl.GenTableServiceImpl$$EnhancerBySpringCGLIB$$ed45ea3b.generatorCode(<generated>)\r\n	at com.ruoyi.generator.controller.GenController.genCode(GenController.java:267)\r\n	at com.ruoyi.generator.controller.GenController$$FastClassBySpringCGLIB$$cf110d34.invoke(<generated>)\r\n	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:792)\r\n	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:762)\r\n	at org.springframework.aop.framework.adapter.MethodBeforeAdviceInterceptor.invoke(MethodBeforeAdviceInterceptor.java:58)\r\n	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:175)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:762)\r\n	at org.springframework.aop.aspectj.AspectJAfterThrowingAdvice.invoke(AspectJAfterThrowingAdvice.java:64)\r\n	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:175)\r\n	at org.spri', '2026-03-06 22:06:26', 59);
-INSERT INTO `sys_oper_log` VALUES (102, '用户管理', 1, 'com.ruoyi.web.controller.system.SysAccountController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/account/add', '127.0.0.1', '内网IP', '{\"userName\":[\"测试\"],\"phonenumber\":[\"13666663333\"],\"loginName\":[\"test\"],\"roleIds\":[\"2\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-07 11:04:14', 152);
-INSERT INTO `sys_oper_log` VALUES (103, '用户管理', 1, 'com.ruoyi.web.controller.system.SysAccountController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/account/add', '127.0.0.1', '内网IP', '{\"userName\":[\"凯航\"],\"phonenumber\":[\"13899995555\"],\"loginName\":[\"kaihang\"],\"roleIds\":[\"2\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-07 11:08:19', 31);
-INSERT INTO `sys_oper_log` VALUES (104, '用户管理', 1, 'com.ruoyi.web.controller.system.SysAccountController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/account/add', '127.0.0.1', '内网IP', '{\"admin\":false,\"createBy\":\"admin\",\"dept\":{\"params\":{}},\"loginName\":\"wukong\",\"params\":{},\"phonenumber\":\"13788888888\",\"pwdUpdateDate\":1772853178416,\"roleIds\":[2],\"salt\":\"63d176\",\"userId\":102,\"userName\":\"孙悟空\"} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-07 11:12:58', 8036);
-INSERT INTO `sys_oper_log` VALUES (105, '用户管理', 2, 'com.ruoyi.web.controller.system.SysAccountController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/account/update', '127.0.0.1', '内网IP', '{\"admin\":false,\"dept\":{\"params\":{}},\"loginName\":\"wuse\",\"params\":{},\"phonenumber\":\"13712347896\",\"roleIds\":[2],\"updateBy\":\"admin\",\"userId\":102,\"userName\":\"李悟空\"} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-07 12:02:15', 177);
-INSERT INTO `sys_oper_log` VALUES (106, '用户管理', 1, 'com.ruoyi.web.controller.system.SysAccountController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/account/add', '127.0.0.1', '内网IP', '{\"admin\":false,\"dept\":{\"params\":{}},\"loginName\":\"wukong\",\"params\":{},\"phonenumber\":\"13788888888\",\"roleIds\":[2],\"userName\":\"孙悟空\"} ', '{\"msg\":\"新增用户\'wukong\'失败，登录账号已存在\",\"code\":500}', 0, NULL, '2026-03-07 12:04:56', 8);
-INSERT INTO `sys_oper_log` VALUES (107, '用户管理', 1, 'com.ruoyi.web.controller.system.SysAccountController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/account/add', '127.0.0.1', '内网IP', '{\"admin\":false,\"dept\":{\"params\":{}},\"loginName\":\"wukong\",\"params\":{},\"phonenumber\":\"13788888888\",\"roleIds\":[2],\"userName\":\"让人悟空\"} ', '{\"msg\":\"新增用户\'wukong\'失败，登录账号已存在\",\"code\":500}', 0, NULL, '2026-03-07 12:05:03', 8);
-INSERT INTO `sys_oper_log` VALUES (108, '用户管理', 1, 'com.ruoyi.web.controller.system.SysAccountController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/account/add', '127.0.0.1', '内网IP', '{\"admin\":false,\"createBy\":\"admin\",\"dept\":{\"params\":{}},\"loginName\":\"wykong\",\"params\":{},\"phonenumber\":\"13788888888\",\"pwdUpdateDate\":1772856310275,\"roleIds\":[2],\"salt\":\"bf560e\",\"userId\":103,\"userName\":\"让人悟空\"} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-07 12:05:10', 64);
-INSERT INTO `sys_oper_log` VALUES (109, '用户管理', 1, 'com.ruoyi.web.controller.system.SysAccountController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/account/add', '127.0.0.1', '内网IP', '{\"admin\":false,\"dept\":{\"params\":{}},\"loginName\":\"fdgs\",\"params\":{},\"phonenumber\":\"13788888888\",\"roleIds\":[2],\"userName\":\"风格\"} ', '{\"msg\":\"新增用户\'fdgs\'失败，手机号码已存在\",\"code\":500}', 0, NULL, '2026-03-07 12:05:31', 15);
-INSERT INTO `sys_oper_log` VALUES (110, '用户管理', 1, 'com.ruoyi.web.controller.system.SysAccountController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/account/add', '127.0.0.1', '内网IP', '{\"admin\":false,\"createBy\":\"admin\",\"dept\":{\"params\":{}},\"loginName\":\"fdgs\",\"params\":{},\"phonenumber\":\"13767888888\",\"pwdUpdateDate\":1772856337307,\"roleIds\":[2],\"salt\":\"7839a5\",\"userId\":104,\"userName\":\"风格\"} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-07 12:05:37', 43);
-INSERT INTO `sys_oper_log` VALUES (111, '用户管理', 3, 'com.ruoyi.web.controller.system.SysAccountController.remove()', 'POST', 1, 'admin', '研发部门', '/cosl/api/account/delete', '127.0.0.1', '内网IP', '{\"ids\":[\"103,104\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-07 12:15:03', 96);
-INSERT INTO `sys_oper_log` VALUES (112, '用户管理', 2, 'com.ruoyi.web.controller.system.SysAccountController.changeStatus()', 'POST', 1, 'admin', '研发部门', '/cosl/api/account/changeStatus', '127.0.0.1', '内网IP', '{\"admin\":false,\"dept\":{\"params\":{}},\"params\":{}} ', '{\"msg\":\"操作失败\",\"code\":500}', 0, NULL, '2026-03-07 12:23:35', 41);
-INSERT INTO `sys_oper_log` VALUES (113, '用户管理', 2, 'com.ruoyi.web.controller.system.SysAccountController.changeStatus()', 'POST', 1, 'admin', '研发部门', '/cosl/api/account/changeStatus', '127.0.0.1', '内网IP', '{\"admin\":false,\"dept\":{\"params\":{}},\"params\":{},\"status\":\"1\",\"userId\":102} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-07 12:24:12', 89);
-INSERT INTO `sys_oper_log` VALUES (114, '重置密码', 2, 'com.ruoyi.web.controller.system.SysAccountController.resetPwdSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/account/resetPwd', '127.0.0.1', '内网IP', '{\"admin\":false,\"dept\":{\"params\":{}},\"params\":{},\"salt\":\"fc7bb9\"} ', '{\"msg\":\"操作失败\",\"code\":500}', 0, NULL, '2026-03-07 12:28:01', 7);
-INSERT INTO `sys_oper_log` VALUES (115, '重置密码', 2, 'com.ruoyi.web.controller.system.SysAccountController.resetPwdSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/account/resetPwd', '127.0.0.1', '内网IP', '{\"admin\":false,\"dept\":{\"params\":{}},\"params\":{},\"salt\":\"aa7dca\"} ', '{\"msg\":\"操作失败\",\"code\":500}', 0, NULL, '2026-03-07 12:28:36', 9926);
-INSERT INTO `sys_oper_log` VALUES (116, '重置密码', 2, 'com.ruoyi.web.controller.system.SysAccountController.resetPwdSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/account/resetPwd', '127.0.0.1', '内网IP', '{\"admin\":false,\"dept\":{\"params\":{}},\"loginName\":\"wukong\",\"params\":{},\"salt\":\"e0b4d5\",\"userId\":102} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-07 12:29:04', 3733);
-INSERT INTO `sys_oper_log` VALUES (117, '修改个人密码', 2, 'com.ruoyi.web.controller.system.SysAccountController.changePassword()', 'POST', 1, 'admin', '研发部门', '/cosl/api/account/change-password', '127.0.0.1', '内网IP', '{\"admin\":false,\"dept\":{\"params\":{}},\"loginName\":\"wukong\",\"params\":{},\"salt\":\"6f6f06\",\"userId\":102} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-07 12:46:52', 93);
-INSERT INTO `sys_oper_log` VALUES (118, '用户管理', 5, 'com.ruoyi.web.controller.system.SysAccountController.export()', 'POST', 1, 'admin', '研发部门', '/cosl/api/account/export', '127.0.0.1', '内网IP', '{\"admin\":false,\"dept\":{\"params\":{}},\"params\":{\"dataScope\":\"\"}} ', '{\"msg\":\"02fe90d3-f784-4cbb-a5a9-c1aa535cd30f_用户数据.xlsx\",\"code\":0}', 0, NULL, '2026-03-07 12:48:16', 772);
-INSERT INTO `sys_oper_log` VALUES (119, '用户管理', 5, 'com.ruoyi.web.controller.system.SysAccountController.export()', 'POST', 1, 'admin', '研发部门', '/cosl/api/account/export', '127.0.0.1', '内网IP', '{\"admin\":false,\"dept\":{\"params\":{}},\"params\":{\"dataScope\":\"\"}} ', '{\"msg\":\"ee82fc05-c3c1-47f6-982a-85354585041c_用户数据.xlsx\",\"code\":0}', 0, NULL, '2026-03-07 12:54:32', 323638);
-INSERT INTO `sys_oper_log` VALUES (120, '人员管理', 1, 'com.ruoyi.web.controller.system.PersonController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/person/add', '127.0.0.1', '内网IP', '{\"bedId\":202,\"blacklistFlag\":0,\"certificateExpireDate\":1767110400000,\"company\":\"XX海洋工程有限公司\",\"createTime\":1685586600000,\"deleted\":0,\"idCard\":\"110101199001011234\",\"lifeboatId\":5,\"mtsCardNo\":\"MTS123456789\",\"name\":\"张三\",\"onboardDate\":1685577600000,\"position\":\"轮机长\",\"roomId\":101,\"status\":\"ONBOARD\",\"updateTime\":1685586600000} ', NULL, 1, 'nested exception is org.apache.ibatis.reflection.ReflectionException: There is no getter for property named \'createBy\' in \'class com.ruoyi.common.core.domain.entity.Person\'', '2026-03-07 13:21:14', 103);
-INSERT INTO `sys_oper_log` VALUES (121, '人员管理', 1, 'com.ruoyi.web.controller.system.PersonController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/person/add', '127.0.0.1', '内网IP', '{\"bedId\":202,\"blacklistFlag\":0,\"certificateExpireDate\":1767110400000,\"company\":\"XX海洋工程有限公司\",\"createTime\":1685586600000,\"deleted\":0,\"id\":1,\"idCard\":\"110101199001011234\",\"lifeboatId\":5,\"mtsCardNo\":\"MTS123456789\",\"name\":\"张三\",\"onboardDate\":1685577600000,\"position\":\"轮机长\",\"roomId\":101,\"status\":\"ONBOARD\",\"updateTime\":1685586600000} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-07 13:22:28', 102);
-INSERT INTO `sys_oper_log` VALUES (122, '人员管理', 2, 'com.ruoyi.web.controller.system.PersonController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/person/edit', '127.0.0.1', '内网IP', '{} ', '{\"msg\":\"操作失败\",\"code\":500}', 0, NULL, '2026-03-07 13:43:59', 95);
-INSERT INTO `sys_oper_log` VALUES (123, '人员管理', 2, 'com.ruoyi.web.controller.system.PersonController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/person/edit', '127.0.0.1', '内网IP', '{\"bedId\":202,\"blacklistFlag\":0,\"certificateExpireDate\":1767110400000,\"company\":\"XX海洋工程有限公司\",\"createTime\":1685586600000,\"deleted\":0,\"idCard\":\"110101199001011234\",\"lifeboatId\":5,\"mtsCardNo\":\"MTS123456789\",\"name\":\"张yu\",\"onboardDate\":1685577600000,\"position\":\"轮机长\",\"roomId\":101,\"status\":\"ONBOARD\",\"updateTime\":1685586600000} ', '{\"msg\":\"修改人员\'张yu\'失败，MTS 卡号已存在\",\"code\":500}', 0, NULL, '2026-03-07 13:45:00', 78);
-INSERT INTO `sys_oper_log` VALUES (124, '人员管理', 2, 'com.ruoyi.web.controller.system.PersonController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/person/edit', '127.0.0.1', '内网IP', '{\"bedId\":202,\"blacklistFlag\":0,\"certificateExpireDate\":1767110400000,\"company\":\"XX海洋工程有限公司\",\"createTime\":1685586600000,\"deleted\":0,\"idCard\":\"110101179001011234\",\"lifeboatId\":5,\"mtsCardNo\":\"MTS1234567894\",\"name\":\"张yu\",\"onboardDate\":1685577600000,\"position\":\"轮机长\",\"roomId\":101,\"status\":\"ONBOARD\",\"updateTime\":1685586600000} ', '{\"msg\":\"操作失败\",\"code\":500}', 0, NULL, '2026-03-07 13:45:12', 19);
-INSERT INTO `sys_oper_log` VALUES (125, '人员管理', 2, 'com.ruoyi.web.controller.system.PersonController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/person/edit', '127.0.0.1', '内网IP', '{\"bedId\":202,\"blacklistFlag\":0,\"certificateExpireDate\":1767110400000,\"company\":\"XX海洋工程有限公司\",\"createTime\":1685586600000,\"deleted\":0,\"id\":1,\"idCard\":\"110101179001011234\",\"lifeboatId\":5,\"mtsCardNo\":\"MTS1234567894\",\"name\":\"张yu\",\"onboardDate\":1685577600000,\"position\":\"轮机长\",\"roomId\":101,\"status\":\"ONBOARD\",\"updateTime\":1685586600000} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-07 13:45:50', 35);
-INSERT INTO `sys_oper_log` VALUES (126, '人员管理', 1, 'com.ruoyi.web.controller.system.PersonController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/person/add', '127.0.0.1', '内网IP', '{\"bedId\":202,\"blacklistFlag\":0,\"certificateExpireDate\":1767110400000,\"company\":\"XX海洋工程有限公司\",\"createTime\":1685586600000,\"deleted\":0,\"id\":2,\"idCard\":\"110105199001011234\",\"lifeboatId\":5,\"mtsCardNo\":\"MTS1453456789\",\"name\":\"电饭锅\",\"onboardDate\":1685577600000,\"position\":\"轮机长\",\"roomId\":101,\"status\":\"ONBOARD\",\"updateTime\":1685586600000} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-07 13:53:16', 108);
-INSERT INTO `sys_oper_log` VALUES (127, '人员管理', 3, 'com.ruoyi.web.controller.system.PersonController.remove()', 'POST', 1, 'admin', '研发部门', '/cosl/api/person/remove', '127.0.0.1', '内网IP', '{\"ids\":[\"2\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-07 13:54:33', 16);
-INSERT INTO `sys_oper_log` VALUES (128, '房间配置管理', 1, 'com.ruoyi.web.controller.system.RoomConfigController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomConfig/add', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"floor\":\"1\",\"params\":{}} ', NULL, 1, '\r\n### Error updating database.  Cause: java.sql.SQLSyntaxErrorException: Unknown column \'create_by\' in \'field list\'\r\n### The error may exist in file [D:\\emar\\cosl\\cosl-system\\target\\classes\\mapper\\system\\RoomConfigMapper.xml]\r\n### The error may involve com.ruoyi.system.mapper.RoomConfigMapper.insertRoomConfig-Inline\r\n### The error occurred while setting parameters\r\n### SQL: insert into room_config          ( floor,                          create_by,             create_time,                          update_time )           values ( ?,                          ?,             sysdate(),                          sysdate() )\r\n### Cause: java.sql.SQLSyntaxErrorException: Unknown column \'create_by\' in \'field list\'\n; bad SQL grammar []; nested exception is java.sql.SQLSyntaxErrorException: Unknown column \'create_by\' in \'field list\'', '2026-03-07 14:39:17', 178);
-INSERT INTO `sys_oper_log` VALUES (129, '房间配置管理', 1, 'com.ruoyi.web.controller.system.RoomConfigController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomConfig/add', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"floor\":\"1\",\"id\":1,\"params\":{}} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-07 14:43:10', 90);
-INSERT INTO `sys_oper_log` VALUES (130, '房间配置管理', 1, 'com.ruoyi.web.controller.system.RoomConfigController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomConfig/add', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"floor\":\"1\",\"id\":2,\"params\":{},\"roomNo\":\"A101\",\"totalBeds\":4} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-07 14:43:39', 27);
-INSERT INTO `sys_oper_log` VALUES (131, '房间配置管理', 1, 'com.ruoyi.web.controller.system.RoomConfigController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomConfig/add', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"floor\":\"1\",\"id\":3,\"params\":{},\"roomNo\":\"A102\",\"totalBeds\":4} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-07 14:43:53', 26);
-INSERT INTO `sys_oper_log` VALUES (132, '房间配置管理', 1, 'com.ruoyi.web.controller.system.RoomConfigController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomConfig/add', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"floor\":\"3\",\"id\":4,\"params\":{},\"roomNo\":\"A302\",\"totalBeds\":4} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-07 14:44:00', 29);
-INSERT INTO `sys_oper_log` VALUES (133, '房间配置管理', 1, 'com.ruoyi.web.controller.system.RoomConfigController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomConfig/add', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"floor\":\"2\",\"id\":5,\"params\":{},\"roomNo\":\"A202\",\"totalBeds\":4} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-07 14:44:06', 27);
-INSERT INTO `sys_oper_log` VALUES (134, '房间配置管理', 2, 'com.ruoyi.web.controller.system.RoomConfigController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomConfig/edit', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"id\":1,\"params\":{},\"roomNo\":\"A101\",\"status\":\"\"} ', '{\"msg\":\"修改房间\'A101\'失败，房间号已存在\",\"code\":500}', 0, NULL, '2026-03-07 14:58:38', 157);
-INSERT INTO `sys_oper_log` VALUES (135, '房间配置管理', 2, 'com.ruoyi.web.controller.system.RoomConfigController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomConfig/edit', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"id\":1,\"params\":{},\"status\":\"\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作失败\",\"code\":500}', 0, NULL, '2026-03-07 14:58:48', 12);
-INSERT INTO `sys_oper_log` VALUES (136, '房间配置管理', 2, 'com.ruoyi.web.controller.system.RoomConfigController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomConfig/edit', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"id\":1,\"params\":{},\"status\":\"空闲\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作失败\",\"code\":500}', 0, NULL, '2026-03-07 14:59:17', 11);
-INSERT INTO `sys_oper_log` VALUES (137, '房间配置管理', 2, 'com.ruoyi.web.controller.system.RoomConfigController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomConfig/edit', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"id\":2,\"params\":{},\"status\":\"空闲\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-07 15:00:16', 46);
-INSERT INTO `sys_oper_log` VALUES (138, '房间配置管理', 2, 'com.ruoyi.web.controller.system.RoomConfigController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomConfig/edit', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"id\":2,\"params\":{},\"status\":\"空闲\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-07 15:01:14', 11);
-INSERT INTO `sys_oper_log` VALUES (139, '房间配置管理', 3, 'com.ruoyi.web.controller.system.RoomConfigController.remove()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomConfig/remove', '127.0.0.1', '内网IP', '{\"ids\":[\"4,5\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-09 19:33:00', 8934);
-INSERT INTO `sys_oper_log` VALUES (140, '房间床位管理', 1, 'com.ruoyi.web.controller.system.RoomBedController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomBed/add', '127.0.0.1', '内网IP', '{\"params\":{},\"status\":\"FREE\"} ', NULL, 1, 'nested exception is org.apache.ibatis.binding.BindingException: Parameter \'roomId\' not found. Available parameters are [arg1, arg0, param1, param2]', '2026-03-09 21:12:05', 71);
-INSERT INTO `sys_oper_log` VALUES (141, '房间床位管理', 1, 'com.ruoyi.web.controller.system.RoomBedController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomBed/add', '127.0.0.1', '内网IP', '{\"bedNo\":\"A\",\"params\":{},\"roomId\":2,\"status\":\"FREE\"} ', NULL, 1, 'nested exception is org.apache.ibatis.binding.BindingException: Parameter \'roomId\' not found. Available parameters are [arg1, arg0, param1, param2]', '2026-03-09 21:13:14', 2);
-INSERT INTO `sys_oper_log` VALUES (142, '房间床位管理', 1, 'com.ruoyi.web.controller.system.RoomBedController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomBed/add', '127.0.0.1', '内网IP', '{\"bedNo\":\"A\",\"params\":{},\"roomId\":2,\"status\":\"FREE\"} ', NULL, 1, 'nested exception is org.apache.ibatis.binding.BindingException: Parameter \'roomId\' not found. Available parameters are [arg1, arg0, param1, param2]', '2026-03-09 21:14:39', 1);
-INSERT INTO `sys_oper_log` VALUES (143, '房间床位管理', 1, 'com.ruoyi.web.controller.system.RoomBedController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomBed/add', '127.0.0.1', '内网IP', '{\"bedNo\":\"A\",\"params\":{},\"roomId\":2,\"status\":\"FREE\"} ', NULL, 1, 'nested exception is org.apache.ibatis.binding.BindingException: Parameter \'roomId\' not found. Available parameters are [arg1, arg0, param1, param2]', '2026-03-09 21:15:11', 14944);
-INSERT INTO `sys_oper_log` VALUES (144, '房间床位管理', 1, 'com.ruoyi.web.controller.system.RoomBedController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomBed/add', '127.0.0.1', '内网IP', '{\"bedNo\":\"A\",\"params\":{},\"roomId\":2,\"status\":\"FREE\"} ', NULL, 1, 'nested exception is org.apache.ibatis.binding.BindingException: Parameter \'roomId\' not found. Available parameters are [arg1, arg0, param1, param2]', '2026-03-09 21:15:44', 21129);
-INSERT INTO `sys_oper_log` VALUES (145, '房间床位管理', 1, 'com.ruoyi.web.controller.system.RoomBedController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomBed/add', '127.0.0.1', '内网IP', '{\"bedNo\":\"A\",\"params\":{},\"roomId\":2,\"status\":\"FREE\"} ', NULL, 1, 'nested exception is org.apache.ibatis.binding.BindingException: Parameter \'roomId\' not found. Available parameters are [arg1, arg0, param1, param2]', '2026-03-09 21:19:27', 78);
-INSERT INTO `sys_oper_log` VALUES (146, '房间床位管理', 1, 'com.ruoyi.web.controller.system.RoomBedController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomBed/add', '127.0.0.1', '内网IP', '{\"bedNo\":\"A\",\"params\":{},\"roomId\":2,\"status\":\"FREE\"} ', NULL, 1, 'nested exception is org.apache.ibatis.binding.BindingException: Parameter \'roomId\' not found. Available parameters are [arg1, arg0, param1, param2]', '2026-03-09 21:21:28', 101664);
-INSERT INTO `sys_oper_log` VALUES (147, '房间床位管理', 1, 'com.ruoyi.web.controller.system.RoomBedController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomBed/add', '127.0.0.1', '内网IP', '{\"bedNo\":\"A\",\"params\":{},\"roomId\":2,\"status\":\"FREE\"} ', NULL, 1, 'nested exception is org.apache.ibatis.binding.BindingException: Parameter \'roomId\' not found. Available parameters are [arg1, arg0, param1, param2]', '2026-03-09 21:22:48', 4035);
-INSERT INTO `sys_oper_log` VALUES (148, '房间床位管理', 1, 'com.ruoyi.web.controller.system.RoomBedController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomBed/add', '127.0.0.1', '内网IP', '{\"bedNo\":\"A\",\"createBy\":\"admin\",\"id\":1,\"params\":{},\"roomId\":2,\"status\":\"FREE\"} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-09 21:24:48', 4894);
-INSERT INTO `sys_oper_log` VALUES (149, '房间床位管理', 2, 'com.ruoyi.web.controller.system.RoomBedController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomBed/edit', '127.0.0.1', '内网IP', '{\"bedNo\":\"B\",\"params\":{},\"roomId\":2,\"status\":\"FREE\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作失败\",\"code\":500}', 0, NULL, '2026-03-09 21:26:07', 10);
-INSERT INTO `sys_oper_log` VALUES (150, '房间床位管理', 2, 'com.ruoyi.web.controller.system.RoomBedController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomBed/edit', '127.0.0.1', '内网IP', '{\"bedNo\":\"B\",\"id\":1,\"params\":{},\"roomId\":2,\"status\":\"FREE\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-09 21:26:41', 26);
-INSERT INTO `sys_oper_log` VALUES (151, '房间床位管理', 1, 'com.ruoyi.web.controller.system.RoomBedController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomBed/add', '127.0.0.1', '内网IP', '{\"bedNo\":\"B\",\"id\":1,\"params\":{},\"roomId\":2,\"status\":\"FREE\"} ', '{\"msg\":\"新增床位失败，该房间已存在相同床位号\",\"code\":500}', 0, NULL, '2026-03-09 21:27:20', 7);
-INSERT INTO `sys_oper_log` VALUES (152, '房间床位管理', 2, 'com.ruoyi.web.controller.system.RoomBedController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomBed/edit', '127.0.0.1', '内网IP', '{\"bedNo\":\"B\",\"id\":1,\"params\":{},\"roomId\":2,\"status\":\"FREE\"} ', '{\"msg\":\"修改床位失败，该房间已存在相同床位号\",\"code\":500}', 0, NULL, '2026-03-09 21:29:07', 13);
-INSERT INTO `sys_oper_log` VALUES (153, '床位状态管理', 2, 'com.ruoyi.web.controller.system.RoomBedController.batchChangeStatus()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomBed/batchChangeStatus', '127.0.0.1', '内网IP', '{\"ids\":[\"1,2\"],\"status\":[\"LOCKED\"]}', '{\"msg\":\"更新成功\",\"code\":0}', 0, NULL, '2026-03-09 21:42:47', 71);
-INSERT INTO `sys_oper_log` VALUES (154, '房间配置管理', 1, 'com.ruoyi.web.controller.system.RoomConfigController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/room/add', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"floor\":\"2\",\"id\":6,\"params\":{},\"roomNo\":\"A202\",\"totalBeds\":4} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-09 22:07:24', 93);
-INSERT INTO `sys_oper_log` VALUES (155, '房间配置管理', 2, 'com.ruoyi.web.controller.system.RoomConfigController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/room/edit', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"id\":2,\"params\":{},\"status\":\"空闲\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-09 22:08:14', 12);
-INSERT INTO `sys_oper_log` VALUES (156, '房间配置管理', 3, 'com.ruoyi.web.controller.system.RoomConfigController.remove()', 'POST', 1, 'admin', '研发部门', '/cosl/api/room/remove', '127.0.0.1', '内网IP', '{\"ids\":[\"4,5\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-09 22:08:53', 12);
-INSERT INTO `sys_oper_log` VALUES (157, '床位状态管理', 2, 'com.ruoyi.web.controller.system.RoomBedController.batchChangeStatus()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomBed/batchChangeStatus', '127.0.0.1', '内网IP', '{\"ids\":[\"1,2\"],\"status\":[\"LOCKED\"]}', '{\"msg\":\"更新成功\",\"code\":0}', 0, NULL, '2026-03-09 22:10:00', 13);
-INSERT INTO `sys_oper_log` VALUES (158, '房间床位管理', 2, 'com.ruoyi.web.controller.system.RoomBedController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomBed/edit', '127.0.0.1', '内网IP', '{\"ids\":[\"1,2\"],\"status\":[\"LOCKED\"]}', '{\"msg\":\"修改床位失败，该房间已存在相同床位号\",\"code\":500}', 0, NULL, '2026-03-09 22:10:24', 9);
-INSERT INTO `sys_oper_log` VALUES (159, '房间床位管理', 1, 'com.ruoyi.web.controller.system.RoomBedController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomBed/add', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"id\":2,\"params\":{},\"remark\":\"Entrance\",\"status\":\"online\"} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-10 22:33:23', 119);
-INSERT INTO `sys_oper_log` VALUES (160, '摄像头管理', 1, 'com.ruoyi.web.controller.system.CameraController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/add', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"floor\":\"1F\",\"ip\":\"192.168.1.10\",\"name\":\"Camera 1\",\"params\":{},\"remark\":\"Entrance\",\"status\":\"online\"} ', NULL, 1, '\r\n### Error updating database.  Cause: java.sql.SQLSyntaxErrorException: Unknown column \'create_by\' in \'field list\'\r\n### The error may exist in file [D:\\emar\\cosl\\cosl-system\\target\\classes\\mapper\\system\\CameraMapper.xml]\r\n### The error may involve com.ruoyi.system.mapper.CameraMapper.insertCamera-Inline\r\n### The error occurred while setting parameters\r\n### SQL: insert into camera          ( name,             ip,             floor,             status,                                       create_by,             create_time,                          update_time,             remark )           values ( ?,             ?,             ?,             ?,                                       ?,             sysdate(),                          sysdate(),             ? )\r\n### Cause: java.sql.SQLSyntaxErrorException: Unknown column \'create_by\' in \'field list\'\n; bad SQL grammar []; nested exception is java.sql.SQLSyntaxErrorException: Unknown column \'create_by\' in \'field list\'', '2026-03-10 22:34:48', 92);
-INSERT INTO `sys_oper_log` VALUES (161, '摄像头管理', 1, 'com.ruoyi.web.controller.system.CameraController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/add', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"floor\":\"1F\",\"id\":1,\"ip\":\"192.168.1.10\",\"name\":\"Camera 1\",\"params\":{},\"remark\":\"Entrance\",\"status\":\"online\"} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-10 22:36:38', 131);
-INSERT INTO `sys_oper_log` VALUES (162, '摄像头管理', 1, 'com.ruoyi.web.controller.system.CameraController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/add', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"floor\":\"1F\",\"id\":2,\"ip\":\"192.168.1.11\",\"name\":\"Camera 2\",\"params\":{},\"remark\":\"Entrance\",\"status\":\"online\"} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-10 22:37:11', 20);
-INSERT INTO `sys_oper_log` VALUES (163, '摄像头管理', 1, 'com.ruoyi.web.controller.system.CameraController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/add', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"ip\":\"192.168.1.11\",\"name\":\"Camera 2\",\"params\":{},\"remark\":\"Entrance\",\"status\":\"online\"} ', '{\"msg\":\"新增摄像头\'Camera 2\'失败，IP 地址已存在\",\"code\":500}', 0, NULL, '2026-03-10 22:37:53', 8);
-INSERT INTO `sys_oper_log` VALUES (164, '摄像头管理', 1, 'com.ruoyi.web.controller.system.CameraController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/add', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"floor\":\"1\",\"id\":3,\"ip\":\"192.168.1.12\",\"name\":\"Camera 3\",\"params\":{},\"remark\":\"Entrance\",\"status\":\"online\"} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-10 22:39:53', 109660);
-INSERT INTO `sys_oper_log` VALUES (165, '摄像头管理', 1, 'com.ruoyi.web.controller.system.CameraController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/add', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"floor\":\"1\",\"ip\":\"192.168.1.12\",\"name\":\"Camera 3\",\"params\":{},\"remark\":\"Entrance\",\"status\":\"online\"} ', NULL, 1, '\r\n### Error updating database.  Cause: java.sql.SQLIntegrityConstraintViolationException: Duplicate entry \'192.168.1.12\' for key \'camera.uk_ip\'\r\n### The error may exist in file [D:\\emar\\cosl\\cosl-system\\target\\classes\\mapper\\system\\CameraMapper.xml]\r\n### The error may involve com.ruoyi.system.mapper.CameraMapper.insertCamera-Inline\r\n### The error occurred while setting parameters\r\n### SQL: insert into camera          ( name,             ip,             floor,             status,                                        remark )           values ( ?,             ?,             ?,             ?,                                        ? )\r\n### Cause: java.sql.SQLIntegrityConstraintViolationException: Duplicate entry \'192.168.1.12\' for key \'camera.uk_ip\'\n; Duplicate entry \'192.168.1.12\' for key \'camera.uk_ip\'; nested exception is java.sql.SQLIntegrityConstraintViolationException: Duplicate entry \'192.168.1.12\' for key \'camera.uk_ip\'', '2026-03-10 22:39:53', 12639);
-INSERT INTO `sys_oper_log` VALUES (166, '摄像头管理', 1, 'com.ruoyi.web.controller.system.CameraController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/add', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"ip\":\"192.168.1.12\",\"name\":\"Camera 3\",\"params\":{},\"remark\":\"Entrance\",\"status\":\"online\",\"xAxis\":11.5,\"yAxis\":22.3} ', '{\"msg\":\"新增摄像头\'Camera 3\'失败，IP 地址已存在\",\"code\":500}', 0, NULL, '2026-03-10 22:43:06', 85);
-INSERT INTO `sys_oper_log` VALUES (167, '摄像头管理', 1, 'com.ruoyi.web.controller.system.CameraController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/add', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"floor\":\"1\",\"id\":5,\"ip\":\"192.168.1.16\",\"name\":\"Camera 3\",\"params\":{},\"remark\":\"Entrance\",\"status\":\"online\",\"xAxis\":11.5,\"yAxis\":22.3} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-10 22:43:27', 15990);
-INSERT INTO `sys_oper_log` VALUES (168, '摄像头管理', 2, 'com.ruoyi.web.controller.system.CameraController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/edit', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"id\":1,\"ip\":\"192.168.1.186\",\"name\":\"Camera 3\",\"params\":{},\"remark\":\"Entrance\",\"status\":\"online\",\"updateBy\":\"admin\",\"xAxis\":11.5,\"yAxis\":22.3} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-10 22:45:37', 19);
-INSERT INTO `sys_oper_log` VALUES (169, '摄像头管理', 1, 'com.ruoyi.web.controller.system.CameraController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/add', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"ip\":\"192.168.1.186\",\"name\":\"Camera 3\",\"params\":{},\"remark\":\"Entrance\",\"status\":\"online\",\"xAxis\":11.5,\"yAxis\":22.3} ', '{\"msg\":\"新增摄像头\'Camera 3\'失败，IP 地址已存在\",\"code\":500}', 0, NULL, '2026-03-10 22:46:38', 15);
-INSERT INTO `sys_oper_log` VALUES (170, '摄像头管理', 3, 'com.ruoyi.web.controller.system.CameraController.remove()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/remove', '127.0.0.1', '内网IP', '{\"ids\":[\"1,2\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-10 23:04:26', 84);
-INSERT INTO `sys_oper_log` VALUES (171, '人员轨迹管理', 1, 'com.ruoyi.web.controller.system.PersonTrackController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/personTrack/add', '127.0.0.1', '内网IP', '{\"params\":{}} ', NULL, 1, '\r\n### Error updating database.  Cause: java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'\' at line 1\r\n### The error may exist in file [D:\\emar\\cosl\\cosl-system\\target\\classes\\mapper\\system\\PersonTrackMapper.xml]\r\n### The error may involve com.ruoyi.system.mapper.PersonTrackMapper.insertPersonTrack-Inline\r\n### The error occurred while setting parameters\r\n### SQL: insert into person_track\r\n### Cause: java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'\' at line 1\n; bad SQL grammar []; nested exception is java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'\' at line 1', '2026-03-11 22:12:50', 154);
-INSERT INTO `sys_oper_log` VALUES (172, '人员轨迹管理', 1, 'com.ruoyi.web.controller.system.PersonTrackController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/personTrack/add', '127.0.0.1', '内网IP', '{\"params\":{}} ', NULL, 1, '\r\n### Error updating database.  Cause: java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'\' at line 1\r\n### The error may exist in file [D:\\emar\\cosl\\cosl-system\\target\\classes\\mapper\\system\\PersonTrackMapper.xml]\r\n### The error may involve com.ruoyi.system.mapper.PersonTrackMapper.insertPersonTrack-Inline\r\n### The error occurred while setting parameters\r\n### SQL: insert into person_track\r\n### Cause: java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'\' at line 1\n; bad SQL grammar []; nested exception is java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'\' at line 1', '2026-03-11 22:14:52', 112);
-INSERT INTO `sys_oper_log` VALUES (173, '人员轨迹管理', 1, 'com.ruoyi.web.controller.system.PersonTrackController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/personTrack/add', '127.0.0.1', '内网IP', '{\"cameraId\":5,\"captureTime\":1741660200000,\"id\":1,\"params\":{},\"personId\":1,\"xAxis\":12.34,\"yAxis\":56.78} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-11 22:15:40', 17);
-INSERT INTO `sys_oper_log` VALUES (174, '新增演练', 1, 'com.ruoyi.web.controller.system.DrillController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/drill/add', '127.0.0.1', '内网IP', '{\"actualCount\":48,\"createBy\":\"admin\",\"createTime\":1741674600000,\"endTime\":1742439600000,\"expectedCount\":50,\"id\":1,\"name\":\"春季消防演习\",\"params\":{},\"startTime\":1742432400000,\"status\":\"已完成\"} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-11 23:03:13', 87);
-INSERT INTO `sys_oper_log` VALUES (175, '演练管理', 2, 'com.ruoyi.web.controller.system.DrillController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/drill/edit', '127.0.0.1', '内网IP', '{\"actualCount\":48,\"createTime\":1741674600000,\"endTime\":1742439600000,\"expectedCount\":50,\"name\":\"春季消防演习\",\"params\":{},\"startTime\":1742432400000,\"status\":\"已完成\",\"updateBy\":\"admin\"} ', NULL, 1, '\r\n### Error updating database.  Cause: java.sql.SQLSyntaxErrorException: Unknown column \'update_time\' in \'field list\'\r\n### The error may exist in file [D:\\emar\\cosl\\cosl-system\\target\\classes\\mapper\\system\\DrillMapper.xml]\r\n### The error may involve com.ruoyi.system.mapper.DrillMapper.updateDrill-Inline\r\n### The error occurred while setting parameters\r\n### SQL: update drill          SET name = ?,             start_time = ?,             end_time = ?,             expected_count = ?,             actual_count = ?,             status = ?,      update_time = sysdate()          where id = ?\r\n### Cause: java.sql.SQLSyntaxErrorException: Unknown column \'update_time\' in \'field list\'\n; bad SQL grammar []; nested exception is java.sql.SQLSyntaxErrorException: Unknown column \'update_time\' in \'field list\'', '2026-03-11 23:04:09', 45);
-INSERT INTO `sys_oper_log` VALUES (176, '演练管理', 2, 'com.ruoyi.web.controller.system.DrillController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/drill/edit', '127.0.0.1', '内网IP', '{\"actualCount\":48,\"createTime\":1741674600000,\"endTime\":1742439600000,\"expectedCount\":50,\"name\":\"春季消防演习\",\"params\":{},\"startTime\":1742432400000,\"status\":\"已完成\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作失败\",\"code\":500}', 0, NULL, '2026-03-11 23:15:33', 78);
-INSERT INTO `sys_oper_log` VALUES (177, '演练管理', 2, 'com.ruoyi.web.controller.system.DrillController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/drill/edit', '127.0.0.1', '内网IP', '{\"actualCount\":48,\"createTime\":1741674600000,\"endTime\":1742439600000,\"expectedCount\":50,\"id\":1,\"name\":\"春季消防演习\",\"params\":{},\"startTime\":1742432400000,\"status\":\"已完成\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-11 23:15:55', 6);
-INSERT INTO `sys_oper_log` VALUES (178, '摄像头管理', 2, 'com.ruoyi.web.controller.system.CameraController.updatePosition()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/updatePosition', '127.0.0.1', '内网IP', '{\"id\":3,\"params\":{},\"xAxis\":19.0,\"yAxis\":20.0} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-22 20:53:58', 96);
-INSERT INTO `sys_oper_log` VALUES (179, '摄像头管理', 2, 'com.ruoyi.web.controller.system.CameraController.clearPosition()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/clearPosition', '127.0.0.1', '内网IP', '{\"id\":[\"3\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-22 20:54:51', 20);
-INSERT INTO `sys_oper_log` VALUES (180, '演练管理', 3, 'com.ruoyi.web.controller.system.DrillController.remove()', 'POST', 1, 'admin', '研发部门', '/cosl/api/drill/remove', '127.0.0.1', '内网IP', '{\"ids\":[\"2,3\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-22 20:58:46', 25);
-INSERT INTO `sys_oper_log` VALUES (181, '演练管理', 2, 'com.ruoyi.web.controller.system.DrillController.startDrill()', 'POST', 1, 'admin', '研发部门', '/cosl/api/drill/startDrill', '127.0.0.1', '内网IP', '{\"id\":[\"1\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-22 21:21:19', 95);
-INSERT INTO `sys_oper_log` VALUES (182, '演练管理', 2, 'com.ruoyi.web.controller.system.DrillController.endDrill()', 'POST', 1, 'admin', '研发部门', '/cosl/api/drill/endDrill', '127.0.0.1', '内网IP', '{\"id\":[\"1\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-22 21:22:12', 24);
-INSERT INTO `sys_oper_log` VALUES (183, '演练管理', 2, 'com.ruoyi.web.controller.system.DrillController.togglePersonnelStatus()', 'POST', 1, 'admin', '研发部门', '/cosl/api/drill/togglePersonnelStatus', '127.0.0.1', '内网IP', '{\"drillId\":[\"1\"],\"personId\":[\"1\"],\"status\":[\"已签到\"]}', NULL, 1, 'nested exception is org.apache.ibatis.binding.BindingException: Parameter \'drillId\' not found. Available parameters are [arg1, arg0, param1, param2]', '2026-03-22 21:25:29', 4);
-INSERT INTO `sys_oper_log` VALUES (184, '演练管理', 2, 'com.ruoyi.web.controller.system.DrillController.togglePersonnelStatus()', 'POST', 1, 'admin', '研发部门', '/cosl/api/drill/togglePersonnelStatus', '127.0.0.1', '内网IP', '{\"drillId\":[\"1\"],\"personId\":[\"1\"],\"status\":[\"已签到\"]}', NULL, 1, 'nested exception is org.apache.ibatis.binding.BindingException: Parameter \'drillId\' not found. Available parameters are [arg1, arg0, param1, param2]', '2026-03-22 21:26:48', 7229);
-INSERT INTO `sys_oper_log` VALUES (185, '演练管理', 2, 'com.ruoyi.web.controller.system.DrillController.togglePersonnelStatus()', 'POST', 1, 'admin', '研发部门', '/cosl/api/drill/togglePersonnelStatus', '127.0.0.1', '内网IP', '{\"drillId\":[\"1\"],\"personId\":[\"1\"],\"status\":[\"已签到\"]}', NULL, 1, 'nested exception is org.apache.ibatis.binding.BindingException: Parameter \'drillId\' not found. Available parameters are [arg1, arg0, param1, param2]', '2026-03-22 21:27:53', 3977);
-INSERT INTO `sys_oper_log` VALUES (186, '演练管理', 2, 'com.ruoyi.web.controller.system.DrillController.togglePersonnelStatus()', 'POST', 1, 'admin', '研发部门', '/cosl/api/drill/togglePersonnelStatus', '127.0.0.1', '内网IP', '{\"drillId\":[\"1\"],\"personId\":[\"1\"],\"status\":[\"已签到\"]}', NULL, 1, 'nested exception is org.apache.ibatis.binding.BindingException: Parameter \'drillId\' not found. Available parameters are [arg1, arg0, param1, param2]', '2026-03-22 21:31:03', 123284);
-INSERT INTO `sys_oper_log` VALUES (187, '演练管理', 2, 'com.ruoyi.web.controller.system.DrillController.togglePersonnelStatus()', 'POST', 1, 'admin', '研发部门', '/cosl/api/drill/togglePersonnelStatus', '127.0.0.1', '内网IP', '{\"drillId\":[\"1\"],\"personId\":[\"1\"],\"status\":[\"已签到\"]}', NULL, 1, 'nested exception is org.apache.ibatis.binding.BindingException: Parameter \'drillId\' not found. Available parameters are [arg1, arg0, param1, param2]', '2026-03-22 21:31:36', 2894);
-INSERT INTO `sys_oper_log` VALUES (188, '演练管理', 2, 'com.ruoyi.web.controller.system.DrillController.togglePersonnelStatus()', 'POST', 1, 'admin', '研发部门', '/cosl/api/drill/togglePersonnelStatus', '127.0.0.1', '内网IP', '{\"drillId\":[\"1\"],\"personId\":[\"1\"],\"status\":[\"已签到\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-22 21:34:00', 2851);
-INSERT INTO `sys_oper_log` VALUES (189, '演练管理', 2, 'com.ruoyi.web.controller.system.DrillController.togglePersonnelStatus()', 'POST', 1, 'admin', '研发部门', '/cosl/api/drill/togglePersonnelStatus', '127.0.0.1', '内网IP', '{\"drillId\":[\"1\"],\"personId\":[\"1\"],\"status\":[\"已签到\"]}', '{\"msg\":\"操作失败\",\"code\":500}', 0, NULL, '2026-03-22 21:35:54', 75);
-INSERT INTO `sys_oper_log` VALUES (190, '演练管理', 2, 'com.ruoyi.web.controller.system.DrillController.togglePersonnelStatus()', 'POST', 1, 'admin', '研发部门', '/cosl/api/drill/togglePersonnelStatus', '127.0.0.1', '内网IP', '{\"drillId\":[\"1\"],\"personId\":[\"1\"],\"status\":[\"已签到\"]}', '{\"msg\":\"操作失败\",\"code\":500}', 0, NULL, '2026-03-22 21:36:34', 18381);
-INSERT INTO `sys_oper_log` VALUES (191, '演练管理', 2, 'com.ruoyi.web.controller.system.DrillController.togglePersonnelStatus()', 'POST', 1, 'admin', '研发部门', '/cosl/api/drill/togglePersonnelStatus', '127.0.0.1', '内网IP', '{\"drillId\":[\"1\"],\"personId\":[\"1\"],\"status\":[\"已签到\"]}', '{\"msg\":\"操作失败\",\"code\":500}', 0, NULL, '2026-03-22 21:37:32', 3692);
-INSERT INTO `sys_oper_log` VALUES (192, '演练管理', 2, 'com.ruoyi.web.controller.system.DrillController.togglePersonnelStatus()', 'POST', 1, 'admin', '研发部门', '/cosl/api/drill/togglePersonnelStatus', '127.0.0.1', '内网IP', '{\"drillId\":[\"1\"],\"personId\":[\"1\"],\"status\":[\"已签到\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-22 21:38:30', 80);
-INSERT INTO `sys_oper_log` VALUES (193, '演练管理', 2, 'com.ruoyi.web.controller.system.DrillController.drillDetail()', 'POST', 1, 'admin', '研发部门', '/cosl/api/drill/detail', '127.0.0.1', '内网IP', '{\"id\":[\"1\"]}', '{\"msg\":\"操作成功\",\"code\":0,\"data\":{\"actualCount\":48,\"createTime\":1773241393000,\"endTime\":1774185732000,\"expectedCount\":50,\"id\":1,\"name\":\"春季消防演习\",\"params\":{},\"startTime\":1774185679000,\"status\":\"COMPLETED\"}}', 0, NULL, '2026-03-30 21:55:16', 109);
-INSERT INTO `sys_oper_log` VALUES (194, '房间管理', 2, 'com.ruoyi.web.controller.system.RoomConfigController.toggleLock()', 'POST', 1, 'admin', '研发部门', '/cosl/api/room/toggleLock', '127.0.0.1', '内网IP', '{\"id\":[\"2\"],\"status\":[\"OCCUPIED\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-31 21:36:34', 137);
-INSERT INTO `sys_oper_log` VALUES (195, '房间管理', 2, 'com.ruoyi.web.controller.system.RoomConfigController.batchLock()', 'POST', 1, 'admin', '研发部门', '/cosl/api/room/batchLock', '127.0.0.1', '内网IP', '{\"ids\":[\"2\"],\"status\":[\"OCCUPIED\"]}', '{\"msg\":\"成功0个房间\",\"code\":0}', 0, NULL, '2026-03-31 21:37:35', 8);
-INSERT INTO `sys_oper_log` VALUES (196, '床位状态管理', 2, 'com.ruoyi.web.controller.system.RoomBedController.toggleLock()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomBed/toggleLock', '127.0.0.1', '内网IP', '{\"ids\":[\"1,2\"],\"status\":[\"LOCKED\"]}', '{\"msg\":\"更新成功\",\"code\":0}', 0, NULL, '2026-03-31 21:43:52', 146);
-INSERT INTO `sys_oper_log` VALUES (197, '救生艇管理', 1, 'com.ruoyi.web.controller.system.LifeboatController.addLifeboatConfig()', 'POST', 1, 'admin', '研发部门', '/cosl/api/lifeboat/add', '127.0.0.1', '内网IP', '{\"boatName\":\"救生艇A1\",\"createBy\":\"admin\",\"createTime\":1775052096490,\"deleted\":0,\"evacuationPointId\":1,\"maxCapacity\":40,\"params\":{},\"updateTime\":1775052096490} ', NULL, 1, '\r\n### Error updating database.  Cause: java.sql.SQLException: Field \'boat_no\' doesn\'t have a default value\r\n### The error may exist in file [D:\\emar\\cosl\\cosl-system\\target\\classes\\mapper\\system\\LifeboatConfigMapper.xml]\r\n### The error may involve com.ruoyi.system.mapper.LifeboatConfigMapper.insertLifeboatConfig-Inline\r\n### The error occurred while setting parameters\r\n### SQL: insert into lifeboat_config          ( boat_name,             max_capacity,             evacuation_point_id,                                       create_time,             update_time,             deleted )           values ( ?,             ?,             ?,                                       ?,             ?,             ? )\r\n### Cause: java.sql.SQLException: Field \'boat_no\' doesn\'t have a default value\n; Field \'boat_no\' doesn\'t have a default value; nested exception is java.sql.SQLException: Field \'boat_no\' doesn\'t have a default value', '2026-04-01 22:01:36', 3623);
-INSERT INTO `sys_oper_log` VALUES (198, '救生艇管理', 1, 'com.ruoyi.web.controller.system.LifeboatController.addLifeboatConfig()', 'POST', 1, 'admin', '研发部门', '/cosl/api/lifeboat/add', '127.0.0.1', '内网IP', '{\"boatName\":\"救生艇A1\",\"createBy\":\"admin\",\"createTime\":1775052121716,\"deleted\":0,\"evacuationPointId\":1,\"id\":1,\"maxCapacity\":40,\"params\":{},\"updateTime\":1775052121716} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-04-01 22:02:01', 4129);
-INSERT INTO `sys_oper_log` VALUES (199, '救生艇管理', 2, 'com.ruoyi.web.controller.system.LifeboatController.editLifeboatConfig()', 'POST', 1, 'admin', '研发部门', '/cosl/api/lifeboat/edit', '127.0.0.1', '内网IP', '{\"boatName\":\"救生艇A2\",\"evacuationPointId\":1,\"id\":1,\"maxCapacity\":40,\"params\":{},\"updateBy\":\"admin\",\"updateTime\":1775052206610} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-04-01 22:03:26', 26);
-INSERT INTO `sys_oper_log` VALUES (200, '救生艇管理', 1, 'com.ruoyi.web.controller.system.LifeboatController.addLifeboatConfig()', 'POST', 1, 'admin', '研发部门', '/cosl/api/lifeboat/add', '127.0.0.1', '内网IP', '{\"boatName\":\"救生艇A1\",\"createBy\":\"admin\",\"createTime\":1775052269259,\"deleted\":0,\"evacuationPointId\":1,\"id\":2,\"maxCapacity\":40,\"params\":{},\"updateTime\":1775052269259} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-04-01 22:04:29', 3890);
-INSERT INTO `sys_oper_log` VALUES (201, '救生艇管理', 1, 'com.ruoyi.web.controller.system.LifeboatController.addLifeboatConfig()', 'POST', 1, 'admin', '研发部门', '/cosl/api/lifeboat/add', '127.0.0.1', '内网IP', '{\"boatName\":\"救生艇A6\",\"createBy\":\"admin\",\"createTime\":1775052276903,\"deleted\":0,\"evacuationPointId\":1,\"id\":3,\"maxCapacity\":40,\"params\":{},\"updateTime\":1775052276903} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-04-01 22:04:36', 31);
-INSERT INTO `sys_oper_log` VALUES (202, '救生艇管理', 3, 'com.ruoyi.web.controller.system.LifeboatController.removeLifeboatConfigs()', 'POST', 1, 'admin', '研发部门', '/cosl/api/lifeboat/remove', '127.0.0.1', '内网IP', '{\"ids\":[\"1,2\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-04-01 22:05:26', 35);
-INSERT INTO `sys_oper_log` VALUES (203, '救生艇管理', 3, 'com.ruoyi.web.controller.system.LifeboatController.removeLifeboatConfigs()', 'POST', 1, 'admin', '研发部门', '/cosl/api/lifeboat/remove', '127.0.0.1', '内网IP', '{\"ids\":[\"1,2\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-04-01 22:07:00', 68867);
-INSERT INTO `sys_oper_log` VALUES (204, '撤离点管理', 1, 'com.ruoyi.web.controller.system.LifeboatController.addEvacuationPoint()', 'POST', 1, 'admin', '研发部门', '/cosl/api/lifeboat/evacuationPoint/add', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"createTime\":1775052746028,\"deleted\":0,\"floor\":\"1\",\"id\":1,\"params\":{},\"pointName\":\"撤离点A\",\"updateTime\":1775052746028} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-04-01 22:12:26', 146);
-INSERT INTO `sys_oper_log` VALUES (205, '撤离点管理', 1, 'com.ruoyi.web.controller.system.LifeboatController.addEvacuationPoint()', 'POST', 1, 'admin', '研发部门', '/cosl/api/lifeboat/evacuationPoint/add', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"params\":{},\"pointName\":\"撤离点A\"} ', '{\"msg\":\"新增撤离点\'撤离点A\'失败，撤离点名称已存在\",\"code\":500}', 0, NULL, '2026-04-01 22:13:08', 8);
-INSERT INTO `sys_oper_log` VALUES (206, '撤离点管理', 1, 'com.ruoyi.web.controller.system.LifeboatController.addEvacuationPoint()', 'POST', 1, 'admin', '研发部门', '/cosl/api/lifeboat/evacuationPoint/add', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"createTime\":1775052795278,\"deleted\":0,\"floor\":\"1\",\"id\":2,\"params\":{},\"pointName\":\"撤离点B\",\"updateTime\":1775052795278} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-04-01 22:13:15', 42);
-INSERT INTO `sys_oper_log` VALUES (207, '撤离点管理', 1, 'com.ruoyi.web.controller.system.LifeboatController.addEvacuationPoint()', 'POST', 1, 'admin', '研发部门', '/cosl/api/lifeboat/evacuationPoint/add', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"params\":{},\"pointName\":\"撤离点B\"} ', '{\"msg\":\"新增撤离点\'撤离点B\'失败，撤离点名称已存在\",\"code\":500}', 0, NULL, '2026-04-01 22:14:36', 33103);
-INSERT INTO `sys_oper_log` VALUES (208, '撤离点管理', 1, 'com.ruoyi.web.controller.system.LifeboatController.addEvacuationPoint()', 'POST', 1, 'admin', '研发部门', '/cosl/api/lifeboat/evacuationPoint/add', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"createTime\":1775052931783,\"deleted\":0,\"floor\":\"1\",\"id\":4,\"params\":{},\"pointName\":\"撤离点c\",\"updateTime\":1775052931783} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-04-01 22:15:31', 42843);
-INSERT INTO `sys_oper_log` VALUES (209, '撤离点管理', 1, 'com.ruoyi.web.controller.system.LifeboatController.addEvacuationPoint()', 'POST', 1, 'admin', '研发部门', '/cosl/api/lifeboat/evacuationPoint/add', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"createTime\":1775052931787,\"deleted\":0,\"floor\":\"1\",\"id\":3,\"params\":{},\"pointName\":\"撤离点c\",\"updateTime\":1775052931787} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-04-01 22:15:31', 1141);
-INSERT INTO `sys_oper_log` VALUES (210, '撤离点管理', 1, 'com.ruoyi.web.controller.system.LifeboatController.addEvacuationPoint()', 'POST', 1, 'admin', '研发部门', '/cosl/api/lifeboat/evacuationPoint/add', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"params\":{},\"pointName\":\"撤离点c\"} ', '{\"msg\":\"新增撤离点\'撤离点c\'失败，撤离点名称已存在\",\"code\":500}', 0, NULL, '2026-04-01 22:18:02', 147826);
-INSERT INTO `sys_oper_log` VALUES (211, '撤离点管理', 1, 'com.ruoyi.web.controller.system.LifeboatController.addEvacuationPoint()', 'POST', 1, 'admin', '研发部门', '/cosl/api/lifeboat/evacuationPoint/add', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"params\":{},\"pointName\":\"撤离点c\"} ', '{\"msg\":\"新增撤离点\'撤离点c\'失败，撤离点名称已存在\",\"code\":500}', 0, NULL, '2026-04-01 22:18:02', 746);
-INSERT INTO `sys_oper_log` VALUES (212, '撤离点管理', 1, 'com.ruoyi.web.controller.system.LifeboatController.addEvacuationPoint()', 'POST', 1, 'admin', '研发部门', '/cosl/api/lifeboat/evacuationPoint/add', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"params\":{},\"pointName\":\"撤离点c\"} ', '{\"msg\":\"新增撤离点\'撤离点c\'失败，撤离点名称已存在\",\"code\":500}', 0, NULL, '2026-04-01 22:22:05', 238217);
-INSERT INTO `sys_oper_log` VALUES (213, '撤离点管理', 1, 'com.ruoyi.web.controller.system.LifeboatController.addEvacuationPoint()', 'POST', 1, 'admin', '研发部门', '/cosl/api/lifeboat/evacuationPoint/add', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"params\":{},\"pointName\":\"撤离点c\",\"xAxis\":11.5,\"yAxis\":22.3} ', '{\"msg\":\"新增撤离点\'撤离点c\'失败，撤离点名称已存在\",\"code\":500}', 0, NULL, '2026-04-01 22:24:17', 6511);
-INSERT INTO `sys_oper_log` VALUES (214, '撤离点管理', 1, 'com.ruoyi.web.controller.system.LifeboatController.addEvacuationPoint()', 'POST', 1, 'admin', '研发部门', '/cosl/api/lifeboat/evacuationPoint/add', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"createTime\":1775053492781,\"deleted\":0,\"floor\":\"1\",\"id\":5,\"params\":{},\"pointName\":\"撤离点D\",\"updateTime\":1775053492781,\"xAxis\":11.5,\"yAxis\":22.3} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-04-01 22:24:55', 5811);
-INSERT INTO `sys_oper_log` VALUES (215, '撤离点管理', 2, 'com.ruoyi.web.controller.system.LifeboatController.editEvacuationPoint()', 'POST', 1, 'admin', '研发部门', '/cosl/api/lifeboat/evacuationPoint/edit', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"id\":1,\"params\":{},\"pointName\":\"撤离点11\",\"updateBy\":\"admin\",\"updateTime\":1775053563901,\"xAxis\":11.5,\"yAxis\":22.3} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-04-01 22:26:03', 30);
-INSERT INTO `sys_oper_log` VALUES (216, '撤离点管理', 3, 'com.ruoyi.web.controller.system.LifeboatController.removeEvacuationPoints()', 'POST', 1, 'admin', '研发部门', '/cosl/api/lifeboat/evacuationPoint/remove', '127.0.0.1', '内网IP', '{\"ids\":[\"1,2\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-04-01 22:26:45', 35);
-INSERT INTO `sys_oper_log` VALUES (217, '人员管理', 2, 'com.ruoyi.web.controller.system.PersonController.batchUpdateRoomInfo()', 'POST', 1, 'admin', '研发部门', '/cosl/api/person/batchUpdateRoomInfo', '127.0.0.1', '内网IP', '[{\"bedId\":201,\"id\":1,\"roomId\":101},{\"bedId\":202,\"id\":2,\"roomId\":101},{\"bedId\":203,\"id\":3,\"roomId\":102}] ', '{\"msg\":\"\\r\\n### Error updating database.  Cause: java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'update person\\n             SET room_id = 101,\\n                bed_id = 202,\\n    \' at line 9\\r\\n### The error may exist in file [D:\\\\emar\\\\cosl\\\\cosl-system\\\\target\\\\classes\\\\mapper\\\\system\\\\PersonMapper.xml]\\r\\n### The error may involve defaultParameterMap\\r\\n### The error occurred while setting parameters\\r\\n### SQL: update person              SET room_id = ?,                 bed_id = ?,                                                   update_time = sysdate()              where id = ?          ;              update person              SET room_id = ?,                 bed_id = ?,                                                   update_time = sysdate()              where id = ?          ;              update person              SET room_id = ?,                 bed_id = ?,                                                   update_time = sysdate()              where id = ?\\r\\n### Cause: java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'update person\\n             SET room_id = 101,\\n                bed_id = 202,\\n    \' at line 9\\n; bad SQL grammar []; nested exception is java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'update person\\n             SET room_id = 101,\\n                bed_id = 202,\\n    \' at line 9\",\"code\":500}', 0, NULL, '2026-04-02 22:42:57', 144);
-INSERT INTO `sys_oper_log` VALUES (218, '人员管理', 2, 'com.ruoyi.web.controller.system.PersonController.batchUpdateRoomInfo()', 'POST', 1, 'admin', '研发部门', '/cosl/api/person/batchUpdateRoomInfo', '127.0.0.1', '内网IP', '[{\"bedId\":201,\"id\":1,\"roomId\":101},{\"bedId\":202,\"id\":2,\"roomId\":101},{\"bedId\":203,\"id\":3,\"roomId\":102}] ', '{\"msg\":\"\\r\\n### Error updating database.  Cause: java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'update person\\n             SET room_id = 101,\\n                bed_id = 202,\\n    \' at line 9\\r\\n### The error may exist in file [D:\\\\emar\\\\cosl\\\\cosl-system\\\\target\\\\classes\\\\mapper\\\\system\\\\PersonMapper.xml]\\r\\n### The error may involve defaultParameterMap\\r\\n### The error occurred while setting parameters\\r\\n### SQL: update person              SET room_id = ?,                 bed_id = ?,                                                   update_time = sysdate()              where id = ?          ;              update person              SET room_id = ?,                 bed_id = ?,                                                   update_time = sysdate()              where id = ?          ;              update person              SET room_id = ?,                 bed_id = ?,                                                   update_time = sysdate()              where id = ?\\r\\n### Cause: java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'update person\\n             SET room_id = 101,\\n                bed_id = 202,\\n    \' at line 9\\n; bad SQL grammar []; nested exception is java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'update person\\n             SET room_id = 101,\\n                bed_id = 202,\\n    \' at line 9\",\"code\":500}', 0, NULL, '2026-04-02 22:46:25', 45374);
-INSERT INTO `sys_oper_log` VALUES (219, '人员管理', 2, 'com.ruoyi.web.controller.system.PersonController.batchUpdateRoomInfo()', 'POST', 1, 'admin', '研发部门', '/cosl/api/person/batchUpdateRoomInfo', '127.0.0.1', '内网IP', '[{\"bedId\":201,\"id\":1,\"roomId\":101},{\"bedId\":202,\"id\":2,\"roomId\":101},{\"bedId\":203,\"id\":3,\"roomId\":102}] ', '{\"msg\":\"成功更新1条记录\",\"code\":0}', 0, NULL, '2026-04-02 22:53:02', 3444);
-INSERT INTO `sys_oper_log` VALUES (220, '平台数据统计', 0, 'com.ruoyi.web.controller.system.PlatformStatsController.getPlatformStats()', 'GET', 1, 'admin', '研发部门', '/cosl/api/platform/stats', '127.0.0.1', '内网IP', '', '{\"msg\":\"操作成功\",\"code\":0,\"data\":{\"cameraStats\":{\"online\":2,\"total\":2},\"drillStats\":{\"thisMonth\":0,\"total\":1},\"lifeboatStats\":{\"free\":0,\"total\":1},\"personStats\":{\"current\":2,\"enter\":0,\"leave\":0,\"total\":2},\"roomStats\":{\"free\":0,\"total\":3}}}', 0, NULL, '2026-04-04 19:55:44', 206);
-INSERT INTO `sys_oper_log` VALUES (221, '证书到期提醒', 0, 'com.ruoyi.web.controller.system.CertificateAlertController.getAlertList()', 'GET', 1, 'admin', '研发部门', '/cosl/api/alert/list', '127.0.0.1', '内网IP', '', '{\"msg\":\"操作成功\",\"code\":0,\"data\":[{\"alertTime\":1775365765859,\"content\":\"张yu的安全证书已过期95天\",\"count\":2,\"persons\":[{\"certificateExpireDate\":1767110400000,\"company\":\"XX海洋工程有限公司\",\"expiredDays\":95,\"name\":\"张yu\",\"personId\":1,\"position\":\"轮机长\"}],\"title\":\"证件已过期\",\"type\":\"EXPIRED\"}]}', 0, NULL, '2026-04-05 13:09:25', 121);
-INSERT INTO `sys_oper_log` VALUES (222, '证书到期提醒', 0, 'com.ruoyi.web.controller.system.CertificateAlertController.getAlertList()', 'GET', 1, 'admin', '研发部门', '/cosl/api/alert/list', '127.0.0.1', '内网IP', '', '{\"msg\":\"操作成功\",\"code\":0,\"data\":[{\"alertTime\":1775365957154,\"content\":\"电饭锅的安全证书已过期95天\",\"count\":2,\"persons\":[{\"certificateExpireDate\":1767110400000,\"company\":\"XX海洋工程有限公司\",\"expiredDays\":95,\"name\":\"电饭锅\",\"personId\":2,\"position\":\"轮机长\"}],\"title\":\"证件已过期\",\"type\":\"EXPIRED\"}]}', 0, NULL, '2026-04-05 13:12:37', 3033);
-INSERT INTO `sys_oper_log` VALUES (223, '证书到期提醒', 0, 'com.ruoyi.web.controller.system.CertificateAlertController.getAlertList()', 'GET', 1, 'admin', '研发部门', '/cosl/api/alert/list', '127.0.0.1', '内网IP', '', '{\"msg\":\"操作成功\",\"code\":0,\"data\":[{\"alertTime\":1775365998443,\"content\":\"电饭锅的安全证书已过期95天\",\"count\":2,\"persons\":[{\"certificateExpireDate\":1767110400000,\"company\":\"XX海洋工程有限公司\",\"expiredDays\":95,\"name\":\"电饭锅\",\"personId\":2,\"position\":\"轮机长\"}],\"title\":\"证件已过期\",\"type\":\"EXPIRED\"}]}', 0, NULL, '2026-04-05 13:19:12', 363394);
-INSERT INTO `sys_oper_log` VALUES (224, '证书到期提醒', 0, 'com.ruoyi.web.controller.system.CertificateAlertController.getAlertList()', 'GET', 1, 'admin', '研发部门', '/cosl/api/alert/list', '127.0.0.1', '内网IP', '', '{\"msg\":\"操作成功\",\"code\":0,\"data\":[{\"alertTime\":1775366408639,\"content\":\"电饭锅的安全证书已过期95天\",\"count\":2,\"persons\":[{\"certificateExpireDate\":1767110400000,\"company\":\"XX海洋工程有限公司\",\"expiredDays\":95,\"name\":\"电饭锅\",\"personId\":2,\"position\":\"轮机长\"}],\"title\":\"证件已过期\",\"type\":\"EXPIRED\"}]}', 0, NULL, '2026-04-05 13:20:09', 3154);
-INSERT INTO `sys_oper_log` VALUES (225, '证书到期提醒', 0, 'com.ruoyi.web.controller.system.CertificateAlertController.getAlertList()', 'GET', 1, 'admin', '研发部门', '/cosl/api/alert/list', '127.0.0.1', '内网IP', '', '{\"msg\":\"操作成功\",\"code\":0,\"data\":[{\"alertTime\":1775366492020,\"content\":\"电饭锅的安全证书已过期95天\",\"count\":2,\"persons\":[{\"certificateExpireDate\":1767110400000,\"company\":\"XX海洋工程有限公司\",\"expiredDays\":95,\"name\":\"电饭锅\",\"personId\":2,\"position\":\"轮机长\"}],\"title\":\"证件已过期\",\"type\":\"EXPIRED\"}]}', 0, NULL, '2026-04-05 13:22:10', 38787);
-INSERT INTO `sys_oper_log` VALUES (226, '证书到期提醒', 0, 'com.ruoyi.web.controller.system.CertificateAlertController.getAlertList()', 'GET', 1, 'admin', '研发部门', '/cosl/api/alert/list', '127.0.0.1', '内网IP', '', '{\"msg\":\"操作成功\",\"code\":0,\"data\":[{\"alertTime\":1775366756162,\"content\":\"电饭锅的安全证书已过期95天\",\"count\":2,\"persons\":[{\"certificateExpireDate\":1767110400000,\"company\":\"XX海洋工程有限公司\",\"expiredDays\":95,\"name\":\"张yu\",\"personId\":1,\"position\":\"轮机长\"},{\"certificateExpireDate\":1767110400000,\"company\":\"XX海洋工程有限公司\",\"expiredDays\":95,\"name\":\"电饭锅\",\"personId\":2,\"position\":\"轮机长\"}],\"title\":\"证件已过期\",\"type\":\"EXPIRED\"}]}', 0, NULL, '2026-04-05 13:26:01', 5707);
-INSERT INTO `sys_oper_log` VALUES (227, '证书到期提醒', 0, 'com.ruoyi.web.controller.system.CertificateAlertController.getAlertList()', 'GET', 1, 'admin', '研发部门', '/cosl/api/alert/list', '127.0.0.1', '内网IP', '', '{\"msg\":\"操作成功\",\"code\":0,\"data\":[{\"alertTime\":1775366945355,\"content\":\"1人证件将在30天内到期\",\"count\":1,\"description\":\"持续提醒\",\"persons\":[{\"certificateExpireDate\":1777046400000,\"company\":\"XX海杨工程有限公司\",\"expiredDays\":19,\"name\":\"金银花\",\"personId\":3,\"position\":\"船长\"}],\"title\":\"证件即将到期\",\"type\":\"EXPIRING_SOON\"},{\"alertTime\":1775366945377,\"content\":\"电饭锅的安全证书已过期95天\",\"count\":2,\"persons\":[{\"certificateExpireDate\":1767110400000,\"company\":\"XX海洋工程有限公司\",\"expiredDays\":95,\"name\":\"张yu\",\"personId\":1,\"position\":\"轮机长\"},{\"certificateExpireDate\":1767110400000,\"company\":\"XX海洋工程有限公司\",\"expiredDays\":95,\"name\":\"电饭锅\",\"personId\":2,\"position\":\"轮机长\"}],\"title\":\"证件已过期\",\"type\":\"EXPIRED\"}]}', 0, NULL, '2026-04-05 13:29:05', 46);
-INSERT INTO `sys_oper_log` VALUES (228, '新增楼层配置', 1, 'com.ruoyi.web.controller.system.FloorConfigController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/floor/add', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"createTime\":1775369926850,\"deleted\":0,\"floorName\":\"L5\",\"floorNo\":\"5\",\"id\":5,\"params\":{},\"sortOrder\":5,\"status\":\"ACTIVE\"} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-04-05 14:18:46', 98);
-INSERT INTO `sys_oper_log` VALUES (229, '楼层配置管理', 2, 'com.ruoyi.web.controller.system.FloorConfigController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/floor/edit', '127.0.0.1', '内网IP', '{\"floorName\":\"L5\",\"floorNo\":\"5\",\"id\":5,\"params\":{},\"sortOrder\":5,\"status\":\"STOP\",\"updateBy\":\"admin\",\"updateTime\":1775370060274} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-04-05 14:21:00', 22);
-INSERT INTO `sys_oper_log` VALUES (230, '楼层配置管理', 3, 'com.ruoyi.web.controller.system.FloorConfigController.remove()', 'POST', 1, 'admin', '研发部门', '/cosl/api/floor/remove', '127.0.0.1', '内网IP', '{\"ids\":[\"5\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-04-05 14:21:58', 58);
-INSERT INTO `sys_oper_log` VALUES (231, '摄像头管理', 2, 'com.ruoyi.web.controller.system.CameraController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/edit', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"id\":1,\"ip\":\"192.168.1.186\",\"name\":\"Camera 3\",\"params\":{},\"remark\":\"Entrance\",\"status\":\"online\",\"updateBy\":\"admin\",\"xAxis\":11.5,\"yAxis\":22.3} ', '{\"msg\":\"操作失败\",\"code\":500}', 0, NULL, '2026-04-05 14:57:03', 88);
-INSERT INTO `sys_oper_log` VALUES (232, '摄像头管理', 2, 'com.ruoyi.web.controller.system.CameraController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/edit', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"id\":1,\"ip\":\"192.168.1.186\",\"name\":\"Camera 3\",\"params\":{},\"remark\":\"Entrance\",\"status\":\"online\",\"updateBy\":\"admin\",\"xAxis\":11.5,\"yAxis\":22.3} ', '{\"msg\":\"操作失败\",\"code\":500}', 0, NULL, '2026-04-05 14:59:19', 103008);
-INSERT INTO `sys_oper_log` VALUES (233, '摄像头管理', 2, 'com.ruoyi.web.controller.system.CameraController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/edit', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"id\":1,\"ip\":\"192.168.1.186\",\"name\":\"Camera 3\",\"params\":{},\"remark\":\"Entrance\",\"status\":\"online\",\"updateBy\":\"admin\",\"xAxis\":11.5,\"yAxis\":22.3} ', '{\"msg\":\"操作失败\",\"code\":500}', 0, NULL, '2026-04-05 15:01:19', 7326);
-INSERT INTO `sys_oper_log` VALUES (234, '摄像头管理', 2, 'com.ruoyi.web.controller.system.CameraController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/edit', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"id\":1,\"ip\":\"192.168.1.186\",\"name\":\"Camera 3\",\"params\":{},\"remark\":\"Entrance\",\"status\":\"online\",\"updateBy\":\"admin\",\"xAxis\":11.5,\"yAxis\":22.3} ', '{\"msg\":\"操作失败\",\"code\":500}', 0, NULL, '2026-04-05 15:02:35', 49502);
-INSERT INTO `sys_oper_log` VALUES (235, '摄像头管理', 2, 'com.ruoyi.web.controller.system.CameraController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/edit', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"id\":3,\"ip\":\"192.168.1.186\",\"name\":\"Camera 3\",\"params\":{},\"remark\":\"Entrance\",\"status\":\"online\",\"updateBy\":\"admin\",\"xAxis\":11.5,\"yAxis\":22.3} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-04-05 15:02:43', 5112);
-INSERT INTO `sys_oper_log` VALUES (236, '摄像头管理', 2, 'com.ruoyi.web.controller.system.CameraController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/edit', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"id\":3,\"ip\":\"192.168.1.186\",\"name\":\"Camera 3\",\"params\":{},\"remark\":\"Entrance\",\"status\":\"online\",\"xAxis\":11.5,\"yAxis\":22.3} ', '{\"msg\":\"修改摄像头\'Camera 3\'失败，IP 地址已存在\",\"code\":500}', 0, NULL, '2026-04-05 15:03:00', 14333);
-INSERT INTO `sys_oper_log` VALUES (237, '摄像头管理', 2, 'com.ruoyi.web.controller.system.CameraController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/edit', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"id\":3,\"ip\":\"192.168.1.186\",\"name\":\"Camera 3\",\"params\":{},\"remark\":\"Entrance\",\"status\":\"online\",\"updateBy\":\"admin\",\"xAxis\":11.5,\"yAxis\":22.3} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-04-05 15:04:05', 4369);
-INSERT INTO `sys_oper_log` VALUES (238, '救生艇管理', 2, 'com.ruoyi.web.controller.system.LifeboatController.editLifeboatConfig()', 'POST', 1, 'admin', '研发部门', '/cosl/api/lifeboat/edit', '127.0.0.1', '内网IP', '{\"boatName\":\"救生艇A2\",\"evacuationPointId\":1,\"id\":3,\"maxCapacity\":40,\"params\":{},\"updateBy\":\"admin\",\"updateTime\":1775372774836} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-04-05 15:06:14', 30);
-INSERT INTO `sys_oper_log` VALUES (239, '人员管理', 2, 'com.ruoyi.web.controller.system.PersonController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/person/edit', '127.0.0.1', '内网IP', '{\"bedId\":202,\"blacklistFlag\":0,\"certificateExpireDate\":1767110400000,\"company\":\"XX海洋工程有限公司\",\"createTime\":1685586600000,\"deleted\":0,\"id\":1,\"idCard\":\"110101179001011234\",\"lifeboatId\":5,\"mtsCardNo\":\"MTS1234567894\",\"name\":\"张鱼\",\"onboardDate\":1685577600000,\"position\":\"轮机长\",\"roomId\":101,\"status\":\"ONBOARD\",\"updateTime\":1685586600000} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-04-05 15:08:37', 115);
+INSERT INTO `sys_oper_log` VALUES (100, '代码生成', 8, 'com.ruoyi.generator.controller.GenController.genCode()', 'GET', 1, 'admin', '研发部门', '/cosl/tool/gen/genCode/person', '127.0.0.1', '内网IP', '\"person\" ', '{\"msg\":\"【系统预设】不允许生成文件覆盖到本地\",\"code\":500}', 0, NULL, '2026-03-06 22:02:41', 48, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (101, '代码生成', 8, 'com.ruoyi.generator.controller.GenController.genCode()', 'GET', 1, 'admin', '研发部门', '/cosl/tool/gen/genCode/person', '127.0.0.1', '内网IP', '\"person\" ', NULL, 1, 'java.lang.NullPointerException\r\n	at com.ruoyi.generator.service.impl.GenTableServiceImpl.setSubTable(GenTableServiceImpl.java:487)\r\n	at com.ruoyi.generator.service.impl.GenTableServiceImpl.generatorCode(GenTableServiceImpl.java:261)\r\n	at com.ruoyi.generator.service.impl.GenTableServiceImpl$$FastClassBySpringCGLIB$$49da1c7c.invoke(<generated>)\r\n	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)\r\n	at org.springframework.aop.framework.CglibAopProxy.invokeMethod(CglibAopProxy.java:386)\r\n	at org.springframework.aop.framework.CglibAopProxy.access$000(CglibAopProxy.java:85)\r\n	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:703)\r\n	at com.ruoyi.generator.service.impl.GenTableServiceImpl$$EnhancerBySpringCGLIB$$ed45ea3b.generatorCode(<generated>)\r\n	at com.ruoyi.generator.controller.GenController.genCode(GenController.java:267)\r\n	at com.ruoyi.generator.controller.GenController$$FastClassBySpringCGLIB$$cf110d34.invoke(<generated>)\r\n	at org.springframework.cglib.proxy.MethodProxy.invoke(MethodProxy.java:218)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.invokeJoinpoint(CglibAopProxy.java:792)\r\n	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:163)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:762)\r\n	at org.springframework.aop.framework.adapter.MethodBeforeAdviceInterceptor.invoke(MethodBeforeAdviceInterceptor.java:58)\r\n	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:175)\r\n	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:762)\r\n	at org.springframework.aop.aspectj.AspectJAfterThrowingAdvice.invoke(AspectJAfterThrowingAdvice.java:64)\r\n	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:175)\r\n	at org.spri', '2026-03-06 22:06:26', 59, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (102, '用户管理', 1, 'com.ruoyi.web.controller.system.SysAccountController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/account/add', '127.0.0.1', '内网IP', '{\"userName\":[\"测试\"],\"phonenumber\":[\"13666663333\"],\"loginName\":[\"test\"],\"roleIds\":[\"2\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-07 11:04:14', 152, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (103, '用户管理', 1, 'com.ruoyi.web.controller.system.SysAccountController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/account/add', '127.0.0.1', '内网IP', '{\"userName\":[\"凯航\"],\"phonenumber\":[\"13899995555\"],\"loginName\":[\"kaihang\"],\"roleIds\":[\"2\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-07 11:08:19', 31, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (104, '用户管理', 1, 'com.ruoyi.web.controller.system.SysAccountController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/account/add', '127.0.0.1', '内网IP', '{\"admin\":false,\"createBy\":\"admin\",\"dept\":{\"params\":{}},\"loginName\":\"wukong\",\"params\":{},\"phonenumber\":\"13788888888\",\"pwdUpdateDate\":1772853178416,\"roleIds\":[2],\"salt\":\"63d176\",\"userId\":102,\"userName\":\"孙悟空\"} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-07 11:12:58', 8036, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (105, '用户管理', 2, 'com.ruoyi.web.controller.system.SysAccountController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/account/update', '127.0.0.1', '内网IP', '{\"admin\":false,\"dept\":{\"params\":{}},\"loginName\":\"wuse\",\"params\":{},\"phonenumber\":\"13712347896\",\"roleIds\":[2],\"updateBy\":\"admin\",\"userId\":102,\"userName\":\"李悟空\"} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-07 12:02:15', 177, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (106, '用户管理', 1, 'com.ruoyi.web.controller.system.SysAccountController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/account/add', '127.0.0.1', '内网IP', '{\"admin\":false,\"dept\":{\"params\":{}},\"loginName\":\"wukong\",\"params\":{},\"phonenumber\":\"13788888888\",\"roleIds\":[2],\"userName\":\"孙悟空\"} ', '{\"msg\":\"新增用户\'wukong\'失败，登录账号已存在\",\"code\":500}', 0, NULL, '2026-03-07 12:04:56', 8, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (107, '用户管理', 1, 'com.ruoyi.web.controller.system.SysAccountController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/account/add', '127.0.0.1', '内网IP', '{\"admin\":false,\"dept\":{\"params\":{}},\"loginName\":\"wukong\",\"params\":{},\"phonenumber\":\"13788888888\",\"roleIds\":[2],\"userName\":\"让人悟空\"} ', '{\"msg\":\"新增用户\'wukong\'失败，登录账号已存在\",\"code\":500}', 0, NULL, '2026-03-07 12:05:03', 8, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (108, '用户管理', 1, 'com.ruoyi.web.controller.system.SysAccountController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/account/add', '127.0.0.1', '内网IP', '{\"admin\":false,\"createBy\":\"admin\",\"dept\":{\"params\":{}},\"loginName\":\"wykong\",\"params\":{},\"phonenumber\":\"13788888888\",\"pwdUpdateDate\":1772856310275,\"roleIds\":[2],\"salt\":\"bf560e\",\"userId\":103,\"userName\":\"让人悟空\"} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-07 12:05:10', 64, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (109, '用户管理', 1, 'com.ruoyi.web.controller.system.SysAccountController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/account/add', '127.0.0.1', '内网IP', '{\"admin\":false,\"dept\":{\"params\":{}},\"loginName\":\"fdgs\",\"params\":{},\"phonenumber\":\"13788888888\",\"roleIds\":[2],\"userName\":\"风格\"} ', '{\"msg\":\"新增用户\'fdgs\'失败，手机号码已存在\",\"code\":500}', 0, NULL, '2026-03-07 12:05:31', 15, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (110, '用户管理', 1, 'com.ruoyi.web.controller.system.SysAccountController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/account/add', '127.0.0.1', '内网IP', '{\"admin\":false,\"createBy\":\"admin\",\"dept\":{\"params\":{}},\"loginName\":\"fdgs\",\"params\":{},\"phonenumber\":\"13767888888\",\"pwdUpdateDate\":1772856337307,\"roleIds\":[2],\"salt\":\"7839a5\",\"userId\":104,\"userName\":\"风格\"} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-07 12:05:37', 43, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (111, '用户管理', 3, 'com.ruoyi.web.controller.system.SysAccountController.remove()', 'POST', 1, 'admin', '研发部门', '/cosl/api/account/delete', '127.0.0.1', '内网IP', '{\"ids\":[\"103,104\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-07 12:15:03', 96, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (112, '用户管理', 2, 'com.ruoyi.web.controller.system.SysAccountController.changeStatus()', 'POST', 1, 'admin', '研发部门', '/cosl/api/account/changeStatus', '127.0.0.1', '内网IP', '{\"admin\":false,\"dept\":{\"params\":{}},\"params\":{}} ', '{\"msg\":\"操作失败\",\"code\":500}', 0, NULL, '2026-03-07 12:23:35', 41, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (113, '用户管理', 2, 'com.ruoyi.web.controller.system.SysAccountController.changeStatus()', 'POST', 1, 'admin', '研发部门', '/cosl/api/account/changeStatus', '127.0.0.1', '内网IP', '{\"admin\":false,\"dept\":{\"params\":{}},\"params\":{},\"status\":\"1\",\"userId\":102} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-07 12:24:12', 89, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (114, '重置密码', 2, 'com.ruoyi.web.controller.system.SysAccountController.resetPwdSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/account/resetPwd', '127.0.0.1', '内网IP', '{\"admin\":false,\"dept\":{\"params\":{}},\"params\":{},\"salt\":\"fc7bb9\"} ', '{\"msg\":\"操作失败\",\"code\":500}', 0, NULL, '2026-03-07 12:28:01', 7, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (115, '重置密码', 2, 'com.ruoyi.web.controller.system.SysAccountController.resetPwdSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/account/resetPwd', '127.0.0.1', '内网IP', '{\"admin\":false,\"dept\":{\"params\":{}},\"params\":{},\"salt\":\"aa7dca\"} ', '{\"msg\":\"操作失败\",\"code\":500}', 0, NULL, '2026-03-07 12:28:36', 9926, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (116, '重置密码', 2, 'com.ruoyi.web.controller.system.SysAccountController.resetPwdSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/account/resetPwd', '127.0.0.1', '内网IP', '{\"admin\":false,\"dept\":{\"params\":{}},\"loginName\":\"wukong\",\"params\":{},\"salt\":\"e0b4d5\",\"userId\":102} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-07 12:29:04', 3733, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (117, '修改个人密码', 2, 'com.ruoyi.web.controller.system.SysAccountController.changePassword()', 'POST', 1, 'admin', '研发部门', '/cosl/api/account/change-password', '127.0.0.1', '内网IP', '{\"admin\":false,\"dept\":{\"params\":{}},\"loginName\":\"wukong\",\"params\":{},\"salt\":\"6f6f06\",\"userId\":102} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-07 12:46:52', 93, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (118, '用户管理', 5, 'com.ruoyi.web.controller.system.SysAccountController.export()', 'POST', 1, 'admin', '研发部门', '/cosl/api/account/export', '127.0.0.1', '内网IP', '{\"admin\":false,\"dept\":{\"params\":{}},\"params\":{\"dataScope\":\"\"}} ', '{\"msg\":\"02fe90d3-f784-4cbb-a5a9-c1aa535cd30f_用户数据.xlsx\",\"code\":0}', 0, NULL, '2026-03-07 12:48:16', 772, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (119, '用户管理', 5, 'com.ruoyi.web.controller.system.SysAccountController.export()', 'POST', 1, 'admin', '研发部门', '/cosl/api/account/export', '127.0.0.1', '内网IP', '{\"admin\":false,\"dept\":{\"params\":{}},\"params\":{\"dataScope\":\"\"}} ', '{\"msg\":\"ee82fc05-c3c1-47f6-982a-85354585041c_用户数据.xlsx\",\"code\":0}', 0, NULL, '2026-03-07 12:54:32', 323638, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (120, '人员管理', 1, 'com.ruoyi.web.controller.system.PersonController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/person/add', '127.0.0.1', '内网IP', '{\"bedId\":202,\"blacklistFlag\":0,\"certificateExpireDate\":1767110400000,\"company\":\"XX海洋工程有限公司\",\"createTime\":1685586600000,\"deleted\":0,\"idCard\":\"110101199001011234\",\"lifeboatId\":5,\"mtsCardNo\":\"MTS123456789\",\"name\":\"张三\",\"onboardDate\":1685577600000,\"position\":\"轮机长\",\"roomId\":101,\"status\":\"ONBOARD\",\"updateTime\":1685586600000} ', NULL, 1, 'nested exception is org.apache.ibatis.reflection.ReflectionException: There is no getter for property named \'createBy\' in \'class com.ruoyi.common.core.domain.entity.Person\'', '2026-03-07 13:21:14', 103, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (121, '人员管理', 1, 'com.ruoyi.web.controller.system.PersonController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/person/add', '127.0.0.1', '内网IP', '{\"bedId\":202,\"blacklistFlag\":0,\"certificateExpireDate\":1767110400000,\"company\":\"XX海洋工程有限公司\",\"createTime\":1685586600000,\"deleted\":0,\"id\":1,\"idCard\":\"110101199001011234\",\"lifeboatId\":5,\"mtsCardNo\":\"MTS123456789\",\"name\":\"张三\",\"onboardDate\":1685577600000,\"position\":\"轮机长\",\"roomId\":101,\"status\":\"ONBOARD\",\"updateTime\":1685586600000} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-07 13:22:28', 102, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (122, '人员管理', 2, 'com.ruoyi.web.controller.system.PersonController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/person/edit', '127.0.0.1', '内网IP', '{} ', '{\"msg\":\"操作失败\",\"code\":500}', 0, NULL, '2026-03-07 13:43:59', 95, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (123, '人员管理', 2, 'com.ruoyi.web.controller.system.PersonController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/person/edit', '127.0.0.1', '内网IP', '{\"bedId\":202,\"blacklistFlag\":0,\"certificateExpireDate\":1767110400000,\"company\":\"XX海洋工程有限公司\",\"createTime\":1685586600000,\"deleted\":0,\"idCard\":\"110101199001011234\",\"lifeboatId\":5,\"mtsCardNo\":\"MTS123456789\",\"name\":\"张yu\",\"onboardDate\":1685577600000,\"position\":\"轮机长\",\"roomId\":101,\"status\":\"ONBOARD\",\"updateTime\":1685586600000} ', '{\"msg\":\"修改人员\'张yu\'失败，MTS 卡号已存在\",\"code\":500}', 0, NULL, '2026-03-07 13:45:00', 78, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (124, '人员管理', 2, 'com.ruoyi.web.controller.system.PersonController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/person/edit', '127.0.0.1', '内网IP', '{\"bedId\":202,\"blacklistFlag\":0,\"certificateExpireDate\":1767110400000,\"company\":\"XX海洋工程有限公司\",\"createTime\":1685586600000,\"deleted\":0,\"idCard\":\"110101179001011234\",\"lifeboatId\":5,\"mtsCardNo\":\"MTS1234567894\",\"name\":\"张yu\",\"onboardDate\":1685577600000,\"position\":\"轮机长\",\"roomId\":101,\"status\":\"ONBOARD\",\"updateTime\":1685586600000} ', '{\"msg\":\"操作失败\",\"code\":500}', 0, NULL, '2026-03-07 13:45:12', 19, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (125, '人员管理', 2, 'com.ruoyi.web.controller.system.PersonController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/person/edit', '127.0.0.1', '内网IP', '{\"bedId\":202,\"blacklistFlag\":0,\"certificateExpireDate\":1767110400000,\"company\":\"XX海洋工程有限公司\",\"createTime\":1685586600000,\"deleted\":0,\"id\":1,\"idCard\":\"110101179001011234\",\"lifeboatId\":5,\"mtsCardNo\":\"MTS1234567894\",\"name\":\"张yu\",\"onboardDate\":1685577600000,\"position\":\"轮机长\",\"roomId\":101,\"status\":\"ONBOARD\",\"updateTime\":1685586600000} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-07 13:45:50', 35, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (126, '人员管理', 1, 'com.ruoyi.web.controller.system.PersonController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/person/add', '127.0.0.1', '内网IP', '{\"bedId\":202,\"blacklistFlag\":0,\"certificateExpireDate\":1767110400000,\"company\":\"XX海洋工程有限公司\",\"createTime\":1685586600000,\"deleted\":0,\"id\":2,\"idCard\":\"110105199001011234\",\"lifeboatId\":5,\"mtsCardNo\":\"MTS1453456789\",\"name\":\"电饭锅\",\"onboardDate\":1685577600000,\"position\":\"轮机长\",\"roomId\":101,\"status\":\"ONBOARD\",\"updateTime\":1685586600000} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-07 13:53:16', 108, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (127, '人员管理', 3, 'com.ruoyi.web.controller.system.PersonController.remove()', 'POST', 1, 'admin', '研发部门', '/cosl/api/person/remove', '127.0.0.1', '内网IP', '{\"ids\":[\"2\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-07 13:54:33', 16, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (128, '房间配置管理', 1, 'com.ruoyi.web.controller.system.RoomConfigController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomConfig/add', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"floor\":\"1\",\"params\":{}} ', NULL, 1, '\r\n### Error updating database.  Cause: java.sql.SQLSyntaxErrorException: Unknown column \'create_by\' in \'field list\'\r\n### The error may exist in file [D:\\emar\\cosl\\cosl-system\\target\\classes\\mapper\\system\\RoomConfigMapper.xml]\r\n### The error may involve com.ruoyi.system.mapper.RoomConfigMapper.insertRoomConfig-Inline\r\n### The error occurred while setting parameters\r\n### SQL: insert into room_config          ( floor,                          create_by,             create_time,                          update_time )           values ( ?,                          ?,             sysdate(),                          sysdate() )\r\n### Cause: java.sql.SQLSyntaxErrorException: Unknown column \'create_by\' in \'field list\'\n; bad SQL grammar []; nested exception is java.sql.SQLSyntaxErrorException: Unknown column \'create_by\' in \'field list\'', '2026-03-07 14:39:17', 178, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (129, '房间配置管理', 1, 'com.ruoyi.web.controller.system.RoomConfigController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomConfig/add', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"floor\":\"1\",\"id\":1,\"params\":{}} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-07 14:43:10', 90, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (130, '房间配置管理', 1, 'com.ruoyi.web.controller.system.RoomConfigController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomConfig/add', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"floor\":\"1\",\"id\":2,\"params\":{},\"roomNo\":\"A101\",\"totalBeds\":4} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-07 14:43:39', 27, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (131, '房间配置管理', 1, 'com.ruoyi.web.controller.system.RoomConfigController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomConfig/add', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"floor\":\"1\",\"id\":3,\"params\":{},\"roomNo\":\"A102\",\"totalBeds\":4} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-07 14:43:53', 26, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (132, '房间配置管理', 1, 'com.ruoyi.web.controller.system.RoomConfigController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomConfig/add', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"floor\":\"3\",\"id\":4,\"params\":{},\"roomNo\":\"A302\",\"totalBeds\":4} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-07 14:44:00', 29, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (133, '房间配置管理', 1, 'com.ruoyi.web.controller.system.RoomConfigController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomConfig/add', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"floor\":\"2\",\"id\":5,\"params\":{},\"roomNo\":\"A202\",\"totalBeds\":4} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-07 14:44:06', 27, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (134, '房间配置管理', 2, 'com.ruoyi.web.controller.system.RoomConfigController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomConfig/edit', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"id\":1,\"params\":{},\"roomNo\":\"A101\",\"status\":\"\"} ', '{\"msg\":\"修改房间\'A101\'失败，房间号已存在\",\"code\":500}', 0, NULL, '2026-03-07 14:58:38', 157, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (135, '房间配置管理', 2, 'com.ruoyi.web.controller.system.RoomConfigController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomConfig/edit', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"id\":1,\"params\":{},\"status\":\"\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作失败\",\"code\":500}', 0, NULL, '2026-03-07 14:58:48', 12, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (136, '房间配置管理', 2, 'com.ruoyi.web.controller.system.RoomConfigController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomConfig/edit', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"id\":1,\"params\":{},\"status\":\"空闲\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作失败\",\"code\":500}', 0, NULL, '2026-03-07 14:59:17', 11, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (137, '房间配置管理', 2, 'com.ruoyi.web.controller.system.RoomConfigController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomConfig/edit', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"id\":2,\"params\":{},\"status\":\"空闲\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-07 15:00:16', 46, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (138, '房间配置管理', 2, 'com.ruoyi.web.controller.system.RoomConfigController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomConfig/edit', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"id\":2,\"params\":{},\"status\":\"空闲\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-07 15:01:14', 11, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (139, '房间配置管理', 3, 'com.ruoyi.web.controller.system.RoomConfigController.remove()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomConfig/remove', '127.0.0.1', '内网IP', '{\"ids\":[\"4,5\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-09 19:33:00', 8934, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (140, '房间床位管理', 1, 'com.ruoyi.web.controller.system.RoomBedController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomBed/add', '127.0.0.1', '内网IP', '{\"params\":{},\"status\":\"FREE\"} ', NULL, 1, 'nested exception is org.apache.ibatis.binding.BindingException: Parameter \'roomId\' not found. Available parameters are [arg1, arg0, param1, param2]', '2026-03-09 21:12:05', 71, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (141, '房间床位管理', 1, 'com.ruoyi.web.controller.system.RoomBedController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomBed/add', '127.0.0.1', '内网IP', '{\"bedNo\":\"A\",\"params\":{},\"roomId\":2,\"status\":\"FREE\"} ', NULL, 1, 'nested exception is org.apache.ibatis.binding.BindingException: Parameter \'roomId\' not found. Available parameters are [arg1, arg0, param1, param2]', '2026-03-09 21:13:14', 2, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (142, '房间床位管理', 1, 'com.ruoyi.web.controller.system.RoomBedController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomBed/add', '127.0.0.1', '内网IP', '{\"bedNo\":\"A\",\"params\":{},\"roomId\":2,\"status\":\"FREE\"} ', NULL, 1, 'nested exception is org.apache.ibatis.binding.BindingException: Parameter \'roomId\' not found. Available parameters are [arg1, arg0, param1, param2]', '2026-03-09 21:14:39', 1, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (143, '房间床位管理', 1, 'com.ruoyi.web.controller.system.RoomBedController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomBed/add', '127.0.0.1', '内网IP', '{\"bedNo\":\"A\",\"params\":{},\"roomId\":2,\"status\":\"FREE\"} ', NULL, 1, 'nested exception is org.apache.ibatis.binding.BindingException: Parameter \'roomId\' not found. Available parameters are [arg1, arg0, param1, param2]', '2026-03-09 21:15:11', 14944, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (144, '房间床位管理', 1, 'com.ruoyi.web.controller.system.RoomBedController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomBed/add', '127.0.0.1', '内网IP', '{\"bedNo\":\"A\",\"params\":{},\"roomId\":2,\"status\":\"FREE\"} ', NULL, 1, 'nested exception is org.apache.ibatis.binding.BindingException: Parameter \'roomId\' not found. Available parameters are [arg1, arg0, param1, param2]', '2026-03-09 21:15:44', 21129, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (145, '房间床位管理', 1, 'com.ruoyi.web.controller.system.RoomBedController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomBed/add', '127.0.0.1', '内网IP', '{\"bedNo\":\"A\",\"params\":{},\"roomId\":2,\"status\":\"FREE\"} ', NULL, 1, 'nested exception is org.apache.ibatis.binding.BindingException: Parameter \'roomId\' not found. Available parameters are [arg1, arg0, param1, param2]', '2026-03-09 21:19:27', 78, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (146, '房间床位管理', 1, 'com.ruoyi.web.controller.system.RoomBedController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomBed/add', '127.0.0.1', '内网IP', '{\"bedNo\":\"A\",\"params\":{},\"roomId\":2,\"status\":\"FREE\"} ', NULL, 1, 'nested exception is org.apache.ibatis.binding.BindingException: Parameter \'roomId\' not found. Available parameters are [arg1, arg0, param1, param2]', '2026-03-09 21:21:28', 101664, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (147, '房间床位管理', 1, 'com.ruoyi.web.controller.system.RoomBedController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomBed/add', '127.0.0.1', '内网IP', '{\"bedNo\":\"A\",\"params\":{},\"roomId\":2,\"status\":\"FREE\"} ', NULL, 1, 'nested exception is org.apache.ibatis.binding.BindingException: Parameter \'roomId\' not found. Available parameters are [arg1, arg0, param1, param2]', '2026-03-09 21:22:48', 4035, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (148, '房间床位管理', 1, 'com.ruoyi.web.controller.system.RoomBedController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomBed/add', '127.0.0.1', '内网IP', '{\"bedNo\":\"A\",\"createBy\":\"admin\",\"id\":1,\"params\":{},\"roomId\":2,\"status\":\"FREE\"} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-09 21:24:48', 4894, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (149, '房间床位管理', 2, 'com.ruoyi.web.controller.system.RoomBedController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomBed/edit', '127.0.0.1', '内网IP', '{\"bedNo\":\"B\",\"params\":{},\"roomId\":2,\"status\":\"FREE\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作失败\",\"code\":500}', 0, NULL, '2026-03-09 21:26:07', 10, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (150, '房间床位管理', 2, 'com.ruoyi.web.controller.system.RoomBedController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomBed/edit', '127.0.0.1', '内网IP', '{\"bedNo\":\"B\",\"id\":1,\"params\":{},\"roomId\":2,\"status\":\"FREE\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-09 21:26:41', 26, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (151, '房间床位管理', 1, 'com.ruoyi.web.controller.system.RoomBedController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomBed/add', '127.0.0.1', '内网IP', '{\"bedNo\":\"B\",\"id\":1,\"params\":{},\"roomId\":2,\"status\":\"FREE\"} ', '{\"msg\":\"新增床位失败，该房间已存在相同床位号\",\"code\":500}', 0, NULL, '2026-03-09 21:27:20', 7, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (152, '房间床位管理', 2, 'com.ruoyi.web.controller.system.RoomBedController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomBed/edit', '127.0.0.1', '内网IP', '{\"bedNo\":\"B\",\"id\":1,\"params\":{},\"roomId\":2,\"status\":\"FREE\"} ', '{\"msg\":\"修改床位失败，该房间已存在相同床位号\",\"code\":500}', 0, NULL, '2026-03-09 21:29:07', 13, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (153, '床位状态管理', 2, 'com.ruoyi.web.controller.system.RoomBedController.batchChangeStatus()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomBed/batchChangeStatus', '127.0.0.1', '内网IP', '{\"ids\":[\"1,2\"],\"status\":[\"LOCKED\"]}', '{\"msg\":\"更新成功\",\"code\":0}', 0, NULL, '2026-03-09 21:42:47', 71, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (154, '房间配置管理', 1, 'com.ruoyi.web.controller.system.RoomConfigController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/room/add', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"floor\":\"2\",\"id\":6,\"params\":{},\"roomNo\":\"A202\",\"totalBeds\":4} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-09 22:07:24', 93, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (155, '房间配置管理', 2, 'com.ruoyi.web.controller.system.RoomConfigController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/room/edit', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"id\":2,\"params\":{},\"status\":\"空闲\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-09 22:08:14', 12, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (156, '房间配置管理', 3, 'com.ruoyi.web.controller.system.RoomConfigController.remove()', 'POST', 1, 'admin', '研发部门', '/cosl/api/room/remove', '127.0.0.1', '内网IP', '{\"ids\":[\"4,5\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-09 22:08:53', 12, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (157, '床位状态管理', 2, 'com.ruoyi.web.controller.system.RoomBedController.batchChangeStatus()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomBed/batchChangeStatus', '127.0.0.1', '内网IP', '{\"ids\":[\"1,2\"],\"status\":[\"LOCKED\"]}', '{\"msg\":\"更新成功\",\"code\":0}', 0, NULL, '2026-03-09 22:10:00', 13, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (158, '房间床位管理', 2, 'com.ruoyi.web.controller.system.RoomBedController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomBed/edit', '127.0.0.1', '内网IP', '{\"ids\":[\"1,2\"],\"status\":[\"LOCKED\"]}', '{\"msg\":\"修改床位失败，该房间已存在相同床位号\",\"code\":500}', 0, NULL, '2026-03-09 22:10:24', 9, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (159, '房间床位管理', 1, 'com.ruoyi.web.controller.system.RoomBedController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomBed/add', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"id\":2,\"params\":{},\"remark\":\"Entrance\",\"status\":\"online\"} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-10 22:33:23', 119, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (160, '摄像头管理', 1, 'com.ruoyi.web.controller.system.CameraController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/add', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"floor\":\"1F\",\"ip\":\"192.168.1.10\",\"name\":\"Camera 1\",\"params\":{},\"remark\":\"Entrance\",\"status\":\"online\"} ', NULL, 1, '\r\n### Error updating database.  Cause: java.sql.SQLSyntaxErrorException: Unknown column \'create_by\' in \'field list\'\r\n### The error may exist in file [D:\\emar\\cosl\\cosl-system\\target\\classes\\mapper\\system\\CameraMapper.xml]\r\n### The error may involve com.ruoyi.system.mapper.CameraMapper.insertCamera-Inline\r\n### The error occurred while setting parameters\r\n### SQL: insert into camera          ( name,             ip,             floor,             status,                                       create_by,             create_time,                          update_time,             remark )           values ( ?,             ?,             ?,             ?,                                       ?,             sysdate(),                          sysdate(),             ? )\r\n### Cause: java.sql.SQLSyntaxErrorException: Unknown column \'create_by\' in \'field list\'\n; bad SQL grammar []; nested exception is java.sql.SQLSyntaxErrorException: Unknown column \'create_by\' in \'field list\'', '2026-03-10 22:34:48', 92, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (161, '摄像头管理', 1, 'com.ruoyi.web.controller.system.CameraController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/add', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"floor\":\"1F\",\"id\":1,\"ip\":\"192.168.1.10\",\"name\":\"Camera 1\",\"params\":{},\"remark\":\"Entrance\",\"status\":\"online\"} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-10 22:36:38', 131, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (162, '摄像头管理', 1, 'com.ruoyi.web.controller.system.CameraController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/add', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"floor\":\"1F\",\"id\":2,\"ip\":\"192.168.1.11\",\"name\":\"Camera 2\",\"params\":{},\"remark\":\"Entrance\",\"status\":\"online\"} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-10 22:37:11', 20, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (163, '摄像头管理', 1, 'com.ruoyi.web.controller.system.CameraController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/add', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"ip\":\"192.168.1.11\",\"name\":\"Camera 2\",\"params\":{},\"remark\":\"Entrance\",\"status\":\"online\"} ', '{\"msg\":\"新增摄像头\'Camera 2\'失败，IP 地址已存在\",\"code\":500}', 0, NULL, '2026-03-10 22:37:53', 8, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (164, '摄像头管理', 1, 'com.ruoyi.web.controller.system.CameraController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/add', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"floor\":\"1\",\"id\":3,\"ip\":\"192.168.1.12\",\"name\":\"Camera 3\",\"params\":{},\"remark\":\"Entrance\",\"status\":\"online\"} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-10 22:39:53', 109660, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (165, '摄像头管理', 1, 'com.ruoyi.web.controller.system.CameraController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/add', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"floor\":\"1\",\"ip\":\"192.168.1.12\",\"name\":\"Camera 3\",\"params\":{},\"remark\":\"Entrance\",\"status\":\"online\"} ', NULL, 1, '\r\n### Error updating database.  Cause: java.sql.SQLIntegrityConstraintViolationException: Duplicate entry \'192.168.1.12\' for key \'camera.uk_ip\'\r\n### The error may exist in file [D:\\emar\\cosl\\cosl-system\\target\\classes\\mapper\\system\\CameraMapper.xml]\r\n### The error may involve com.ruoyi.system.mapper.CameraMapper.insertCamera-Inline\r\n### The error occurred while setting parameters\r\n### SQL: insert into camera          ( name,             ip,             floor,             status,                                        remark )           values ( ?,             ?,             ?,             ?,                                        ? )\r\n### Cause: java.sql.SQLIntegrityConstraintViolationException: Duplicate entry \'192.168.1.12\' for key \'camera.uk_ip\'\n; Duplicate entry \'192.168.1.12\' for key \'camera.uk_ip\'; nested exception is java.sql.SQLIntegrityConstraintViolationException: Duplicate entry \'192.168.1.12\' for key \'camera.uk_ip\'', '2026-03-10 22:39:53', 12639, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (166, '摄像头管理', 1, 'com.ruoyi.web.controller.system.CameraController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/add', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"ip\":\"192.168.1.12\",\"name\":\"Camera 3\",\"params\":{},\"remark\":\"Entrance\",\"status\":\"online\",\"xAxis\":11.5,\"yAxis\":22.3} ', '{\"msg\":\"新增摄像头\'Camera 3\'失败，IP 地址已存在\",\"code\":500}', 0, NULL, '2026-03-10 22:43:06', 85, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (167, '摄像头管理', 1, 'com.ruoyi.web.controller.system.CameraController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/add', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"floor\":\"1\",\"id\":5,\"ip\":\"192.168.1.16\",\"name\":\"Camera 3\",\"params\":{},\"remark\":\"Entrance\",\"status\":\"online\",\"xAxis\":11.5,\"yAxis\":22.3} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-10 22:43:27', 15990, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (168, '摄像头管理', 2, 'com.ruoyi.web.controller.system.CameraController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/edit', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"id\":1,\"ip\":\"192.168.1.186\",\"name\":\"Camera 3\",\"params\":{},\"remark\":\"Entrance\",\"status\":\"online\",\"updateBy\":\"admin\",\"xAxis\":11.5,\"yAxis\":22.3} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-10 22:45:37', 19, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (169, '摄像头管理', 1, 'com.ruoyi.web.controller.system.CameraController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/add', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"ip\":\"192.168.1.186\",\"name\":\"Camera 3\",\"params\":{},\"remark\":\"Entrance\",\"status\":\"online\",\"xAxis\":11.5,\"yAxis\":22.3} ', '{\"msg\":\"新增摄像头\'Camera 3\'失败，IP 地址已存在\",\"code\":500}', 0, NULL, '2026-03-10 22:46:38', 15, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (170, '摄像头管理', 3, 'com.ruoyi.web.controller.system.CameraController.remove()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/remove', '127.0.0.1', '内网IP', '{\"ids\":[\"1,2\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-10 23:04:26', 84, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (171, '人员轨迹管理', 1, 'com.ruoyi.web.controller.system.PersonTrackController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/personTrack/add', '127.0.0.1', '内网IP', '{\"params\":{}} ', NULL, 1, '\r\n### Error updating database.  Cause: java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'\' at line 1\r\n### The error may exist in file [D:\\emar\\cosl\\cosl-system\\target\\classes\\mapper\\system\\PersonTrackMapper.xml]\r\n### The error may involve com.ruoyi.system.mapper.PersonTrackMapper.insertPersonTrack-Inline\r\n### The error occurred while setting parameters\r\n### SQL: insert into person_track\r\n### Cause: java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'\' at line 1\n; bad SQL grammar []; nested exception is java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'\' at line 1', '2026-03-11 22:12:50', 154, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (172, '人员轨迹管理', 1, 'com.ruoyi.web.controller.system.PersonTrackController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/personTrack/add', '127.0.0.1', '内网IP', '{\"params\":{}} ', NULL, 1, '\r\n### Error updating database.  Cause: java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'\' at line 1\r\n### The error may exist in file [D:\\emar\\cosl\\cosl-system\\target\\classes\\mapper\\system\\PersonTrackMapper.xml]\r\n### The error may involve com.ruoyi.system.mapper.PersonTrackMapper.insertPersonTrack-Inline\r\n### The error occurred while setting parameters\r\n### SQL: insert into person_track\r\n### Cause: java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'\' at line 1\n; bad SQL grammar []; nested exception is java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'\' at line 1', '2026-03-11 22:14:52', 112, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (173, '人员轨迹管理', 1, 'com.ruoyi.web.controller.system.PersonTrackController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/personTrack/add', '127.0.0.1', '内网IP', '{\"cameraId\":5,\"captureTime\":1741660200000,\"id\":1,\"params\":{},\"personId\":1,\"xAxis\":12.34,\"yAxis\":56.78} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-11 22:15:40', 17, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (174, '新增演练', 1, 'com.ruoyi.web.controller.system.DrillController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/drill/add', '127.0.0.1', '内网IP', '{\"actualCount\":48,\"createBy\":\"admin\",\"createTime\":1741674600000,\"endTime\":1742439600000,\"expectedCount\":50,\"id\":1,\"name\":\"春季消防演习\",\"params\":{},\"startTime\":1742432400000,\"status\":\"已完成\"} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-11 23:03:13', 87, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (175, '演练管理', 2, 'com.ruoyi.web.controller.system.DrillController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/drill/edit', '127.0.0.1', '内网IP', '{\"actualCount\":48,\"createTime\":1741674600000,\"endTime\":1742439600000,\"expectedCount\":50,\"name\":\"春季消防演习\",\"params\":{},\"startTime\":1742432400000,\"status\":\"已完成\",\"updateBy\":\"admin\"} ', NULL, 1, '\r\n### Error updating database.  Cause: java.sql.SQLSyntaxErrorException: Unknown column \'update_time\' in \'field list\'\r\n### The error may exist in file [D:\\emar\\cosl\\cosl-system\\target\\classes\\mapper\\system\\DrillMapper.xml]\r\n### The error may involve com.ruoyi.system.mapper.DrillMapper.updateDrill-Inline\r\n### The error occurred while setting parameters\r\n### SQL: update drill          SET name = ?,             start_time = ?,             end_time = ?,             expected_count = ?,             actual_count = ?,             status = ?,      update_time = sysdate()          where id = ?\r\n### Cause: java.sql.SQLSyntaxErrorException: Unknown column \'update_time\' in \'field list\'\n; bad SQL grammar []; nested exception is java.sql.SQLSyntaxErrorException: Unknown column \'update_time\' in \'field list\'', '2026-03-11 23:04:09', 45, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (176, '演练管理', 2, 'com.ruoyi.web.controller.system.DrillController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/drill/edit', '127.0.0.1', '内网IP', '{\"actualCount\":48,\"createTime\":1741674600000,\"endTime\":1742439600000,\"expectedCount\":50,\"name\":\"春季消防演习\",\"params\":{},\"startTime\":1742432400000,\"status\":\"已完成\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作失败\",\"code\":500}', 0, NULL, '2026-03-11 23:15:33', 78, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (177, '演练管理', 2, 'com.ruoyi.web.controller.system.DrillController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/drill/edit', '127.0.0.1', '内网IP', '{\"actualCount\":48,\"createTime\":1741674600000,\"endTime\":1742439600000,\"expectedCount\":50,\"id\":1,\"name\":\"春季消防演习\",\"params\":{},\"startTime\":1742432400000,\"status\":\"已完成\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-11 23:15:55', 6, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (178, '摄像头管理', 2, 'com.ruoyi.web.controller.system.CameraController.updatePosition()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/updatePosition', '127.0.0.1', '内网IP', '{\"id\":3,\"params\":{},\"xAxis\":19.0,\"yAxis\":20.0} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-22 20:53:58', 96, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (179, '摄像头管理', 2, 'com.ruoyi.web.controller.system.CameraController.clearPosition()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/clearPosition', '127.0.0.1', '内网IP', '{\"id\":[\"3\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-22 20:54:51', 20, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (180, '演练管理', 3, 'com.ruoyi.web.controller.system.DrillController.remove()', 'POST', 1, 'admin', '研发部门', '/cosl/api/drill/remove', '127.0.0.1', '内网IP', '{\"ids\":[\"2,3\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-22 20:58:46', 25, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (181, '演练管理', 2, 'com.ruoyi.web.controller.system.DrillController.startDrill()', 'POST', 1, 'admin', '研发部门', '/cosl/api/drill/startDrill', '127.0.0.1', '内网IP', '{\"id\":[\"1\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-22 21:21:19', 95, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (182, '演练管理', 2, 'com.ruoyi.web.controller.system.DrillController.endDrill()', 'POST', 1, 'admin', '研发部门', '/cosl/api/drill/endDrill', '127.0.0.1', '内网IP', '{\"id\":[\"1\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-22 21:22:12', 24, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (183, '演练管理', 2, 'com.ruoyi.web.controller.system.DrillController.togglePersonnelStatus()', 'POST', 1, 'admin', '研发部门', '/cosl/api/drill/togglePersonnelStatus', '127.0.0.1', '内网IP', '{\"drillId\":[\"1\"],\"personId\":[\"1\"],\"status\":[\"已签到\"]}', NULL, 1, 'nested exception is org.apache.ibatis.binding.BindingException: Parameter \'drillId\' not found. Available parameters are [arg1, arg0, param1, param2]', '2026-03-22 21:25:29', 4, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (184, '演练管理', 2, 'com.ruoyi.web.controller.system.DrillController.togglePersonnelStatus()', 'POST', 1, 'admin', '研发部门', '/cosl/api/drill/togglePersonnelStatus', '127.0.0.1', '内网IP', '{\"drillId\":[\"1\"],\"personId\":[\"1\"],\"status\":[\"已签到\"]}', NULL, 1, 'nested exception is org.apache.ibatis.binding.BindingException: Parameter \'drillId\' not found. Available parameters are [arg1, arg0, param1, param2]', '2026-03-22 21:26:48', 7229, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (185, '演练管理', 2, 'com.ruoyi.web.controller.system.DrillController.togglePersonnelStatus()', 'POST', 1, 'admin', '研发部门', '/cosl/api/drill/togglePersonnelStatus', '127.0.0.1', '内网IP', '{\"drillId\":[\"1\"],\"personId\":[\"1\"],\"status\":[\"已签到\"]}', NULL, 1, 'nested exception is org.apache.ibatis.binding.BindingException: Parameter \'drillId\' not found. Available parameters are [arg1, arg0, param1, param2]', '2026-03-22 21:27:53', 3977, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (186, '演练管理', 2, 'com.ruoyi.web.controller.system.DrillController.togglePersonnelStatus()', 'POST', 1, 'admin', '研发部门', '/cosl/api/drill/togglePersonnelStatus', '127.0.0.1', '内网IP', '{\"drillId\":[\"1\"],\"personId\":[\"1\"],\"status\":[\"已签到\"]}', NULL, 1, 'nested exception is org.apache.ibatis.binding.BindingException: Parameter \'drillId\' not found. Available parameters are [arg1, arg0, param1, param2]', '2026-03-22 21:31:03', 123284, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (187, '演练管理', 2, 'com.ruoyi.web.controller.system.DrillController.togglePersonnelStatus()', 'POST', 1, 'admin', '研发部门', '/cosl/api/drill/togglePersonnelStatus', '127.0.0.1', '内网IP', '{\"drillId\":[\"1\"],\"personId\":[\"1\"],\"status\":[\"已签到\"]}', NULL, 1, 'nested exception is org.apache.ibatis.binding.BindingException: Parameter \'drillId\' not found. Available parameters are [arg1, arg0, param1, param2]', '2026-03-22 21:31:36', 2894, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (188, '演练管理', 2, 'com.ruoyi.web.controller.system.DrillController.togglePersonnelStatus()', 'POST', 1, 'admin', '研发部门', '/cosl/api/drill/togglePersonnelStatus', '127.0.0.1', '内网IP', '{\"drillId\":[\"1\"],\"personId\":[\"1\"],\"status\":[\"已签到\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-22 21:34:00', 2851, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (189, '演练管理', 2, 'com.ruoyi.web.controller.system.DrillController.togglePersonnelStatus()', 'POST', 1, 'admin', '研发部门', '/cosl/api/drill/togglePersonnelStatus', '127.0.0.1', '内网IP', '{\"drillId\":[\"1\"],\"personId\":[\"1\"],\"status\":[\"已签到\"]}', '{\"msg\":\"操作失败\",\"code\":500}', 0, NULL, '2026-03-22 21:35:54', 75, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (190, '演练管理', 2, 'com.ruoyi.web.controller.system.DrillController.togglePersonnelStatus()', 'POST', 1, 'admin', '研发部门', '/cosl/api/drill/togglePersonnelStatus', '127.0.0.1', '内网IP', '{\"drillId\":[\"1\"],\"personId\":[\"1\"],\"status\":[\"已签到\"]}', '{\"msg\":\"操作失败\",\"code\":500}', 0, NULL, '2026-03-22 21:36:34', 18381, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (191, '演练管理', 2, 'com.ruoyi.web.controller.system.DrillController.togglePersonnelStatus()', 'POST', 1, 'admin', '研发部门', '/cosl/api/drill/togglePersonnelStatus', '127.0.0.1', '内网IP', '{\"drillId\":[\"1\"],\"personId\":[\"1\"],\"status\":[\"已签到\"]}', '{\"msg\":\"操作失败\",\"code\":500}', 0, NULL, '2026-03-22 21:37:32', 3692, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (192, '演练管理', 2, 'com.ruoyi.web.controller.system.DrillController.togglePersonnelStatus()', 'POST', 1, 'admin', '研发部门', '/cosl/api/drill/togglePersonnelStatus', '127.0.0.1', '内网IP', '{\"drillId\":[\"1\"],\"personId\":[\"1\"],\"status\":[\"已签到\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-22 21:38:30', 80, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (193, '演练管理', 2, 'com.ruoyi.web.controller.system.DrillController.drillDetail()', 'POST', 1, 'admin', '研发部门', '/cosl/api/drill/detail', '127.0.0.1', '内网IP', '{\"id\":[\"1\"]}', '{\"msg\":\"操作成功\",\"code\":0,\"data\":{\"actualCount\":48,\"createTime\":1773241393000,\"endTime\":1774185732000,\"expectedCount\":50,\"id\":1,\"name\":\"春季消防演习\",\"params\":{},\"startTime\":1774185679000,\"status\":\"COMPLETED\"}}', 0, NULL, '2026-03-30 21:55:16', 109, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (194, '房间管理', 2, 'com.ruoyi.web.controller.system.RoomConfigController.toggleLock()', 'POST', 1, 'admin', '研发部门', '/cosl/api/room/toggleLock', '127.0.0.1', '内网IP', '{\"id\":[\"2\"],\"status\":[\"OCCUPIED\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-03-31 21:36:34', 137, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (195, '房间管理', 2, 'com.ruoyi.web.controller.system.RoomConfigController.batchLock()', 'POST', 1, 'admin', '研发部门', '/cosl/api/room/batchLock', '127.0.0.1', '内网IP', '{\"ids\":[\"2\"],\"status\":[\"OCCUPIED\"]}', '{\"msg\":\"成功0个房间\",\"code\":0}', 0, NULL, '2026-03-31 21:37:35', 8, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (196, '床位状态管理', 2, 'com.ruoyi.web.controller.system.RoomBedController.toggleLock()', 'POST', 1, 'admin', '研发部门', '/cosl/api/roomBed/toggleLock', '127.0.0.1', '内网IP', '{\"ids\":[\"1,2\"],\"status\":[\"LOCKED\"]}', '{\"msg\":\"更新成功\",\"code\":0}', 0, NULL, '2026-03-31 21:43:52', 146, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (197, '救生艇管理', 1, 'com.ruoyi.web.controller.system.LifeboatController.addLifeboatConfig()', 'POST', 1, 'admin', '研发部门', '/cosl/api/lifeboat/add', '127.0.0.1', '内网IP', '{\"boatName\":\"救生艇A1\",\"createBy\":\"admin\",\"createTime\":1775052096490,\"deleted\":0,\"evacuationPointId\":1,\"maxCapacity\":40,\"params\":{},\"updateTime\":1775052096490} ', NULL, 1, '\r\n### Error updating database.  Cause: java.sql.SQLException: Field \'boat_no\' doesn\'t have a default value\r\n### The error may exist in file [D:\\emar\\cosl\\cosl-system\\target\\classes\\mapper\\system\\LifeboatConfigMapper.xml]\r\n### The error may involve com.ruoyi.system.mapper.LifeboatConfigMapper.insertLifeboatConfig-Inline\r\n### The error occurred while setting parameters\r\n### SQL: insert into lifeboat_config          ( boat_name,             max_capacity,             evacuation_point_id,                                       create_time,             update_time,             deleted )           values ( ?,             ?,             ?,                                       ?,             ?,             ? )\r\n### Cause: java.sql.SQLException: Field \'boat_no\' doesn\'t have a default value\n; Field \'boat_no\' doesn\'t have a default value; nested exception is java.sql.SQLException: Field \'boat_no\' doesn\'t have a default value', '2026-04-01 22:01:36', 3623, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (198, '救生艇管理', 1, 'com.ruoyi.web.controller.system.LifeboatController.addLifeboatConfig()', 'POST', 1, 'admin', '研发部门', '/cosl/api/lifeboat/add', '127.0.0.1', '内网IP', '{\"boatName\":\"救生艇A1\",\"createBy\":\"admin\",\"createTime\":1775052121716,\"deleted\":0,\"evacuationPointId\":1,\"id\":1,\"maxCapacity\":40,\"params\":{},\"updateTime\":1775052121716} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-04-01 22:02:01', 4129, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (199, '救生艇管理', 2, 'com.ruoyi.web.controller.system.LifeboatController.editLifeboatConfig()', 'POST', 1, 'admin', '研发部门', '/cosl/api/lifeboat/edit', '127.0.0.1', '内网IP', '{\"boatName\":\"救生艇A2\",\"evacuationPointId\":1,\"id\":1,\"maxCapacity\":40,\"params\":{},\"updateBy\":\"admin\",\"updateTime\":1775052206610} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-04-01 22:03:26', 26, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (200, '救生艇管理', 1, 'com.ruoyi.web.controller.system.LifeboatController.addLifeboatConfig()', 'POST', 1, 'admin', '研发部门', '/cosl/api/lifeboat/add', '127.0.0.1', '内网IP', '{\"boatName\":\"救生艇A1\",\"createBy\":\"admin\",\"createTime\":1775052269259,\"deleted\":0,\"evacuationPointId\":1,\"id\":2,\"maxCapacity\":40,\"params\":{},\"updateTime\":1775052269259} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-04-01 22:04:29', 3890, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (201, '救生艇管理', 1, 'com.ruoyi.web.controller.system.LifeboatController.addLifeboatConfig()', 'POST', 1, 'admin', '研发部门', '/cosl/api/lifeboat/add', '127.0.0.1', '内网IP', '{\"boatName\":\"救生艇A6\",\"createBy\":\"admin\",\"createTime\":1775052276903,\"deleted\":0,\"evacuationPointId\":1,\"id\":3,\"maxCapacity\":40,\"params\":{},\"updateTime\":1775052276903} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-04-01 22:04:36', 31, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (202, '救生艇管理', 3, 'com.ruoyi.web.controller.system.LifeboatController.removeLifeboatConfigs()', 'POST', 1, 'admin', '研发部门', '/cosl/api/lifeboat/remove', '127.0.0.1', '内网IP', '{\"ids\":[\"1,2\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-04-01 22:05:26', 35, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (203, '救生艇管理', 3, 'com.ruoyi.web.controller.system.LifeboatController.removeLifeboatConfigs()', 'POST', 1, 'admin', '研发部门', '/cosl/api/lifeboat/remove', '127.0.0.1', '内网IP', '{\"ids\":[\"1,2\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-04-01 22:07:00', 68867, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (204, '撤离点管理', 1, 'com.ruoyi.web.controller.system.LifeboatController.addEvacuationPoint()', 'POST', 1, 'admin', '研发部门', '/cosl/api/lifeboat/evacuationPoint/add', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"createTime\":1775052746028,\"deleted\":0,\"floor\":\"1\",\"id\":1,\"params\":{},\"pointName\":\"撤离点A\",\"updateTime\":1775052746028} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-04-01 22:12:26', 146, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (205, '撤离点管理', 1, 'com.ruoyi.web.controller.system.LifeboatController.addEvacuationPoint()', 'POST', 1, 'admin', '研发部门', '/cosl/api/lifeboat/evacuationPoint/add', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"params\":{},\"pointName\":\"撤离点A\"} ', '{\"msg\":\"新增撤离点\'撤离点A\'失败，撤离点名称已存在\",\"code\":500}', 0, NULL, '2026-04-01 22:13:08', 8, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (206, '撤离点管理', 1, 'com.ruoyi.web.controller.system.LifeboatController.addEvacuationPoint()', 'POST', 1, 'admin', '研发部门', '/cosl/api/lifeboat/evacuationPoint/add', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"createTime\":1775052795278,\"deleted\":0,\"floor\":\"1\",\"id\":2,\"params\":{},\"pointName\":\"撤离点B\",\"updateTime\":1775052795278} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-04-01 22:13:15', 42, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (207, '撤离点管理', 1, 'com.ruoyi.web.controller.system.LifeboatController.addEvacuationPoint()', 'POST', 1, 'admin', '研发部门', '/cosl/api/lifeboat/evacuationPoint/add', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"params\":{},\"pointName\":\"撤离点B\"} ', '{\"msg\":\"新增撤离点\'撤离点B\'失败，撤离点名称已存在\",\"code\":500}', 0, NULL, '2026-04-01 22:14:36', 33103, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (208, '撤离点管理', 1, 'com.ruoyi.web.controller.system.LifeboatController.addEvacuationPoint()', 'POST', 1, 'admin', '研发部门', '/cosl/api/lifeboat/evacuationPoint/add', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"createTime\":1775052931783,\"deleted\":0,\"floor\":\"1\",\"id\":4,\"params\":{},\"pointName\":\"撤离点c\",\"updateTime\":1775052931783} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-04-01 22:15:31', 42843, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (209, '撤离点管理', 1, 'com.ruoyi.web.controller.system.LifeboatController.addEvacuationPoint()', 'POST', 1, 'admin', '研发部门', '/cosl/api/lifeboat/evacuationPoint/add', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"createTime\":1775052931787,\"deleted\":0,\"floor\":\"1\",\"id\":3,\"params\":{},\"pointName\":\"撤离点c\",\"updateTime\":1775052931787} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-04-01 22:15:31', 1141, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (210, '撤离点管理', 1, 'com.ruoyi.web.controller.system.LifeboatController.addEvacuationPoint()', 'POST', 1, 'admin', '研发部门', '/cosl/api/lifeboat/evacuationPoint/add', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"params\":{},\"pointName\":\"撤离点c\"} ', '{\"msg\":\"新增撤离点\'撤离点c\'失败，撤离点名称已存在\",\"code\":500}', 0, NULL, '2026-04-01 22:18:02', 147826, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (211, '撤离点管理', 1, 'com.ruoyi.web.controller.system.LifeboatController.addEvacuationPoint()', 'POST', 1, 'admin', '研发部门', '/cosl/api/lifeboat/evacuationPoint/add', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"params\":{},\"pointName\":\"撤离点c\"} ', '{\"msg\":\"新增撤离点\'撤离点c\'失败，撤离点名称已存在\",\"code\":500}', 0, NULL, '2026-04-01 22:18:02', 746, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (212, '撤离点管理', 1, 'com.ruoyi.web.controller.system.LifeboatController.addEvacuationPoint()', 'POST', 1, 'admin', '研发部门', '/cosl/api/lifeboat/evacuationPoint/add', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"params\":{},\"pointName\":\"撤离点c\"} ', '{\"msg\":\"新增撤离点\'撤离点c\'失败，撤离点名称已存在\",\"code\":500}', 0, NULL, '2026-04-01 22:22:05', 238217, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (213, '撤离点管理', 1, 'com.ruoyi.web.controller.system.LifeboatController.addEvacuationPoint()', 'POST', 1, 'admin', '研发部门', '/cosl/api/lifeboat/evacuationPoint/add', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"params\":{},\"pointName\":\"撤离点c\",\"xAxis\":11.5,\"yAxis\":22.3} ', '{\"msg\":\"新增撤离点\'撤离点c\'失败，撤离点名称已存在\",\"code\":500}', 0, NULL, '2026-04-01 22:24:17', 6511, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (214, '撤离点管理', 1, 'com.ruoyi.web.controller.system.LifeboatController.addEvacuationPoint()', 'POST', 1, 'admin', '研发部门', '/cosl/api/lifeboat/evacuationPoint/add', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"createTime\":1775053492781,\"deleted\":0,\"floor\":\"1\",\"id\":5,\"params\":{},\"pointName\":\"撤离点D\",\"updateTime\":1775053492781,\"xAxis\":11.5,\"yAxis\":22.3} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-04-01 22:24:55', 5811, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (215, '撤离点管理', 2, 'com.ruoyi.web.controller.system.LifeboatController.editEvacuationPoint()', 'POST', 1, 'admin', '研发部门', '/cosl/api/lifeboat/evacuationPoint/edit', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"id\":1,\"params\":{},\"pointName\":\"撤离点11\",\"updateBy\":\"admin\",\"updateTime\":1775053563901,\"xAxis\":11.5,\"yAxis\":22.3} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-04-01 22:26:03', 30, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (216, '撤离点管理', 3, 'com.ruoyi.web.controller.system.LifeboatController.removeEvacuationPoints()', 'POST', 1, 'admin', '研发部门', '/cosl/api/lifeboat/evacuationPoint/remove', '127.0.0.1', '内网IP', '{\"ids\":[\"1,2\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-04-01 22:26:45', 35, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (217, '人员管理', 2, 'com.ruoyi.web.controller.system.PersonController.batchUpdateRoomInfo()', 'POST', 1, 'admin', '研发部门', '/cosl/api/person/batchUpdateRoomInfo', '127.0.0.1', '内网IP', '[{\"bedId\":201,\"id\":1,\"roomId\":101},{\"bedId\":202,\"id\":2,\"roomId\":101},{\"bedId\":203,\"id\":3,\"roomId\":102}] ', '{\"msg\":\"\\r\\n### Error updating database.  Cause: java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'update person\\n             SET room_id = 101,\\n                bed_id = 202,\\n    \' at line 9\\r\\n### The error may exist in file [D:\\\\emar\\\\cosl\\\\cosl-system\\\\target\\\\classes\\\\mapper\\\\system\\\\PersonMapper.xml]\\r\\n### The error may involve defaultParameterMap\\r\\n### The error occurred while setting parameters\\r\\n### SQL: update person              SET room_id = ?,                 bed_id = ?,                                                   update_time = sysdate()              where id = ?          ;              update person              SET room_id = ?,                 bed_id = ?,                                                   update_time = sysdate()              where id = ?          ;              update person              SET room_id = ?,                 bed_id = ?,                                                   update_time = sysdate()              where id = ?\\r\\n### Cause: java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'update person\\n             SET room_id = 101,\\n                bed_id = 202,\\n    \' at line 9\\n; bad SQL grammar []; nested exception is java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'update person\\n             SET room_id = 101,\\n                bed_id = 202,\\n    \' at line 9\",\"code\":500}', 0, NULL, '2026-04-02 22:42:57', 144, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (218, '人员管理', 2, 'com.ruoyi.web.controller.system.PersonController.batchUpdateRoomInfo()', 'POST', 1, 'admin', '研发部门', '/cosl/api/person/batchUpdateRoomInfo', '127.0.0.1', '内网IP', '[{\"bedId\":201,\"id\":1,\"roomId\":101},{\"bedId\":202,\"id\":2,\"roomId\":101},{\"bedId\":203,\"id\":3,\"roomId\":102}] ', '{\"msg\":\"\\r\\n### Error updating database.  Cause: java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'update person\\n             SET room_id = 101,\\n                bed_id = 202,\\n    \' at line 9\\r\\n### The error may exist in file [D:\\\\emar\\\\cosl\\\\cosl-system\\\\target\\\\classes\\\\mapper\\\\system\\\\PersonMapper.xml]\\r\\n### The error may involve defaultParameterMap\\r\\n### The error occurred while setting parameters\\r\\n### SQL: update person              SET room_id = ?,                 bed_id = ?,                                                   update_time = sysdate()              where id = ?          ;              update person              SET room_id = ?,                 bed_id = ?,                                                   update_time = sysdate()              where id = ?          ;              update person              SET room_id = ?,                 bed_id = ?,                                                   update_time = sysdate()              where id = ?\\r\\n### Cause: java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'update person\\n             SET room_id = 101,\\n                bed_id = 202,\\n    \' at line 9\\n; bad SQL grammar []; nested exception is java.sql.SQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near \'update person\\n             SET room_id = 101,\\n                bed_id = 202,\\n    \' at line 9\",\"code\":500}', 0, NULL, '2026-04-02 22:46:25', 45374, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (219, '人员管理', 2, 'com.ruoyi.web.controller.system.PersonController.batchUpdateRoomInfo()', 'POST', 1, 'admin', '研发部门', '/cosl/api/person/batchUpdateRoomInfo', '127.0.0.1', '内网IP', '[{\"bedId\":201,\"id\":1,\"roomId\":101},{\"bedId\":202,\"id\":2,\"roomId\":101},{\"bedId\":203,\"id\":3,\"roomId\":102}] ', '{\"msg\":\"成功更新1条记录\",\"code\":0}', 0, NULL, '2026-04-02 22:53:02', 3444, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (220, '平台数据统计', 0, 'com.ruoyi.web.controller.system.PlatformStatsController.getPlatformStats()', 'GET', 1, 'admin', '研发部门', '/cosl/api/platform/stats', '127.0.0.1', '内网IP', '', '{\"msg\":\"操作成功\",\"code\":0,\"data\":{\"cameraStats\":{\"online\":2,\"total\":2},\"drillStats\":{\"thisMonth\":0,\"total\":1},\"lifeboatStats\":{\"free\":0,\"total\":1},\"personStats\":{\"current\":2,\"enter\":0,\"leave\":0,\"total\":2},\"roomStats\":{\"free\":0,\"total\":3}}}', 0, NULL, '2026-04-04 19:55:44', 206, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (221, '证书到期提醒', 0, 'com.ruoyi.web.controller.system.CertificateAlertController.getAlertList()', 'GET', 1, 'admin', '研发部门', '/cosl/api/alert/list', '127.0.0.1', '内网IP', '', '{\"msg\":\"操作成功\",\"code\":0,\"data\":[{\"alertTime\":1775365765859,\"content\":\"张yu的安全证书已过期95天\",\"count\":2,\"persons\":[{\"certificateExpireDate\":1767110400000,\"company\":\"XX海洋工程有限公司\",\"expiredDays\":95,\"name\":\"张yu\",\"personId\":1,\"position\":\"轮机长\"}],\"title\":\"证件已过期\",\"type\":\"EXPIRED\"}]}', 0, NULL, '2026-04-05 13:09:25', 121, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (222, '证书到期提醒', 0, 'com.ruoyi.web.controller.system.CertificateAlertController.getAlertList()', 'GET', 1, 'admin', '研发部门', '/cosl/api/alert/list', '127.0.0.1', '内网IP', '', '{\"msg\":\"操作成功\",\"code\":0,\"data\":[{\"alertTime\":1775365957154,\"content\":\"电饭锅的安全证书已过期95天\",\"count\":2,\"persons\":[{\"certificateExpireDate\":1767110400000,\"company\":\"XX海洋工程有限公司\",\"expiredDays\":95,\"name\":\"电饭锅\",\"personId\":2,\"position\":\"轮机长\"}],\"title\":\"证件已过期\",\"type\":\"EXPIRED\"}]}', 0, NULL, '2026-04-05 13:12:37', 3033, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (223, '证书到期提醒', 0, 'com.ruoyi.web.controller.system.CertificateAlertController.getAlertList()', 'GET', 1, 'admin', '研发部门', '/cosl/api/alert/list', '127.0.0.1', '内网IP', '', '{\"msg\":\"操作成功\",\"code\":0,\"data\":[{\"alertTime\":1775365998443,\"content\":\"电饭锅的安全证书已过期95天\",\"count\":2,\"persons\":[{\"certificateExpireDate\":1767110400000,\"company\":\"XX海洋工程有限公司\",\"expiredDays\":95,\"name\":\"电饭锅\",\"personId\":2,\"position\":\"轮机长\"}],\"title\":\"证件已过期\",\"type\":\"EXPIRED\"}]}', 0, NULL, '2026-04-05 13:19:12', 363394, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (224, '证书到期提醒', 0, 'com.ruoyi.web.controller.system.CertificateAlertController.getAlertList()', 'GET', 1, 'admin', '研发部门', '/cosl/api/alert/list', '127.0.0.1', '内网IP', '', '{\"msg\":\"操作成功\",\"code\":0,\"data\":[{\"alertTime\":1775366408639,\"content\":\"电饭锅的安全证书已过期95天\",\"count\":2,\"persons\":[{\"certificateExpireDate\":1767110400000,\"company\":\"XX海洋工程有限公司\",\"expiredDays\":95,\"name\":\"电饭锅\",\"personId\":2,\"position\":\"轮机长\"}],\"title\":\"证件已过期\",\"type\":\"EXPIRED\"}]}', 0, NULL, '2026-04-05 13:20:09', 3154, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (225, '证书到期提醒', 0, 'com.ruoyi.web.controller.system.CertificateAlertController.getAlertList()', 'GET', 1, 'admin', '研发部门', '/cosl/api/alert/list', '127.0.0.1', '内网IP', '', '{\"msg\":\"操作成功\",\"code\":0,\"data\":[{\"alertTime\":1775366492020,\"content\":\"电饭锅的安全证书已过期95天\",\"count\":2,\"persons\":[{\"certificateExpireDate\":1767110400000,\"company\":\"XX海洋工程有限公司\",\"expiredDays\":95,\"name\":\"电饭锅\",\"personId\":2,\"position\":\"轮机长\"}],\"title\":\"证件已过期\",\"type\":\"EXPIRED\"}]}', 0, NULL, '2026-04-05 13:22:10', 38787, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (226, '证书到期提醒', 0, 'com.ruoyi.web.controller.system.CertificateAlertController.getAlertList()', 'GET', 1, 'admin', '研发部门', '/cosl/api/alert/list', '127.0.0.1', '内网IP', '', '{\"msg\":\"操作成功\",\"code\":0,\"data\":[{\"alertTime\":1775366756162,\"content\":\"电饭锅的安全证书已过期95天\",\"count\":2,\"persons\":[{\"certificateExpireDate\":1767110400000,\"company\":\"XX海洋工程有限公司\",\"expiredDays\":95,\"name\":\"张yu\",\"personId\":1,\"position\":\"轮机长\"},{\"certificateExpireDate\":1767110400000,\"company\":\"XX海洋工程有限公司\",\"expiredDays\":95,\"name\":\"电饭锅\",\"personId\":2,\"position\":\"轮机长\"}],\"title\":\"证件已过期\",\"type\":\"EXPIRED\"}]}', 0, NULL, '2026-04-05 13:26:01', 5707, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (227, '证书到期提醒', 0, 'com.ruoyi.web.controller.system.CertificateAlertController.getAlertList()', 'GET', 1, 'admin', '研发部门', '/cosl/api/alert/list', '127.0.0.1', '内网IP', '', '{\"msg\":\"操作成功\",\"code\":0,\"data\":[{\"alertTime\":1775366945355,\"content\":\"1人证件将在30天内到期\",\"count\":1,\"description\":\"持续提醒\",\"persons\":[{\"certificateExpireDate\":1777046400000,\"company\":\"XX海杨工程有限公司\",\"expiredDays\":19,\"name\":\"金银花\",\"personId\":3,\"position\":\"船长\"}],\"title\":\"证件即将到期\",\"type\":\"EXPIRING_SOON\"},{\"alertTime\":1775366945377,\"content\":\"电饭锅的安全证书已过期95天\",\"count\":2,\"persons\":[{\"certificateExpireDate\":1767110400000,\"company\":\"XX海洋工程有限公司\",\"expiredDays\":95,\"name\":\"张yu\",\"personId\":1,\"position\":\"轮机长\"},{\"certificateExpireDate\":1767110400000,\"company\":\"XX海洋工程有限公司\",\"expiredDays\":95,\"name\":\"电饭锅\",\"personId\":2,\"position\":\"轮机长\"}],\"title\":\"证件已过期\",\"type\":\"EXPIRED\"}]}', 0, NULL, '2026-04-05 13:29:05', 46, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (228, '新增楼层配置', 1, 'com.ruoyi.web.controller.system.FloorConfigController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/floor/add', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"createTime\":1775369926850,\"deleted\":0,\"floorName\":\"L5\",\"floorNo\":\"5\",\"id\":5,\"params\":{},\"sortOrder\":5,\"status\":\"ACTIVE\"} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-04-05 14:18:46', 98, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (229, '楼层配置管理', 2, 'com.ruoyi.web.controller.system.FloorConfigController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/floor/edit', '127.0.0.1', '内网IP', '{\"floorName\":\"L5\",\"floorNo\":\"5\",\"id\":5,\"params\":{},\"sortOrder\":5,\"status\":\"STOP\",\"updateBy\":\"admin\",\"updateTime\":1775370060274} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-04-05 14:21:00', 22, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (230, '楼层配置管理', 3, 'com.ruoyi.web.controller.system.FloorConfigController.remove()', 'POST', 1, 'admin', '研发部门', '/cosl/api/floor/remove', '127.0.0.1', '内网IP', '{\"ids\":[\"5\"]}', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-04-05 14:21:58', 58, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (231, '摄像头管理', 2, 'com.ruoyi.web.controller.system.CameraController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/edit', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"id\":1,\"ip\":\"192.168.1.186\",\"name\":\"Camera 3\",\"params\":{},\"remark\":\"Entrance\",\"status\":\"online\",\"updateBy\":\"admin\",\"xAxis\":11.5,\"yAxis\":22.3} ', '{\"msg\":\"操作失败\",\"code\":500}', 0, NULL, '2026-04-05 14:57:03', 88, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (232, '摄像头管理', 2, 'com.ruoyi.web.controller.system.CameraController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/edit', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"id\":1,\"ip\":\"192.168.1.186\",\"name\":\"Camera 3\",\"params\":{},\"remark\":\"Entrance\",\"status\":\"online\",\"updateBy\":\"admin\",\"xAxis\":11.5,\"yAxis\":22.3} ', '{\"msg\":\"操作失败\",\"code\":500}', 0, NULL, '2026-04-05 14:59:19', 103008, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (233, '摄像头管理', 2, 'com.ruoyi.web.controller.system.CameraController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/edit', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"id\":1,\"ip\":\"192.168.1.186\",\"name\":\"Camera 3\",\"params\":{},\"remark\":\"Entrance\",\"status\":\"online\",\"updateBy\":\"admin\",\"xAxis\":11.5,\"yAxis\":22.3} ', '{\"msg\":\"操作失败\",\"code\":500}', 0, NULL, '2026-04-05 15:01:19', 7326, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (234, '摄像头管理', 2, 'com.ruoyi.web.controller.system.CameraController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/edit', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"id\":1,\"ip\":\"192.168.1.186\",\"name\":\"Camera 3\",\"params\":{},\"remark\":\"Entrance\",\"status\":\"online\",\"updateBy\":\"admin\",\"xAxis\":11.5,\"yAxis\":22.3} ', '{\"msg\":\"操作失败\",\"code\":500}', 0, NULL, '2026-04-05 15:02:35', 49502, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (235, '摄像头管理', 2, 'com.ruoyi.web.controller.system.CameraController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/edit', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"id\":3,\"ip\":\"192.168.1.186\",\"name\":\"Camera 3\",\"params\":{},\"remark\":\"Entrance\",\"status\":\"online\",\"updateBy\":\"admin\",\"xAxis\":11.5,\"yAxis\":22.3} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-04-05 15:02:43', 5112, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (236, '摄像头管理', 2, 'com.ruoyi.web.controller.system.CameraController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/edit', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"id\":3,\"ip\":\"192.168.1.186\",\"name\":\"Camera 3\",\"params\":{},\"remark\":\"Entrance\",\"status\":\"online\",\"xAxis\":11.5,\"yAxis\":22.3} ', '{\"msg\":\"修改摄像头\'Camera 3\'失败，IP 地址已存在\",\"code\":500}', 0, NULL, '2026-04-05 15:03:00', 14333, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (237, '摄像头管理', 2, 'com.ruoyi.web.controller.system.CameraController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/edit', '127.0.0.1', '内网IP', '{\"floor\":\"1\",\"id\":3,\"ip\":\"192.168.1.186\",\"name\":\"Camera 3\",\"params\":{},\"remark\":\"Entrance\",\"status\":\"online\",\"updateBy\":\"admin\",\"xAxis\":11.5,\"yAxis\":22.3} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-04-05 15:04:05', 4369, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (238, '救生艇管理', 2, 'com.ruoyi.web.controller.system.LifeboatController.editLifeboatConfig()', 'POST', 1, 'admin', '研发部门', '/cosl/api/lifeboat/edit', '127.0.0.1', '内网IP', '{\"boatName\":\"救生艇A2\",\"evacuationPointId\":1,\"id\":3,\"maxCapacity\":40,\"params\":{},\"updateBy\":\"admin\",\"updateTime\":1775372774836} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-04-05 15:06:14', 30, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (239, '人员管理', 2, 'com.ruoyi.web.controller.system.PersonController.editSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/person/edit', '127.0.0.1', '内网IP', '{\"bedId\":202,\"blacklistFlag\":0,\"certificateExpireDate\":1767110400000,\"company\":\"XX海洋工程有限公司\",\"createTime\":1685586600000,\"deleted\":0,\"id\":1,\"idCard\":\"110101179001011234\",\"lifeboatId\":5,\"mtsCardNo\":\"MTS1234567894\",\"name\":\"张鱼\",\"onboardDate\":1685577600000,\"position\":\"轮机长\",\"roomId\":101,\"status\":\"ONBOARD\",\"updateTime\":1685586600000} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-04-05 15:08:37', 115, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (240, '摄像头管理', 1, 'com.ruoyi.web.controller.system.CameraController.addGroup()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/group/add', '127.0.0.1', '内网IP', '{\"groupName\":\"cosl\",\"params\":{},\"parentId\":\"\"} ', NULL, 1, 'java.util.HashMap cannot be cast to com.alibaba.fastjson.JSONObject', '2026-04-13 14:47:30', 92, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (241, '摄像头管理', 1, 'com.ruoyi.web.controller.system.CameraController.addGroup()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/group/add', '127.0.0.1', '内网IP', '{\"groupName\":\"cosl\",\"params\":{},\"parentId\":\"\"} ', NULL, 1, 'java.util.HashMap cannot be cast to com.alibaba.fastjson.JSONObject', '2026-04-13 14:48:45', 57357, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (242, '摄像头管理', 1, 'com.ruoyi.web.controller.system.CameraController.addGroup()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/group/add', '127.0.0.1', '内网IP', '{\"groupName\":\"cosl\",\"params\":{},\"parentId\":\"\"} ', '{\"msg\":\"<!doctype html><html lang=\\\"en\\\"><head><title>HTTP Status 404 – Not Found</title><style type=\\\"text/css\\\">body {font-family:Tahoma,Arial,sans-serif;} h1, h2, h3, b {color:white;background-color:#525D76;} h1 {font-size:22px;} h2 {font-size:16px;} h3 {font-size:14px;} p {font-size:12px;} a {color:black;} .line {height:1px;background-color:#525D76;border:none;}</style></head><body><h1>HTTP Status 404 – Not Found</h1><hr class=\\\"line\\\" /><p><b>Type</b> Status Report</p><p><b>Description</b> The origin server did not find a current representation for the target resource or is not willing to disclose that one exists.</p><hr class=\\\"line\\\" /><h3>Apache Tomcat/9.0.112</h3></body></html>\",\"code\":0}', 0, NULL, '2026-04-13 14:50:31', 23354, 'PLATFORM-A01');
 
 -- ----------------------------
 -- Table structure for sys_post
@@ -1118,16 +1140,17 @@ CREATE TABLE `sys_post`  (
   `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT '' COMMENT '更新者',
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '备注',
+  `platform_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '钻井平台编号',
   PRIMARY KEY (`post_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '岗位信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_post
 -- ----------------------------
-INSERT INTO `sys_post` VALUES (1, 'ceo', '董事长', 1, '0', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_post` VALUES (2, 'se', '项目经理', 2, '0', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_post` VALUES (3, 'hr', '人力资源', 3, '0', 'admin', '2026-03-05 22:17:41', '', NULL, '');
-INSERT INTO `sys_post` VALUES (4, 'user', '普通员工', 4, '0', 'admin', '2026-03-05 22:17:41', '', NULL, '');
+INSERT INTO `sys_post` VALUES (1, 'ceo', '董事长', 1, '0', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_post` VALUES (2, 'se', '项目经理', 2, '0', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_post` VALUES (3, 'hr', '人力资源', 3, '0', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_post` VALUES (4, 'user', '普通员工', 4, '0', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
 
 -- ----------------------------
 -- Table structure for sys_role
@@ -1146,14 +1169,15 @@ CREATE TABLE `sys_role`  (
   `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT '' COMMENT '更新者',
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '备注',
+  `platform_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '钻井平台编号',
   PRIMARY KEY (`role_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '角色信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_role
 -- ----------------------------
-INSERT INTO `sys_role` VALUES (1, '超级管理员', 'admin', 1, '1', '0', '0', 'admin', '2026-03-05 22:17:41', '', NULL, '超级管理员');
-INSERT INTO `sys_role` VALUES (2, '普通角色', 'common', 2, '2', '0', '0', 'admin', '2026-03-05 22:17:41', '', NULL, '普通角色');
+INSERT INTO `sys_role` VALUES (1, '超级管理员', 'admin', 1, '1', '0', '0', 'admin', '2026-03-05 22:17:41', '', NULL, '超级管理员', 'PLATFORM-A01');
+INSERT INTO `sys_role` VALUES (2, '普通角色', 'common', 2, '2', '0', '0', 'admin', '2026-03-05 22:17:41', '', NULL, '普通角色', 'PLATFORM-A01');
 
 -- ----------------------------
 -- Table structure for sys_role_dept
@@ -1162,15 +1186,16 @@ DROP TABLE IF EXISTS `sys_role_dept`;
 CREATE TABLE `sys_role_dept`  (
   `role_id` bigint(0) NOT NULL COMMENT '角色ID',
   `dept_id` bigint(0) NOT NULL COMMENT '部门ID',
+  `platform_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '钻井平台编号',
   PRIMARY KEY (`role_id`, `dept_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '角色和部门关联表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_role_dept
 -- ----------------------------
-INSERT INTO `sys_role_dept` VALUES (2, 100);
-INSERT INTO `sys_role_dept` VALUES (2, 101);
-INSERT INTO `sys_role_dept` VALUES (2, 105);
+INSERT INTO `sys_role_dept` VALUES (2, 100, 'PLATFORM-A01');
+INSERT INTO `sys_role_dept` VALUES (2, 101, 'PLATFORM-A01');
+INSERT INTO `sys_role_dept` VALUES (2, 105, 'PLATFORM-A01');
 
 -- ----------------------------
 -- Table structure for sys_role_menu
@@ -1179,97 +1204,98 @@ DROP TABLE IF EXISTS `sys_role_menu`;
 CREATE TABLE `sys_role_menu`  (
   `role_id` bigint(0) NOT NULL COMMENT '角色ID',
   `menu_id` bigint(0) NOT NULL COMMENT '菜单ID',
+  `platform_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '钻井平台编号',
   PRIMARY KEY (`role_id`, `menu_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '角色和菜单关联表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_role_menu
 -- ----------------------------
-INSERT INTO `sys_role_menu` VALUES (2, 1);
-INSERT INTO `sys_role_menu` VALUES (2, 2);
-INSERT INTO `sys_role_menu` VALUES (2, 3);
-INSERT INTO `sys_role_menu` VALUES (2, 4);
-INSERT INTO `sys_role_menu` VALUES (2, 100);
-INSERT INTO `sys_role_menu` VALUES (2, 101);
-INSERT INTO `sys_role_menu` VALUES (2, 102);
-INSERT INTO `sys_role_menu` VALUES (2, 103);
-INSERT INTO `sys_role_menu` VALUES (2, 104);
-INSERT INTO `sys_role_menu` VALUES (2, 105);
-INSERT INTO `sys_role_menu` VALUES (2, 106);
-INSERT INTO `sys_role_menu` VALUES (2, 107);
-INSERT INTO `sys_role_menu` VALUES (2, 108);
-INSERT INTO `sys_role_menu` VALUES (2, 109);
-INSERT INTO `sys_role_menu` VALUES (2, 110);
-INSERT INTO `sys_role_menu` VALUES (2, 111);
-INSERT INTO `sys_role_menu` VALUES (2, 112);
-INSERT INTO `sys_role_menu` VALUES (2, 113);
-INSERT INTO `sys_role_menu` VALUES (2, 114);
-INSERT INTO `sys_role_menu` VALUES (2, 115);
-INSERT INTO `sys_role_menu` VALUES (2, 116);
-INSERT INTO `sys_role_menu` VALUES (2, 500);
-INSERT INTO `sys_role_menu` VALUES (2, 501);
-INSERT INTO `sys_role_menu` VALUES (2, 1000);
-INSERT INTO `sys_role_menu` VALUES (2, 1001);
-INSERT INTO `sys_role_menu` VALUES (2, 1002);
-INSERT INTO `sys_role_menu` VALUES (2, 1003);
-INSERT INTO `sys_role_menu` VALUES (2, 1004);
-INSERT INTO `sys_role_menu` VALUES (2, 1005);
-INSERT INTO `sys_role_menu` VALUES (2, 1006);
-INSERT INTO `sys_role_menu` VALUES (2, 1007);
-INSERT INTO `sys_role_menu` VALUES (2, 1008);
-INSERT INTO `sys_role_menu` VALUES (2, 1009);
-INSERT INTO `sys_role_menu` VALUES (2, 1010);
-INSERT INTO `sys_role_menu` VALUES (2, 1011);
-INSERT INTO `sys_role_menu` VALUES (2, 1012);
-INSERT INTO `sys_role_menu` VALUES (2, 1013);
-INSERT INTO `sys_role_menu` VALUES (2, 1014);
-INSERT INTO `sys_role_menu` VALUES (2, 1015);
-INSERT INTO `sys_role_menu` VALUES (2, 1016);
-INSERT INTO `sys_role_menu` VALUES (2, 1017);
-INSERT INTO `sys_role_menu` VALUES (2, 1018);
-INSERT INTO `sys_role_menu` VALUES (2, 1019);
-INSERT INTO `sys_role_menu` VALUES (2, 1020);
-INSERT INTO `sys_role_menu` VALUES (2, 1021);
-INSERT INTO `sys_role_menu` VALUES (2, 1022);
-INSERT INTO `sys_role_menu` VALUES (2, 1023);
-INSERT INTO `sys_role_menu` VALUES (2, 1024);
-INSERT INTO `sys_role_menu` VALUES (2, 1025);
-INSERT INTO `sys_role_menu` VALUES (2, 1026);
-INSERT INTO `sys_role_menu` VALUES (2, 1027);
-INSERT INTO `sys_role_menu` VALUES (2, 1028);
-INSERT INTO `sys_role_menu` VALUES (2, 1029);
-INSERT INTO `sys_role_menu` VALUES (2, 1030);
-INSERT INTO `sys_role_menu` VALUES (2, 1031);
-INSERT INTO `sys_role_menu` VALUES (2, 1032);
-INSERT INTO `sys_role_menu` VALUES (2, 1033);
-INSERT INTO `sys_role_menu` VALUES (2, 1034);
-INSERT INTO `sys_role_menu` VALUES (2, 1035);
-INSERT INTO `sys_role_menu` VALUES (2, 1036);
-INSERT INTO `sys_role_menu` VALUES (2, 1037);
-INSERT INTO `sys_role_menu` VALUES (2, 1038);
-INSERT INTO `sys_role_menu` VALUES (2, 1039);
-INSERT INTO `sys_role_menu` VALUES (2, 1040);
-INSERT INTO `sys_role_menu` VALUES (2, 1041);
-INSERT INTO `sys_role_menu` VALUES (2, 1042);
-INSERT INTO `sys_role_menu` VALUES (2, 1043);
-INSERT INTO `sys_role_menu` VALUES (2, 1044);
-INSERT INTO `sys_role_menu` VALUES (2, 1045);
-INSERT INTO `sys_role_menu` VALUES (2, 1046);
-INSERT INTO `sys_role_menu` VALUES (2, 1047);
-INSERT INTO `sys_role_menu` VALUES (2, 1048);
-INSERT INTO `sys_role_menu` VALUES (2, 1049);
-INSERT INTO `sys_role_menu` VALUES (2, 1050);
-INSERT INTO `sys_role_menu` VALUES (2, 1051);
-INSERT INTO `sys_role_menu` VALUES (2, 1052);
-INSERT INTO `sys_role_menu` VALUES (2, 1053);
-INSERT INTO `sys_role_menu` VALUES (2, 1054);
-INSERT INTO `sys_role_menu` VALUES (2, 1055);
-INSERT INTO `sys_role_menu` VALUES (2, 1056);
-INSERT INTO `sys_role_menu` VALUES (2, 1057);
-INSERT INTO `sys_role_menu` VALUES (2, 1058);
-INSERT INTO `sys_role_menu` VALUES (2, 1059);
-INSERT INTO `sys_role_menu` VALUES (2, 1060);
-INSERT INTO `sys_role_menu` VALUES (2, 1061);
+INSERT INTO `sys_role_menu` VALUES (2, 1, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 2, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 3, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 4, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 100, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 101, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 102, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 103, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 104, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 105, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 106, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 107, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 108, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 109, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 110, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 111, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 112, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 113, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 114, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 115, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 116, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 500, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 501, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1000, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1001, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1002, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1003, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1004, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1005, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1006, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1007, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1008, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1009, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1010, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1011, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1012, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1013, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1014, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1015, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1016, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1017, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1018, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1019, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1020, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1021, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1022, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1023, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1024, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1025, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1026, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1027, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1028, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1029, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1030, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1031, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1032, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1033, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1034, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1035, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1036, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1037, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1038, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1039, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1040, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1041, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1042, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1043, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1044, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1045, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1046, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1047, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1048, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1049, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1050, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1051, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1052, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1053, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1054, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1055, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1056, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1057, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1058, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1059, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1060, 'PLATFORM-A01');
+INSERT INTO `sys_role_menu` VALUES (2, 1061, 'PLATFORM-A01');
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -1297,19 +1323,20 @@ CREATE TABLE `sys_user`  (
   `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT '' COMMENT '更新者',
   `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '备注',
+  `platform_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '钻井平台编号',
   PRIMARY KEY (`user_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 105 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '用户信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 103, 'admin', '管理员', '00', 'ry@163.com', '15888888888', '1', '', '29c67a30398638269fe600f73a054934', '111111', '0', '0', '127.0.0.1', '2026-04-09 23:24:47', NULL, 'admin', '2026-03-05 22:17:41', '', NULL, '管理员');
-INSERT INTO `sys_user` VALUES (2, 105, 'ry', '若依', '00', 'ry@qq.com', '15666666666', '1', '', '8e6d98b90472783cc73c17047ddccf36', '222222', '0', '0', '127.0.0.1', NULL, NULL, 'admin', '2026-03-05 22:17:41', '', NULL, '测试员');
-INSERT INTO `sys_user` VALUES (100, NULL, 'test', '测试', '00', '', '13666663333', '0', '', 'ba3191792f8b5c3d255ddae5f78c1b6e', 'be1d7b', '0', '0', '', NULL, '2026-03-07 11:04:15', 'admin', '2026-03-07 11:04:14', '', NULL, NULL);
-INSERT INTO `sys_user` VALUES (101, NULL, 'kaihang', '凯航', '00', '', '13899995555', '0', '', '452d76a1b03d0242da919d993720f9a8', '131523', '0', '0', '', NULL, '2026-03-07 11:08:20', 'admin', '2026-03-07 11:08:19', '', NULL, NULL);
-INSERT INTO `sys_user` VALUES (102, NULL, 'wukong', '李悟空', '00', '', '13712347896', '0', '', '60855e0fbfac206ebabc11f5e2dc876a', '6f6f06', '1', '0', '', NULL, '2026-03-07 12:46:52', 'admin', '2026-03-07 11:12:58', 'admin', '2026-03-07 12:46:52', NULL);
-INSERT INTO `sys_user` VALUES (103, NULL, 'wykong', '让人悟空', '00', '', '13788888888', '0', '', 'f21ee208d40dc594778541e63ceb1325', 'bf560e', '0', '2', '', NULL, '2026-03-07 12:05:10', 'admin', '2026-03-07 12:05:10', '', NULL, NULL);
-INSERT INTO `sys_user` VALUES (104, NULL, 'fdgs', '风格', '00', '', '13767888888', '0', '', '2fd481ba9cf84f946a2b8f735c77e32e', '7839a5', '0', '2', '', NULL, '2026-03-07 12:05:37', 'admin', '2026-03-07 12:05:37', '', NULL, NULL);
+INSERT INTO `sys_user` VALUES (1, 103, 'admin', '管理员', '00', 'ry@163.com', '15888888888', '1', '', '29c67a30398638269fe600f73a054934', '111111', '0', '0', '127.0.0.1', '2026-04-13 18:12:22', NULL, 'admin', '2026-03-05 22:17:41', '', NULL, '管理员', 'PLATFORM-A01');
+INSERT INTO `sys_user` VALUES (2, 105, 'ry', '若依', '00', 'ry@qq.com', '15666666666', '1', '', '8e6d98b90472783cc73c17047ddccf36', '222222', '0', '0', '127.0.0.1', NULL, NULL, 'admin', '2026-03-05 22:17:41', '', NULL, '测试员', 'PLATFORM-A01');
+INSERT INTO `sys_user` VALUES (100, NULL, 'test', '测试', '00', '', '13666663333', '0', '', 'ba3191792f8b5c3d255ddae5f78c1b6e', 'be1d7b', '0', '0', '', NULL, '2026-03-07 11:04:15', 'admin', '2026-03-07 11:04:14', '', NULL, NULL, 'PLATFORM-A01');
+INSERT INTO `sys_user` VALUES (101, NULL, 'kaihang', '凯航', '00', '', '13899995555', '0', '', '452d76a1b03d0242da919d993720f9a8', '131523', '0', '0', '', NULL, '2026-03-07 11:08:20', 'admin', '2026-03-07 11:08:19', '', NULL, NULL, 'PLATFORM-A01');
+INSERT INTO `sys_user` VALUES (102, NULL, 'wukong', '李悟空', '00', '', '13712347896', '0', '', '60855e0fbfac206ebabc11f5e2dc876a', '6f6f06', '1', '0', '', NULL, '2026-03-07 12:46:52', 'admin', '2026-03-07 11:12:58', 'admin', '2026-03-07 12:46:52', NULL, 'PLATFORM-A01');
+INSERT INTO `sys_user` VALUES (103, NULL, 'wykong', '让人悟空', '00', '', '13788888888', '0', '', 'f21ee208d40dc594778541e63ceb1325', 'bf560e', '0', '2', '', NULL, '2026-03-07 12:05:10', 'admin', '2026-03-07 12:05:10', '', NULL, NULL, 'PLATFORM-A01');
+INSERT INTO `sys_user` VALUES (104, NULL, 'fdgs', '风格', '00', '', '13767888888', '0', '', '2fd481ba9cf84f946a2b8f735c77e32e', '7839a5', '0', '2', '', NULL, '2026-03-07 12:05:37', 'admin', '2026-03-07 12:05:37', '', NULL, NULL, 'PLATFORM-A01');
 
 -- ----------------------------
 -- Table structure for sys_user_online
@@ -1327,13 +1354,14 @@ CREATE TABLE `sys_user_online`  (
   `start_timestamp` datetime(0) NULL DEFAULT NULL COMMENT 'session创建时间',
   `last_access_time` datetime(0) NULL DEFAULT NULL COMMENT 'session最后访问时间',
   `expire_time` int(0) NULL DEFAULT 0 COMMENT '超时时间，单位为分钟',
+  `platform_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '钻井平台编号',
   PRIMARY KEY (`sessionId`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '在线用户记录' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_user_online
 -- ----------------------------
-INSERT INTO `sys_user_online` VALUES ('fac2a6d2-bc77-4e8e-be3d-21ec1af2947f', 'admin', '研发部门', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', 'on_line', '2026-04-09 23:24:45', '2026-04-09 23:25:32', 1800000);
+INSERT INTO `sys_user_online` VALUES ('e38431cb-4a1c-4155-a3ab-e5cab2b0d953', 'admin', '研发部门', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', 'on_line', '2026-04-13 18:08:32', '2026-04-13 18:12:25', 1800000, 'PLATFORM-A01');
 
 -- ----------------------------
 -- Table structure for sys_user_post
@@ -1342,14 +1370,15 @@ DROP TABLE IF EXISTS `sys_user_post`;
 CREATE TABLE `sys_user_post`  (
   `user_id` bigint(0) NOT NULL COMMENT '用户ID',
   `post_id` bigint(0) NOT NULL COMMENT '岗位ID',
+  `platform_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '钻井平台编号',
   PRIMARY KEY (`user_id`, `post_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '用户与岗位关联表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_user_post
 -- ----------------------------
-INSERT INTO `sys_user_post` VALUES (1, 1);
-INSERT INTO `sys_user_post` VALUES (2, 2);
+INSERT INTO `sys_user_post` VALUES (1, 1, 'PLATFORM-A01');
+INSERT INTO `sys_user_post` VALUES (2, 2, 'PLATFORM-A01');
 
 -- ----------------------------
 -- Table structure for sys_user_role
@@ -1358,16 +1387,17 @@ DROP TABLE IF EXISTS `sys_user_role`;
 CREATE TABLE `sys_user_role`  (
   `user_id` bigint(0) NOT NULL COMMENT '用户ID',
   `role_id` bigint(0) NOT NULL COMMENT '角色ID',
+  `platform_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '钻井平台编号',
   PRIMARY KEY (`user_id`, `role_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '用户和角色关联表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_user_role
 -- ----------------------------
-INSERT INTO `sys_user_role` VALUES (1, 1);
-INSERT INTO `sys_user_role` VALUES (2, 2);
-INSERT INTO `sys_user_role` VALUES (100, 2);
-INSERT INTO `sys_user_role` VALUES (101, 2);
-INSERT INTO `sys_user_role` VALUES (102, 2);
+INSERT INTO `sys_user_role` VALUES (1, 1, 'PLATFORM-A01');
+INSERT INTO `sys_user_role` VALUES (2, 2, 'PLATFORM-A01');
+INSERT INTO `sys_user_role` VALUES (100, 2, 'PLATFORM-A01');
+INSERT INTO `sys_user_role` VALUES (101, 2, 'PLATFORM-A01');
+INSERT INTO `sys_user_role` VALUES (102, 2, 'PLATFORM-A01');
 
 SET FOREIGN_KEY_CHECKS = 1;
