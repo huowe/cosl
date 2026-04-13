@@ -7,14 +7,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<resultMap type="SysRoleDept" id="SysRoleDeptResult">
 		<result property="roleId"     column="role_id"      />
 		<result property="deptId"     column="dept_id"      />
+		<result property="platformNo" column="platform_no"  />
 	</resultMap>
 
 	<delete id="deleteRoleDeptByRoleId" parameterType="Long">
 		delete from sys_role_dept where role_id=#{roleId}
 	</delete>
 	
+	<delete id="deleteRoleDeptByRoleIdWithPlatform">
+		delete from sys_role_dept where role_id=#{roleId} and platform_no=#{platformNo}
+	</delete>
+	
 	<select id="selectCountRoleDeptByDeptId" resultType="Integer">
 	    select count(1) from sys_role_dept where dept_id=#{deptId}
+	</select>
+	
+	<select id="selectCountRoleDeptByDeptIdWithPlatform" resultType="Integer">
+	    select count(1) from sys_role_dept where dept_id=#{deptId} and platform_no=#{platformNo}
 	</select>
 	
 	<delete id="deleteRoleDept" parameterType="Long">
@@ -24,10 +33,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach> 
  	</delete>
 	
+	<delete id="deleteRoleDeptWithPlatform">
+ 		delete from sys_role_dept where role_id in
+ 		<foreach collection="ids" item="roleId" open="(" separator="," close=")">
+ 			#{roleId}
+        </foreach>
+        and platform_no = #{platformNo}
+ 	</delete>
+	
 	<insert id="batchRoleDept">
-		insert into sys_role_dept(role_id, dept_id) values
+		insert into sys_role_dept(role_id, dept_id, platform_no) values
 		<foreach item="item" index="index" collection="list" separator=",">
-			(#{item.roleId},#{item.deptId})
+			(#{item.roleId},#{item.deptId},#{item.platformNo})
 		</foreach>
 	</insert>
 	

@@ -20,6 +20,9 @@ public class SysDictType extends BaseEntity
     @Excel(name = "字典主键", cellType = ColumnType.NUMERIC)
     private Long dictId;
 
+    /** 钻井平台编号 */
+    private String platformNo;
+
     /** 字典名称 */
     @Excel(name = "字典名称")
     private String dictName;
@@ -40,6 +43,16 @@ public class SysDictType extends BaseEntity
     public void setDictId(Long dictId)
     {
         this.dictId = dictId;
+    }
+
+    public String getPlatformNo()
+    {
+        return platformNo;
+    }
+
+    public void setPlatformNo(String platformNo)
+    {
+        this.platformNo = platformNo;
     }
 
     @NotBlank(message = "字典名称不能为空")
@@ -81,6 +94,7 @@ public class SysDictType extends BaseEntity
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("dictId", getDictId())
+            .append("platformNo", getPlatformNo())
             .append("dictName", getDictName())
             .append("dictType", getDictType())
             .append("status", getStatus())

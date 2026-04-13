@@ -6,6 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<resultMap type="SysPost" id="SysPostResult">
 		<id     property="postId"        column="post_id"       />
+		<result property="platformNo"    column="platform_no"   />
 		<result property="postCode"      column="post_code"     />
 		<result property="postName"      column="post_name"     />
 		<result property="postSort"      column="post_sort"     />
@@ -18,13 +19,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	
 	<sql id="selectPostVo">
-        select post_id, post_code, post_name, post_sort, status, create_by, create_time, remark 
+        select post_id, platform_no, post_code, post_name, post_sort, status, create_by, create_time, remark 
 		from sys_post
     </sql>
 	
 	<select id="selectPostList" parameterType="SysPost" resultMap="SysPostResult">
 	    <include refid="selectPostVo"/>
 		<where>
+			<if test="platformNo != null and platformNo != ''">
+				AND platform_no = #{platformNo}
+			</if>
 			<if test="postCode != null and postCode != ''">
 				AND post_code like concat('%', #{postCode}, '%')
 			</if>
@@ -74,6 +78,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  	<update id="updatePost" parameterType="SysPost">
  		update sys_post
  		<set>
+ 			<if test="platformNo != null">platform_no = #{platformNo},</if>
  			<if test="postCode != null and postCode != ''">post_code = #{postCode},</if>
  			<if test="postName != null and postName != ''">post_name = #{postName},</if>
  			<if test="postSort != null and postSort != ''">post_sort = #{postSort},</if>
@@ -88,6 +93,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  	<insert id="insertPost" parameterType="SysPost" useGeneratedKeys="true" keyProperty="postId">
  		insert into sys_post(
  			<if test="postId != null and postId != 0">post_id,</if>
+ 			<if test="platformNo != null and platformNo != ''">platform_no,</if>
  			<if test="postCode != null and postCode != ''">post_code,</if>
  			<if test="postName != null and postName != ''">post_name,</if>
  			<if test="postSort != null and postSort != ''">post_sort,</if>
@@ -97,6 +103,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			create_time
  		)values(
  			<if test="postId != null and postId != 0">#{postId},</if>
+ 			<if test="platformNo != null and platformNo != ''">#{platformNo},</if>
  			<if test="postCode != null and postCode != ''">#{postCode},</if>
  			<if test="postName != null and postName != ''">#{postName},</if>
  			<if test="postSort != null and postSort != ''">#{postSort},</if>

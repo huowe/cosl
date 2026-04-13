@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.utils.AddressUtils;
 import com.ruoyi.common.utils.LogUtils;
+import com.ruoyi.common.utils.PlatformContext;
 import com.ruoyi.common.utils.ServletUtils;
 import com.ruoyi.common.utils.ShiroUtils;
 import com.ruoyi.common.utils.StringUtils;
@@ -44,6 +45,7 @@ public class AsyncFactory
             {
                 SysUserOnline online = new SysUserOnline();
                 online.setSessionId(String.valueOf(session.getId()));
+                online.setPlatformNo(PlatformContext.getPlatformNo());
                 online.setDeptName(session.getDeptName());
                 online.setLoginName(session.getLoginName());
                 online.setStartTimestamp(session.getStartTimestamp());
@@ -75,6 +77,8 @@ public class AsyncFactory
             {
                 // 远程查询操作地点
                 operLog.setOperLocation(AddressUtils.getRealAddressByIP(operLog.getOperIp()));
+                // 设置平台编号
+                operLog.setPlatformNo(PlatformContext.getPlatformNo());
                 SpringUtils.getBean(ISysOperLogService.class).insertOperlog(operLog);
             }
         };
@@ -113,6 +117,7 @@ public class AsyncFactory
                 String browser = UserAgentUtils.getBrowser(userAgent);
                 // 封装对象
                 SysLogininfor logininfor = new SysLogininfor();
+                logininfor.setPlatformNo(PlatformContext.getPlatformNo());
                 logininfor.setLoginName(username);
                 logininfor.setIpaddr(ip);
                 logininfor.setLoginLocation(address);

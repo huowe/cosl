@@ -6,6 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<resultMap type="SysUser" id="SysUserResult">
 		<id     property="userId"        column="user_id"         />
+		<result property="platformNo"    column="platform_no"     />
 		<result property="deptId"        column="dept_id"         />
 		<result property="loginName"     column="login_name"      />
 		<result property="userName"      column="user_name"       />
@@ -50,7 +51,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	
 	<sql id="selectUserVo">
-        select  u.user_id, u.dept_id, u.login_name, u.user_name, u.user_type, u.email, u.avatar, u.phonenumber, u.sex, u.password, u.salt, u.status, u.del_flag, u.login_ip, u.login_date, u.pwd_update_date, u.create_by, u.create_time, u.update_by, u.update_time, u.remark,
+        select  u.user_id, u.platform_no, u.dept_id, u.login_name, u.user_name, u.user_type, u.email, u.avatar, u.phonenumber, u.sex, u.password, u.salt, u.status, u.del_flag, u.login_ip, u.login_date, u.pwd_update_date, u.create_by, u.create_time, u.update_by, u.update_time, u.remark,
        		    d.dept_id, d.parent_id, d.ancestors, d.dept_name, d.order_num, d.leader, d.status as dept_status,
        		    r.role_id, r.role_name, r.role_key, r.role_sort, r.data_scope, r.status as role_status
 		from sys_user u
@@ -60,9 +61,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </sql>
 	
 	<select id="selectUserList" parameterType="SysUser" resultMap="SysUserResult">
-		select u.user_id, u.dept_id, u.login_name, u.user_name, u.user_type, u.email, u.avatar, u.phonenumber, u.password, u.sex, u.salt, u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark, d.dept_name, d.leader from sys_user u
+		select u.user_id, u.platform_no, u.dept_id, u.login_name, u.user_name, u.user_type, u.email, u.avatar, u.phonenumber, u.password, u.sex, u.salt, u.status, u.del_flag, u.login_ip, u.login_date, u.create_by, u.create_time, u.remark, d.dept_name, d.leader from sys_user u
 		left join sys_dept d on u.dept_id = d.dept_id
 		where u.del_flag = '0'
+		<if test="platformNo != null and platformNo != ''">
+			AND u.platform_no = #{platformNo}
+		</if>
 		<if test="userId != null and userId != 0">
 			AND u.user_id = #{userId}
 		</if>
@@ -188,6 +192,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  	<update id="updateUser" parameterType="SysUser">
  		update sys_user
  		<set>
+ 			<if test="platformNo != null and platformNo != ''">platform_no = #{platformNo},</if>
  			<if test="deptId != 0">dept_id = #{deptId},</if>
  			<if test="userName != null and userName != ''">user_name = #{userName},</if>
  			<if test="userType != null and userType != ''">user_type = #{userType},</if>
@@ -211,6 +216,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  	<insert id="insertUser" parameterType="SysUser" useGeneratedKeys="true" keyProperty="userId">
  		insert into sys_user(
  			<if test="userId != null and userId != 0">user_id,</if>
+ 			<if test="platformNo != null and platformNo != ''">platform_no,</if>
  			<if test="deptId != null and deptId != 0">dept_id,</if>
  			<if test="loginName != null and loginName != ''">login_name,</if>
  			<if test="userName != null and userName != ''">user_name,</if>
@@ -228,6 +234,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  			create_time
  		)values(
  			<if test="userId != null and userId != ''">#{userId},</if>
+ 			<if test="platformNo != null and platformNo != ''">#{platformNo},</if>
  			<if test="deptId != null and deptId != ''">#{deptId},</if>
  			<if test="loginName != null and loginName != ''">#{loginName},</if>
  			<if test="userName != null and userName != ''">#{userName},</if>

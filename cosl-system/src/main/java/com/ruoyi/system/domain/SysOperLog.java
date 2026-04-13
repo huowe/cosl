@@ -20,6 +20,10 @@ public class SysOperLog extends BaseEntity
     @Excel(name = "操作序号", cellType = ColumnType.NUMERIC)
     private Long operId;
 
+    /** 钻井平台编号 */
+    @Excel(name = "平台编号")
+    private String platformNo;
+
     /** 操作模块 */
     @Excel(name = "操作模块")
     private String title;
@@ -95,6 +99,16 @@ public class SysOperLog extends BaseEntity
     public void setOperId(Long operId)
     {
         this.operId = operId;
+    }
+
+    public String getPlatformNo()
+    {
+        return platformNo;
+    }
+
+    public void setPlatformNo(String platformNo)
+    {
+        this.platformNo = platformNo;
     }
 
     public String getTitle()
@@ -271,6 +285,7 @@ public class SysOperLog extends BaseEntity
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("operId", getOperId())
+            .append("platformNo", getPlatformNo())
             .append("title", getTitle())
             .append("businessType", getBusinessType())
             .append("businessTypes", getBusinessTypes())

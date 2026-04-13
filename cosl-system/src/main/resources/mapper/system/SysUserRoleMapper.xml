@@ -7,18 +7,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<resultMap type="SysUserRole" id="SysUserRoleResult">
 		<result property="userId"     column="user_id"      />
 		<result property="roleId"     column="role_id"      />
+		<result property="platformNo" column="platform_no"  />
 	</resultMap>
 	
 	<select id="selectUserRoleByUserId" parameterType="Long" resultMap="SysUserRoleResult">
-		select user_id, role_id from sys_user_role where user_id = #{userId}
+		select user_id, role_id, platform_no from sys_user_role where user_id = #{userId}
 	</select>
 
 	<delete id="deleteUserRoleByUserId" parameterType="Long">
 		delete from sys_user_role where user_id = #{userId}
 	</delete>
 	
+	<delete id="deleteUserRoleByUserIdWithPlatform">
+		delete from sys_user_role where user_id = #{userId} and platform_no = #{platformNo}
+	</delete>
+	
 	<select id="countUserRoleByRoleId" resultType="Integer">
 	    select count(1) from sys_user_role where role_id = #{roleId}  
+	</select>
+	
+	<select id="countUserRoleByRoleIdWithPlatform" resultType="Integer">
+	    select count(1) from sys_user_role where role_id = #{roleId} and platform_no = #{platformNo}
 	</select>
 	
 	<delete id="deleteUserRole" parameterType="Long">
@@ -28,10 +37,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach> 
  	</delete>
 	
+	<delete id="deleteUserRoleWithPlatform">
+ 		delete from sys_user_role where user_id in
+ 		<foreach collection="ids" item="userId" open="(" separator="," close=")">
+ 			#{userId}
+        </foreach>
+        and platform_no = #{platformNo}
+ 	</delete>
+	
 	<insert id="batchUserRole">
-		insert into sys_user_role(user_id, role_id) values
+		insert into sys_user_role(user_id, role_id, platform_no) values
 		<foreach item="item" index="index" collection="list" separator=",">
-			(#{item.userId},#{item.roleId})
+			(#{item.userId},#{item.roleId},#{item.platformNo})
 		</foreach>
 	</insert>
 	

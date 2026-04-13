@@ -2,7 +2,10 @@ package com.ruoyi.web.controller.system;
 
 import java.util.List;
 
+import com.alibaba.fastjson.JSONObject;
+import com.ruoyi.common.core.domain.entity.CameraGroup;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.web.controller.tool.YuanJianApiClient;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +19,8 @@ import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.service.ICameraService;
+
+import javax.annotation.Resource;
 
 /**
  * 摄像头操作处理
@@ -31,6 +36,8 @@ public class CameraController extends BaseController
 
     @Autowired
     private ICameraService cameraService;
+    @Resource
+    private YuanJianApiClient yuanJianApiClient;
 
     @RequiresPermissions("system:camera:view")
     @GetMapping()
@@ -91,6 +98,13 @@ public class CameraController extends BaseController
         if (!cameraService.checkIpUnique(camera))
         {
             return error("新增摄像头'" + camera.getName() + "'失败，IP 地址已存在");
+        }
+        //调用远见添加摄像头的接口
+        String res = yuanJianApiClient.addCamera(camera);
+        JSONObject jsonObject = JSONObject.parseObject(res);
+
+        if (jsonObject.getString("code").equals("SUCCESS")){
+            camera.setCameraId(jsonObject.getString("cameraId"));
         }
         camera.setCreateBy(getLoginName());
         return toAjax(cameraService.insertCamera(camera));
@@ -183,5 +197,29 @@ public class CameraController extends BaseController
     {
         return toAjax(cameraService.clearPosition(id));
     }
+    /**
+     * 新建摄像机分组
+     */
+    @RequiresPermissions("system:camera:add")
+    @Log(title = "摄像头管理", businessType = BusinessType.INSERT)
+    @PostMapping("/group/add")
+    @ResponseBody
+    public AjaxResult addGroup(@RequestBody CameraGroup cameraGroup)
+    {
+        String res = yuanJianApiClient.addCameraGroup(cameraGroup);
+        return success(res);
+    }
+    /**
+     * 修改摄像机分组树
+     */
+    @RequiresPermissions("system:camera:view")
+    @GetMapping("/group/tree")
+    @ResponseBody
+    public AjaxResult groupTree()
+    {
+        String res = yuanJianApiClient.getCameraGroupTree();
+        return success(res);
+    }
+
 
 }

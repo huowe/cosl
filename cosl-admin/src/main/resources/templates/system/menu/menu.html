@@ -11,6 +11,9 @@
 					<div class="select-list">
 						<ul>
 							<li>
+								平台编号：<input type="text" name="platformNo"/>
+							</li>
+							<li>
 								菜单名称：<input type="text" name="menuName"/>
 							</li>
 							<li>
@@ -85,6 +88,13 @@
 		                    return '<i class="' + row.icon + '"></i> <span class="nav-label">' + row.menuName + '</span>';
 		                }
 		            }
+		        },
+		        {
+		            field: 'platformNo',
+		            title: '平台编号',
+		            width: '10',
+		            widthUnit: '%',
+		            align: "center"
 		        },
 		        {
 		            field: 'orderNum',

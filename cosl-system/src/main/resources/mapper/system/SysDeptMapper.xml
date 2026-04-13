@@ -32,6 +32,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		from sys_dept d
 			left join sys_role_dept rd on d.dept_id = rd.dept_id
 		where d.del_flag = '0' and rd.role_id = #{roleId}
+		<if test="params.platformNo != null and params.platformNo != ''">
+			and rd.platform_no = #{params.platformNo}
+		</if>
 		order by d.parent_id, d.order_num
 	</select>
 	

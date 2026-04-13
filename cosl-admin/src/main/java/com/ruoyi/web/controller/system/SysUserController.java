@@ -25,6 +25,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.PlatformContext;
 import com.ruoyi.common.utils.ShiroUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
@@ -144,6 +145,11 @@ public class SysUserController extends BaseController
         else if (StringUtils.isNotEmpty(user.getEmail()) && !userService.checkEmailUnique(user))
         {
             return error("新增用户'" + user.getLoginName() + "'失败，邮箱账号已存在");
+        }
+        // 设置平台编号
+        if (StringUtils.isEmpty(user.getPlatformNo()))
+        {
+            user.setPlatformNo(PlatformContext.getPlatformNo());
         }
         user.setSalt(ShiroUtils.randomSalt());
         user.setPassword(passwordService.encryptPassword(user.getLoginName(), user.getPassword(), user.getSalt()));

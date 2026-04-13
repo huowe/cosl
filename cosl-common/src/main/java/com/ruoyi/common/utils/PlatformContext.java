@@ -1,5 +1,8 @@
 package com.ruoyi.common.utils;
 
+import com.ruoyi.common.config.PlatformConfig;
+import com.ruoyi.common.utils.spring.SpringUtils;
+
 /**
  * 钻井平台上下文工具类
  * 用于存储和获取当前用户选择的钻井平台编号
@@ -26,12 +29,31 @@ public class PlatformContext
 
     /**
      * 获取当前平台编号
+     * 如果ThreadLocal中没有，则从配置文件中读取默认值
      * 
      * @return 平台编号
      */
     public static String getPlatformNo()
     {
-        return PLATFORM_HOLDER.get();
+        String platformNo = PLATFORM_HOLDER.get();
+        // 如果ThreadLocal中没有，尝试从配置文件获取默认值
+        if (platformNo == null || platformNo.isEmpty())
+        {
+            try
+            {
+                PlatformConfig platformConfig = SpringUtils.getBean(PlatformConfig.class);
+                if (platformConfig != null)
+                {
+                    platformNo = platformConfig.getPlatformNo();
+                }
+            }
+            catch (Exception e)
+            {
+                // 如果无法获取Bean，返回默认值
+                platformNo = "DEFAULT";
+            }
+        }
+        return platformNo;
     }
 
     /**

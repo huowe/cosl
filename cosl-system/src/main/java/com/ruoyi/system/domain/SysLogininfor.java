@@ -20,6 +20,10 @@ public class SysLogininfor extends BaseEntity
     @Excel(name = "序号", cellType = ColumnType.NUMERIC)
     private Long infoId;
 
+    /** 钻井平台编号 */
+    @Excel(name = "平台编号")
+    private String platformNo;
+
     /** 用户账号 */
     @Excel(name = "用户账号")
     private String loginName;
@@ -60,6 +64,16 @@ public class SysLogininfor extends BaseEntity
     public void setInfoId(Long infoId)
     {
         this.infoId = infoId;
+    }
+
+    public String getPlatformNo()
+    {
+        return platformNo;
+    }
+
+    public void setPlatformNo(String platformNo)
+    {
+        this.platformNo = platformNo;
     }
 
     public String getLoginName()
@@ -146,6 +160,7 @@ public class SysLogininfor extends BaseEntity
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("infoId", getInfoId())
+            .append("platformNo", getPlatformNo())
             .append("loginName", getLoginName())
             .append("ipaddr", getIpaddr())
             .append("loginLocation", getLoginLocation())

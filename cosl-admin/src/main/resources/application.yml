@@ -12,6 +12,8 @@ ruoyi:
   profile: D:/ruoyi/uploadPath
   # 获取ip地址开关
   addressEnabled: false
+  # 钻井平台编号（默认值，可通过登录时动态设置）
+  platformNo: PLATFORM-A01
 
 # 开发环境配置
 server:
@@ -147,3 +149,6 @@ csrf:
 swagger:
   # 是否开启swagger
   enabled: true
+yuanjian:
+  base:
+    url: http://fhs0yixynr.dy.takin.cc:31198

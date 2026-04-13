@@ -16,6 +16,7 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.common.utils.PlatformContext;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.domain.SysPost;
 import com.ruoyi.system.service.ISysPostService;
@@ -99,6 +100,7 @@ public class SysPostController extends BaseController
             return error("新增岗位'" + post.getPostName() + "'失败，岗位编码已存在");
         }
         post.setCreateBy(getLoginName());
+        post.setPlatformNo(PlatformContext.getPlatformNo());
         return toAjax(postService.insertPost(post));
     }
 
@@ -131,6 +133,7 @@ public class SysPostController extends BaseController
             return error("修改岗位'" + post.getPostName() + "'失败，岗位编码已存在");
         }
         post.setUpdateBy(getLoginName());
+        post.setPlatformNo(PlatformContext.getPlatformNo());
         return toAjax(postService.updatePost(post));
     }
 

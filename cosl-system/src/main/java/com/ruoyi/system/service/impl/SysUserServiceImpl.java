@@ -225,7 +225,7 @@ public class SysUserServiceImpl implements ISysUserService
         // 新增用户岗位关联
         insertUserPost(user);
         // 新增用户与角色管理
-        insertUserRole(user.getUserId(), user.getRoleIds());
+        insertUserRole(user.getUserId(), user.getRoleIds(), user.getPlatformNo());
         return rows;
     }
 
@@ -256,7 +256,7 @@ public class SysUserServiceImpl implements ISysUserService
         // 删除用户与角色关联
         userRoleMapper.deleteUserRoleByUserId(userId);
         // 新增用户与角色管理
-        insertUserRole(user.getUserId(), user.getRoleIds());
+        insertUserRole(user.getUserId(), user.getRoleIds(), user.getPlatformNo());
         // 删除用户与岗位关联
         userPostMapper.deleteUserPostByUserId(userId);
         // 新增用户与岗位管理
@@ -312,7 +312,10 @@ public class SysUserServiceImpl implements ISysUserService
     public void insertUserAuth(Long userId, Long[] roleIds)
     {
         userRoleMapper.deleteUserRoleByUserId(userId);
-        insertUserRole(userId, roleIds);
+        // 获取用户的平台编号
+        SysUser user = selectUserById(userId);
+        String platformNo = user != null ? user.getPlatformNo() : null;
+        insertUserRole(userId, roleIds, platformNo);
     }
 
     /**
@@ -332,8 +335,9 @@ public class SysUserServiceImpl implements ISysUserService
      * 
      * @param userId 用户ID
      * @param roleIds 角色组
+     * @param platformNo 平台编号
      */
-    public void insertUserRole(Long userId, Long[] roleIds)
+    public void insertUserRole(Long userId, Long[] roleIds, String platformNo)
     {
         if (StringUtils.isNotNull(roleIds))
         {
@@ -344,6 +348,7 @@ public class SysUserServiceImpl implements ISysUserService
                 SysUserRole ur = new SysUserRole();
                 ur.setUserId(userId);
                 ur.setRoleId(roleId);
+                ur.setPlatformNo(platformNo);
                 list.add(ur);
             }
             if (list.size() > 0)
@@ -370,6 +375,7 @@ public class SysUserServiceImpl implements ISysUserService
                 SysUserPost up = new SysUserPost();
                 up.setUserId(user.getUserId());
                 up.setPostId(postId);
+                up.setPlatformNo(user.getPlatformNo());
                 list.add(up);
             }
             if (list.size() > 0)

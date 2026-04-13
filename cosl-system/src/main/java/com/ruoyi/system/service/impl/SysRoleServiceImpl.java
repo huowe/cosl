@@ -13,6 +13,7 @@ import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.domain.entity.SysRole;
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.exception.ServiceException;
+import com.ruoyi.common.utils.PlatformContext;
 import com.ruoyi.common.utils.ShiroUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.spring.SpringUtils;
@@ -137,10 +138,25 @@ public class SysRoleServiceImpl implements ISysRoleService
     @Transactional
     public boolean deleteRoleById(Long roleId)
     {
-        // 删除角色与菜单关联
-        roleMenuMapper.deleteRoleMenuByRoleId(roleId);
-        // 删除角色与部门关联
-        roleDeptMapper.deleteRoleDeptByRoleId(roleId);
+        // 删除角色与菜单关联（带平台编号）
+        SysRole role = selectRoleById(roleId);
+        if (role != null)
+        {
+            roleMenuMapper.deleteRoleMenuByRoleIdWithPlatform(roleId, role.getPlatformNo());
+        }
+        else
+        {
+            roleMenuMapper.deleteRoleMenuByRoleId(roleId);
+        }
+        // 删除角色与部门关联（带平台编号）
+        if (role != null)
+        {
+            roleDeptMapper.deleteRoleDeptByRoleIdWithPlatform(roleId, role.getPlatformNo());
+        }
+        else
+        {
+            roleDeptMapper.deleteRoleDeptByRoleId(roleId);
+        }
         return roleMapper.deleteRoleById(roleId) > 0 ? true : false;
     }
 
@@ -165,10 +181,25 @@ public class SysRoleServiceImpl implements ISysRoleService
                 throw new ServiceException(String.format("%1$s已分配,不能删除", role.getRoleName()));
             }
         }
-        // 删除角色与菜单关联
-        roleMenuMapper.deleteRoleMenu(roleIds);
-        // 删除角色与部门关联
-        roleDeptMapper.deleteRoleDept(roleIds);
+        // 删除角色与菜单关联（带平台编号）
+        String platformNo = PlatformContext.getPlatformNo();
+        if (StringUtils.isNotEmpty(platformNo))
+        {
+            roleMenuMapper.deleteRoleMenuWithPlatform(roleIds, platformNo);
+        }
+        else
+        {
+            roleMenuMapper.deleteRoleMenu(roleIds);
+        }
+        // 删除角色与部门关联（带平台编号）
+        if (StringUtils.isNotEmpty(platformNo))
+        {
+            roleDeptMapper.deleteRoleDeptWithPlatform(roleIds, platformNo);
+        }
+        else
+        {
+            roleDeptMapper.deleteRoleDept(roleIds);
+        }
         return roleMapper.deleteRoleByIds(roleIds);
     }
 
@@ -199,8 +230,9 @@ public class SysRoleServiceImpl implements ISysRoleService
     {
         // 修改角色信息
         roleMapper.updateRole(role);
-        // 删除角色与菜单关联
-        roleMenuMapper.deleteRoleMenuByRoleId(role.getRoleId());
+        // 删除角色与菜单关联（带平台编号）
+        String platformNo = StringUtils.isNotEmpty(role.getPlatformNo()) ? role.getPlatformNo() : PlatformContext.getPlatformNo();
+        roleMenuMapper.deleteRoleMenuByRoleIdWithPlatform(role.getRoleId(), platformNo);
         return insertRoleMenu(role);
     }
 
@@ -216,8 +248,9 @@ public class SysRoleServiceImpl implements ISysRoleService
     {
         // 修改角色信息
         roleMapper.updateRole(role);
-        // 删除角色与部门关联
-        roleDeptMapper.deleteRoleDeptByRoleId(role.getRoleId());
+        // 删除角色与部门关联（带平台编号）
+        String platformNo = StringUtils.isNotEmpty(role.getPlatformNo()) ? role.getPlatformNo() : PlatformContext.getPlatformNo();
+        roleDeptMapper.deleteRoleDeptByRoleIdWithPlatform(role.getRoleId(), platformNo);
         // 新增角色和部门信息（数据权限）
         return insertRoleDept(role);
     }
@@ -232,11 +265,13 @@ public class SysRoleServiceImpl implements ISysRoleService
         int rows = 1;
         // 新增用户与角色管理
         List<SysRoleMenu> list = new ArrayList<SysRoleMenu>();
+        String platformNo = PlatformContext.getPlatformNo();
         for (Long menuId : role.getMenuIds())
         {
             SysRoleMenu rm = new SysRoleMenu();
             rm.setRoleId(role.getRoleId());
             rm.setMenuId(menuId);
+            rm.setPlatformNo(platformNo);
             list.add(rm);
         }
         if (list.size() > 0)
@@ -256,11 +291,13 @@ public class SysRoleServiceImpl implements ISysRoleService
         int rows = 1;
         // 新增角色与部门（数据权限）管理
         List<SysRoleDept> list = new ArrayList<SysRoleDept>();
+        String platformNo = PlatformContext.getPlatformNo();
         for (Long deptId : role.getDeptIds())
         {
             SysRoleDept rd = new SysRoleDept();
             rd.setRoleId(role.getRoleId());
             rd.setDeptId(deptId);
+            rd.setPlatformNo(platformNo);
             list.add(rd);
         }
         if (list.size() > 0)
@@ -403,6 +440,9 @@ public class SysRoleServiceImpl implements ISysRoleService
     public int insertAuthUsers(Long roleId, String userIds)
     {
         Long[] users = Convert.toLongArray(userIds);
+        // 获取角色的平台编号
+        SysRole role = selectRoleById(roleId);
+        String platformNo = role != null ? role.getPlatformNo() : PlatformContext.getPlatformNo();
         // 新增用户与角色管理
         List<SysUserRole> list = new ArrayList<SysUserRole>();
         for (Long userId : users)
@@ -410,6 +450,7 @@ public class SysRoleServiceImpl implements ISysRoleService
             SysUserRole ur = new SysUserRole();
             ur.setUserId(userId);
             ur.setRoleId(roleId);
+            ur.setPlatformNo(platformNo);
             list.add(ur);
         }
         return userRoleMapper.batchUserRole(list);

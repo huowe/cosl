@@ -16,6 +16,9 @@ public class SysUserRole
     /** 角色ID */
     private Long roleId;
 
+    /** 钻井平台编号 */
+    private String platformNo;
+
     public Long getUserId()
     {
         return userId;
@@ -36,11 +39,22 @@ public class SysUserRole
         this.roleId = roleId;
     }
 
+    public String getPlatformNo()
+    {
+        return platformNo;
+    }
+
+    public void setPlatformNo(String platformNo)
+    {
+        this.platformNo = platformNo;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("userId", getUserId())
             .append("roleId", getRoleId())
+            .append("platformNo", getPlatformNo())
             .toString();
     }
 }

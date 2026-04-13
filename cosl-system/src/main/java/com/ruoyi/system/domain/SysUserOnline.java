@@ -18,6 +18,9 @@ public class SysUserOnline extends BaseEntity
     /** 用户会话id */
     private String sessionId;
 
+    /** 钻井平台编号 */
+    private String platformNo;
+
     /** 部门名称 */
     private String deptName;
 
@@ -56,6 +59,16 @@ public class SysUserOnline extends BaseEntity
     public void setSessionId(String sessionId)
     {
         this.sessionId = sessionId;
+    }
+
+    public String getPlatformNo()
+    {
+        return platformNo;
+    }
+
+    public void setPlatformNo(String platformNo)
+    {
+        this.platformNo = platformNo;
     }
 
     public String getDeptName()
@@ -162,6 +175,7 @@ public class SysUserOnline extends BaseEntity
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("sessionId", getSessionId())
+            .append("platformNo", getPlatformNo())
             .append("loginName", getLoginName())
             .append("deptName", getDeptName())
             .append("ipaddr", getIpaddr())

@@ -19,6 +19,9 @@ public class SysMenu extends BaseEntity
     /** 菜单ID */
     private Long menuId;
 
+    /** 钻井平台编号 */
+    private String platformNo;
+
     /** 菜单名称 */
     private String menuName;
 
@@ -63,6 +66,16 @@ public class SysMenu extends BaseEntity
     public void setMenuId(Long menuId)
     {
         this.menuId = menuId;
+    }
+
+    public String getPlatformNo()
+    {
+        return platformNo;
+    }
+
+    public void setPlatformNo(String platformNo)
+    {
+        this.platformNo = platformNo;
     }
 
     @NotBlank(message = "菜单名称不能为空")
@@ -195,6 +208,7 @@ public class SysMenu extends BaseEntity
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("menuId", getMenuId())
+            .append("platformNo", getPlatformNo())
             .append("menuName", getMenuName())
             .append("parentId", getParentId())
             .append("orderNum", getOrderNum())

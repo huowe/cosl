@@ -1,6 +1,8 @@
 package com.ruoyi.common.core.domain.entity;
 
 import javax.validation.constraints.*;
+
+import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
@@ -15,9 +17,9 @@ import java.math.BigDecimal;
  * @author ruoyi
  * @date 2026-03-07
  */
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class Camera extends BaseEntity
 {
+
     private static final long serialVersionUID = 1L;
 
     /** ID */
@@ -49,8 +51,45 @@ public class Camera extends BaseEntity
     /** Y 轴坐标 */
     @Excel(name = "Y 轴坐标", cellType = ColumnType.NUMERIC)
     private double yAxis;
+    @Excel(name = "纬度", cellType = ColumnType.NUMERIC)
+    private BigDecimal latitude;
 
-    public void setId(Long id) 
+    @Excel(name = "经度", cellType = ColumnType.NUMERIC)
+    private BigDecimal longitude;
+
+    @Excel(name = "流地址")
+    private String streamURL;
+
+    @Excel(name = "用户名")
+    private String userName;
+
+    @Excel(name = "密码")
+    private String userPwd;
+
+    @Excel(name = "摄像头ID")
+    private String cameraId;
+
+    private String cameraGroupId;
+    private String cameraType;
+
+    public String getCameraType()
+    {
+        return cameraType;
+    }
+    public void setCameraType(String cameraType)
+    {
+        this.cameraType = cameraType;
+    }
+
+    public String getCameraGroupId()
+    {
+        return cameraGroupId;
+    }
+    public void setCameraGroupId(String cameraGroupId)
+    {
+        this.cameraGroupId = cameraGroupId;
+    }
+    public void setId(Long id)
     {
         this.id = id;
     }
@@ -133,6 +172,54 @@ public class Camera extends BaseEntity
     {
         return platformNo;
     }
+    public void setLatitude(BigDecimal latitude)
+    {
+        this.latitude = latitude;
+    }
+    public BigDecimal getLatitude()
+    {
+        return latitude;
+    }
+    public void setLongitude(BigDecimal longitude)
+    {
+        this.longitude = longitude;
+    }
+    public BigDecimal getLongitude()
+    {
+        return longitude;
+    }
+    public void setStreamURL(String streamURL)
+    {
+        this.streamURL = streamURL;
+    }
+    public String getStreamURL()
+    {
+        return streamURL;
+    }
+    public void setUserName(String userName)
+    {
+        this.userName = userName;
+    }
+    public String getUserName()
+    {
+        return userName;
+    }
+    public void setUserPwd(String userPwd)
+    {
+        this.userPwd = userPwd;
+    }
+    public String getUserPwd()
+    {
+        return userPwd;
+    }
+    public void setCameraId(String cameraId)
+    {
+        this.cameraId = cameraId;
+    }
+    public String getCameraId()
+    {
+        return cameraId;
+    }
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -148,6 +235,14 @@ public class Camera extends BaseEntity
             .append("updateBy", getUpdateBy())
             .append("updateTime", getUpdateTime())
             .append("remark", getRemark())
+            .append("latitude", getLatitude())
+            .append("longitude", getLongitude())
+            .append("streamURL", getStreamURL())
+            .append("userName", getUserName())
+            .append("userPwd", getUserPwd())
+            .append("cameraId", getCameraId())
+            .append("cameraGroupId", getCameraGroupId())
+            .append("cameraType", getCameraType())
             .toString();
     }
 }

@@ -16,6 +16,9 @@ public class SysRoleDept
     /** 部门ID */
     private Long deptId;
 
+    /** 钻井平台编号 */
+    private String platformNo;
+
     public Long getRoleId()
     {
         return roleId;
@@ -36,11 +39,22 @@ public class SysRoleDept
         this.deptId = deptId;
     }
 
+    public String getPlatformNo()
+    {
+        return platformNo;
+    }
+
+    public void setPlatformNo(String platformNo)
+    {
+        this.platformNo = platformNo;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("roleId", getRoleId())
             .append("deptId", getDeptId())
+            .append("platformNo", getPlatformNo())
             .toString();
     }
 }
