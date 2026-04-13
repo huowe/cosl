@@ -5,6 +5,7 @@ import java.util.List;
 import com.alibaba.fastjson.JSONObject;
 import com.ruoyi.common.core.domain.entity.CameraGroup;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.system.domain.CameraQueryRequest;
 import com.ruoyi.web.controller.tool.YuanJianApiClient;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -220,6 +221,18 @@ public class CameraController extends BaseController
         String res = yuanJianApiClient.getCameraGroupTree();
         return success(res);
     }
+    /**
+     * 获取摄像机列表
+     */
+    @RequiresPermissions("system:camera:view")
+    @GetMapping("/openapi/camera/page")
+    @ResponseBody
+    public AjaxResult cameraPage(@RequestBody CameraQueryRequest cameraQueryRequest)
+    {
+        String res = yuanJianApiClient.getCameraPage(cameraQueryRequest);
+        return success(res);
+    }
+
 
 
 }

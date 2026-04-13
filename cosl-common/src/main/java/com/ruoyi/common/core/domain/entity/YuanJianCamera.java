@@ -16,7 +16,7 @@ import java.math.BigDecimal;
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class YuanJianCamera extends BaseEntity
+public class YuanJianCamera
 {
 
     private static final long serialVersionUID = 1L;

@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.ruoyi.common.core.domain.entity.Camera;
 import com.ruoyi.common.core.domain.entity.CameraGroup;
 import com.ruoyi.common.core.domain.entity.YuanJianCamera;
+import com.ruoyi.common.core.domain.entity.YuanJianRepository;
+import com.ruoyi.system.domain.CameraQueryRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -59,5 +61,30 @@ public class YuanJianApiClient {
         String url = BASE_URL + "/cameraGroup/tree";
         return httpClientUtil.get(url);
     }
+
+    public String getRepositoryTree() {
+        String url = BASE_URL + "/repository/tree";
+        return httpClientUtil.get(url);
+    }
+
+    /**
+     * 创建人员底库
+     * @param repository 底库对象
+     * @return 响应结果
+     */
+    public String repositoryAdd(YuanJianRepository repository) {
+        String url = BASE_URL + "/repository/add";
+        repository.setRepParentId("1000000000000000000");
+        JSONObject jsonObject = JSON.parseObject(JSON.toJSONString(repository));
+        return httpClientUtil.postJson(url, jsonObject);
+    }
+
+    public String getCameraPage(CameraQueryRequest cameraQueryRequest) {
+        String url = BASE_URL + "/camera/page";
+        JSONObject jsonObject = JSON.parseObject(JSON.toJSONString(cameraQueryRequest));
+        return httpClientUtil.postJson(url, jsonObject);
+    }
+
+
 
 }

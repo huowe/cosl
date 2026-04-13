@@ -2,9 +2,12 @@ package com.ruoyi.web.controller.system;
 
 import java.util.List;
 
+import com.ruoyi.common.core.domain.entity.CameraGroup;
 import com.ruoyi.common.core.domain.entity.Person;
+import com.ruoyi.common.core.domain.entity.YuanJianRepository;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.service.IPersonService;
+import com.ruoyi.web.controller.tool.YuanJianApiClient;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +19,8 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.poi.ExcelUtil;
+
+import javax.annotation.Resource;
 
 /**
  * 人员信息操作处理
@@ -31,6 +36,8 @@ public class PersonController extends BaseController
 
     @Autowired
     private IPersonService personService;
+    @Resource
+    private YuanJianApiClient yuanJianApiClient;
 
     @RequiresPermissions("system:person:view")
     @GetMapping()
@@ -194,6 +201,27 @@ public class PersonController extends BaseController
         {
             return error(e.getMessage());
         }
+    }
+    /**
+     * 修改摄像机分组树
+     */
+    @RequiresPermissions("system:person:view")
+    @GetMapping("/repository/tree")
+    @ResponseBody
+    public AjaxResult repositoryTree()
+    {
+        String res = yuanJianApiClient.getRepositoryTree();
+        return success(res);
+    }
+
+    @RequiresPermissions("system:person:add")
+    @Log(title = "新增底库", businessType = BusinessType.INSERT)
+    @PostMapping("/repository/add")
+    @ResponseBody
+    public AjaxResult repositoryAdd(@RequestBody YuanJianRepository repository)
+    {
+        String res = yuanJianApiClient.repositoryAdd(repository);
+        return success(res);
     }
     
 }
