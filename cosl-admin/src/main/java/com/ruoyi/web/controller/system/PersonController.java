@@ -127,9 +127,6 @@ public class PersonController extends BaseController
         {
             person.setMonitorId(jsonObject.getJSONObject("data").getString("monitorId"));
         }
-
-
-
         return toAjax(personService.insertPerson(person));
     }
 
@@ -259,6 +256,9 @@ public class PersonController extends BaseController
     @ResponseBody
     public AjaxResult imageAnalysis(@RequestBody ImageAnalysisRequest request)
     {
+        Person person = new Person();
+
+        personService.updatePerson(person);
         String res = yuanJianApiClient.imageAnalysis(request);
         return success(res);
     }

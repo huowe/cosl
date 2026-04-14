@@ -11,7 +11,7 @@
  Target Server Version : 80045
  File Encoding         : 65001
 
- Date: 13/04/2026 21:36:55
+ Date: 14/04/2026 18:09:03
 */
 
 SET NAMES utf8mb4;
@@ -322,6 +322,10 @@ CREATE TABLE `person`  (
   `create_time` datetime(0) NOT NULL,
   `update_time` datetime(0) NOT NULL,
   `deleted` tinyint(0) NULL DEFAULT 0,
+  `monitor_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '底库人员id',
+  `image` longblob NULL COMMENT '证件照',
+  `collect_start_time` datetime(0) NULL DEFAULT NULL COMMENT '采集开始时间',
+  `collect_end_time` datetime(0) NULL DEFAULT NULL COMMENT '采集结束时间',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `mts_card_no`(`mts_card_no`) USING BTREE,
   INDEX `idx_status`(`status`) USING BTREE,
@@ -333,9 +337,9 @@ CREATE TABLE `person`  (
 -- ----------------------------
 -- Records of person
 -- ----------------------------
-INSERT INTO `person` VALUES (1, 'PLATFORM-A01', '张鱼', 'MTS1234567894', '110101179001011234', 'XX海洋工程有限公司', '轮机长', '2025-12-31', '2023-06-01 08:00:00', NULL, 101, 202, 5, 'ONBOARD', 0, '2026-03-07 13:22:28', '2026-04-05 15:08:37', 0);
-INSERT INTO `person` VALUES (2, 'PLATFORM-A01', '电饭锅', 'MTS1453456789', '110105199001011234', 'XX海洋工程有限公司', '轮机长', '2025-12-31', '2023-06-01 08:00:00', NULL, 101, 202, 5, 'ONBOARD', 0, '2026-03-07 13:53:16', '2026-04-02 22:53:02', 0);
-INSERT INTO `person` VALUES (3, 'PLATFORM-A01', '金银花', 'MTS5566522245', '1234567890', 'XX海杨工程有限公司', '船长', '2026-04-25', '2026-04-01 08:00:00', NULL, 102, 101, 1, 'ONBOARD', 0, '2026-04-05 13:28:47', '2026-04-05 13:28:50', 0);
+INSERT INTO `person` VALUES (1, 'PLATFORM-A01', '张鱼', 'MTS1234567894', '110101179001011234', 'XX海洋工程有限公司', '轮机长', '2025-12-31', '2023-06-01 08:00:00', NULL, 101, 202, 5, 'ONBOARD', 0, '2026-03-07 13:22:28', '2026-04-05 15:08:37', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `person` VALUES (2, 'PLATFORM-A01', '电饭锅', 'MTS1453456789', '110105199001011234', 'XX海洋工程有限公司', '轮机长', '2025-12-31', '2023-06-01 08:00:00', NULL, 101, 202, 5, 'ONBOARD', 0, '2026-03-07 13:53:16', '2026-04-02 22:53:02', 0, NULL, NULL, NULL, NULL);
+INSERT INTO `person` VALUES (3, 'PLATFORM-A01', '金银花', 'MTS5566522245', '1234567890', 'XX海杨工程有限公司', '船长', '2026-04-25', '2026-04-01 08:00:00', NULL, 102, 101, 1, 'ONBOARD', 0, '2026-04-05 13:28:47', '2026-04-05 13:28:50', 0, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for person_face
@@ -694,7 +698,7 @@ CREATE TABLE `sys_logininfor`  (
   PRIMARY KEY (`info_id`) USING BTREE,
   INDEX `idx_sys_logininfor_s`(`status`) USING BTREE,
   INDEX `idx_sys_logininfor_lt`(`login_time`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 204 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '系统访问记录' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 214 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '系统访问记录' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_logininfor
@@ -809,6 +813,11 @@ INSERT INTO `sys_logininfor` VALUES (206, 'admin', '127.0.0.1', '内网IP', 'Api
 INSERT INTO `sys_logininfor` VALUES (207, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-13 18:08:33', 'PLATFORM-A01');
 INSERT INTO `sys_logininfor` VALUES (208, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-13 18:09:00', 'PLATFORM-A01');
 INSERT INTO `sys_logininfor` VALUES (209, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-13 18:12:24', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (210, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-14 14:38:20', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (211, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-14 14:41:01', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (212, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-14 14:54:40', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (213, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-14 14:56:21', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (214, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-14 15:46:45', 'PLATFORM-A01');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -976,7 +985,7 @@ CREATE TABLE `sys_oper_log`  (
   INDEX `idx_sys_oper_log_bt`(`business_type`) USING BTREE,
   INDEX `idx_sys_oper_log_s`(`status`) USING BTREE,
   INDEX `idx_sys_oper_log_ot`(`oper_time`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 240 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '操作日志记录' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 245 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '操作日志记录' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_oper_log
@@ -1124,6 +1133,8 @@ INSERT INTO `sys_oper_log` VALUES (239, '人员管理', 2, 'com.ruoyi.web.contro
 INSERT INTO `sys_oper_log` VALUES (240, '摄像头管理', 1, 'com.ruoyi.web.controller.system.CameraController.addGroup()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/group/add', '127.0.0.1', '内网IP', '{\"groupName\":\"cosl\",\"params\":{},\"parentId\":\"\"} ', NULL, 1, 'java.util.HashMap cannot be cast to com.alibaba.fastjson.JSONObject', '2026-04-13 14:47:30', 92, 'PLATFORM-A01');
 INSERT INTO `sys_oper_log` VALUES (241, '摄像头管理', 1, 'com.ruoyi.web.controller.system.CameraController.addGroup()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/group/add', '127.0.0.1', '内网IP', '{\"groupName\":\"cosl\",\"params\":{},\"parentId\":\"\"} ', NULL, 1, 'java.util.HashMap cannot be cast to com.alibaba.fastjson.JSONObject', '2026-04-13 14:48:45', 57357, 'PLATFORM-A01');
 INSERT INTO `sys_oper_log` VALUES (242, '摄像头管理', 1, 'com.ruoyi.web.controller.system.CameraController.addGroup()', 'POST', 1, 'admin', '研发部门', '/cosl/api/camera/group/add', '127.0.0.1', '内网IP', '{\"groupName\":\"cosl\",\"params\":{},\"parentId\":\"\"} ', '{\"msg\":\"<!doctype html><html lang=\\\"en\\\"><head><title>HTTP Status 404 – Not Found</title><style type=\\\"text/css\\\">body {font-family:Tahoma,Arial,sans-serif;} h1, h2, h3, b {color:white;background-color:#525D76;} h1 {font-size:22px;} h2 {font-size:16px;} h3 {font-size:14px;} p {font-size:12px;} a {color:black;} .line {height:1px;background-color:#525D76;border:none;}</style></head><body><h1>HTTP Status 404 – Not Found</h1><hr class=\\\"line\\\" /><p><b>Type</b> Status Report</p><p><b>Description</b> The origin server did not find a current representation for the target resource or is not willing to disclose that one exists.</p><hr class=\\\"line\\\" /><h3>Apache Tomcat/9.0.112</h3></body></html>\",\"code\":0}', 0, NULL, '2026-04-13 14:50:31', 23354, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (243, '岗位管理', 1, 'com.ruoyi.web.controller.system.SysPostController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/post/add', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"flag\":false,\"params\":{},\"platformNo\":\"PLATFORM-A01\",\"postCode\":\"text\",\"postName\":\"水手\"} ', NULL, 1, '\r\n### Error updating database.  Cause: java.sql.SQLException: Field \'status\' doesn\'t have a default value\r\n### The error may exist in file [D:\\emar\\git_work\\cosl\\cosl-system\\target\\classes\\mapper\\system\\SysPostMapper.xml]\r\n### The error may involve com.ruoyi.system.mapper.SysPostMapper.insertPost-Inline\r\n### The error occurred while setting parameters\r\n### SQL: insert into sys_post(            platform_no,       post_code,       post_name,                         create_by,      create_time    )values(            ?,       ?,       ?,                         ?,      sysdate()    )\r\n### Cause: java.sql.SQLException: Field \'status\' doesn\'t have a default value\n; Field \'status\' doesn\'t have a default value; nested exception is java.sql.SQLException: Field \'status\' doesn\'t have a default value', '2026-04-14 14:56:23', 224, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (244, '岗位管理', 1, 'com.ruoyi.web.controller.system.SysPostController.addSave()', 'POST', 1, 'admin', '研发部门', '/cosl/api/post/add', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"flag\":false,\"params\":{},\"platformNo\":\"PLATFORM-A01\",\"postCode\":\"text\",\"postId\":11,\"postName\":\"水手\",\"status\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":0}', 0, NULL, '2026-04-14 14:56:51', 34, 'PLATFORM-A01');
 
 -- ----------------------------
 -- Table structure for sys_post
@@ -1131,9 +1142,9 @@ INSERT INTO `sys_oper_log` VALUES (242, '摄像头管理', 1, 'com.ruoyi.web.con
 DROP TABLE IF EXISTS `sys_post`;
 CREATE TABLE `sys_post`  (
   `post_id` bigint(0) NOT NULL AUTO_INCREMENT COMMENT '岗位ID',
-  `post_code` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '岗位编码',
+  `post_code` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '岗位编码',
   `post_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '岗位名称',
-  `post_sort` int(0) NOT NULL COMMENT '显示顺序',
+  `post_sort` int(0) NULL DEFAULT NULL COMMENT '显示顺序',
   `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL COMMENT '状态（0正常 1停用）',
   `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT '' COMMENT '创建者',
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
@@ -1147,10 +1158,17 @@ CREATE TABLE `sys_post`  (
 -- ----------------------------
 -- Records of sys_post
 -- ----------------------------
-INSERT INTO `sys_post` VALUES (1, 'ceo', '董事长', 1, '0', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
-INSERT INTO `sys_post` VALUES (2, 'se', '项目经理', 2, '0', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
-INSERT INTO `sys_post` VALUES (3, 'hr', '人力资源', 3, '0', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
-INSERT INTO `sys_post` VALUES (4, 'user', '普通员工', 4, '0', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_post` VALUES (1, 'captain', '船长', 1, '0', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_post` VALUES (2, 'chief ', '轮机长', 2, '0', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_post` VALUES (3, 'deckhand', '甲板工', 3, '0', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_post` VALUES (4, 'machinist', '机工', 4, '0', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_post` VALUES (5, 'electrician', '电工', 5, '0', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_post` VALUES (6, 'outsourcing', '外协', 6, '0', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_post` VALUES (7, 'safety', '安全员', 7, '0', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_post` VALUES (8, 'chef', '厨师', 8, '0', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_post` VALUES (9, 'doctor', '医务人员', 9, '0', 'admin', '2026-03-05 22:17:41', '', NULL, '', 'PLATFORM-A01');
+INSERT INTO `sys_post` VALUES (10, 'technician', '技术员', 10, '0', 'admin', '2026-03-05 22:17:41', '', NULL, NULL, 'PLATFORM-A01');
+INSERT INTO `sys_post` VALUES (11, 'text', '水手', NULL, '0', 'admin', '2026-04-14 14:56:51', '', NULL, NULL, 'PLATFORM-A01');
 
 -- ----------------------------
 -- Table structure for sys_role
@@ -1330,7 +1348,7 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 103, 'admin', '管理员', '00', 'ry@163.com', '15888888888', '1', '', '29c67a30398638269fe600f73a054934', '111111', '0', '0', '127.0.0.1', '2026-04-13 18:12:22', NULL, 'admin', '2026-03-05 22:17:41', '', NULL, '管理员', 'PLATFORM-A01');
+INSERT INTO `sys_user` VALUES (1, 103, 'admin', '管理员', '00', 'ry@163.com', '15888888888', '1', '', '29c67a30398638269fe600f73a054934', '111111', '0', '0', '127.0.0.1', '2026-04-14 15:46:42', NULL, 'admin', '2026-03-05 22:17:41', '', NULL, '管理员', 'PLATFORM-A01');
 INSERT INTO `sys_user` VALUES (2, 105, 'ry', '若依', '00', 'ry@qq.com', '15666666666', '1', '', '8e6d98b90472783cc73c17047ddccf36', '222222', '0', '0', '127.0.0.1', NULL, NULL, 'admin', '2026-03-05 22:17:41', '', NULL, '测试员', 'PLATFORM-A01');
 INSERT INTO `sys_user` VALUES (100, NULL, 'test', '测试', '00', '', '13666663333', '0', '', 'ba3191792f8b5c3d255ddae5f78c1b6e', 'be1d7b', '0', '0', '', NULL, '2026-03-07 11:04:15', 'admin', '2026-03-07 11:04:14', '', NULL, NULL, 'PLATFORM-A01');
 INSERT INTO `sys_user` VALUES (101, NULL, 'kaihang', '凯航', '00', '', '13899995555', '0', '', '452d76a1b03d0242da919d993720f9a8', '131523', '0', '0', '', NULL, '2026-03-07 11:08:20', 'admin', '2026-03-07 11:08:19', '', NULL, NULL, 'PLATFORM-A01');
@@ -1361,7 +1379,6 @@ CREATE TABLE `sys_user_online`  (
 -- ----------------------------
 -- Records of sys_user_online
 -- ----------------------------
-INSERT INTO `sys_user_online` VALUES ('e38431cb-4a1c-4155-a3ab-e5cab2b0d953', 'admin', '研发部门', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', 'on_line', '2026-04-13 18:08:32', '2026-04-13 18:12:25', 1800000, 'PLATFORM-A01');
 
 -- ----------------------------
 -- Table structure for sys_user_post
