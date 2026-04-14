@@ -61,15 +61,6 @@ public class PersonServiceImpl implements IPersonService
     @Override
     public int insertPerson(Person person)
     {
-        //插入人脸信息
-        if (StringUtils.isNotEmpty(person.getFaceImageUrl())){
-            PersonFace personFace = new PersonFace();
-            personFace.setPersonId(person.getId());
-            personFace.setImageUrl(person.getFaceImageUrl());
-            personFaceMapper.insertPersonFace(personFace);
-        }
-        //插入步态信息
-
         return personMapper.insertPerson(person);
     }
 

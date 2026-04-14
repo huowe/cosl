@@ -2,11 +2,13 @@ package com.ruoyi.web.controller.system;
 
 import java.util.List;
 
-import com.ruoyi.common.core.domain.entity.CameraGroup;
-import com.ruoyi.common.core.domain.entity.Person;
-import com.ruoyi.common.core.domain.entity.YuanJianRepository;
+import com.alibaba.fastjson.JSONObject;
+import com.ruoyi.common.core.domain.entity.*;
+import com.ruoyi.common.utils.PlatformContext;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.system.domain.SysPost;
 import com.ruoyi.system.service.IPersonService;
+import com.ruoyi.system.service.ISysPostService;
 import com.ruoyi.web.controller.tool.YuanJianApiClient;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,8 @@ public class PersonController extends BaseController
 
     @Autowired
     private IPersonService personService;
+    @Autowired
+    private ISysPostService postService;
     @Resource
     private YuanJianApiClient yuanJianApiClient;
 
@@ -103,6 +107,29 @@ public class PersonController extends BaseController
         {
             return error("新增人员'" + person.getName() + "'失败，身份证号已存在");
         }
+        SysPost post = new SysPost();
+        post.setPostName(person.getPosition());
+        if (postService.checkPostNameUnique(post))
+        {
+            post.setCreateBy(getLoginName());
+            post.setPlatformNo(PlatformContext.getPlatformNo());
+            post.setStatus("0");
+            postService.insertPost(post);
+        }
+
+        MonitorCreateRequest monitorCreateRequest = new MonitorCreateRequest();
+        monitorCreateRequest.setName(person.getName());
+        monitorCreateRequest.setIdCard(person.getIdCard());
+        monitorCreateRequest.setRepId("");
+        String res = yuanJianApiClient.monitorCreate(monitorCreateRequest);
+        JSONObject jsonObject = JSONObject.parseObject(res);
+        if (jsonObject.getString("code").equals("SUCCESS"))
+        {
+            person.setMonitorId(jsonObject.getJSONObject("data").getString("monitorId"));
+        }
+
+
+
         return toAjax(personService.insertPerson(person));
     }
 
@@ -221,6 +248,18 @@ public class PersonController extends BaseController
     public AjaxResult repositoryAdd(@RequestBody YuanJianRepository repository)
     {
         String res = yuanJianApiClient.repositoryAdd(repository);
+        return success(res);
+    }
+    /**
+     * 上传图片同步解析
+     */
+    @RequiresPermissions("system:person:view")
+    @Log(title = "上传图片同步解析", businessType = BusinessType.INSERT)
+    @PostMapping("/imageAnalysis")
+    @ResponseBody
+    public AjaxResult imageAnalysis(@RequestBody ImageAnalysisRequest request)
+    {
+        String res = yuanJianApiClient.imageAnalysis(request);
         return success(res);
     }
     

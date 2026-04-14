@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.alibaba.fastjson.JSONObject;
 import com.ruoyi.common.core.domain.entity.CameraGroup;
+import com.ruoyi.common.core.domain.entity.CameraSetupRequest;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.CameraQueryRequest;
 import com.ruoyi.web.controller.tool.YuanJianApiClient;
@@ -147,6 +148,12 @@ public class CameraController extends BaseController
         {
             return error("修改摄像头'" + camera.getName() + "'失败，IP 地址已存在");
         }
+        //调用远见添加摄像头的接口
+        String res = yuanJianApiClient.editCamera(camera);
+        JSONObject jsonObject = JSONObject.parseObject(res);
+        if (jsonObject.getString("code").equals("SUCCESS")){
+            camera.setCameraId(jsonObject.getString("cameraId"));
+        }
         camera.setUpdateBy(getLoginName());
         return toAjax(cameraService.updateCamera(camera));
     }
@@ -230,6 +237,18 @@ public class CameraController extends BaseController
     public AjaxResult cameraPage(@RequestBody CameraQueryRequest cameraQueryRequest)
     {
         String res = yuanJianApiClient.getCameraPage(cameraQueryRequest);
+        return success(res);
+    }
+    /**
+     * 设置摄像机启停抓拍
+     */
+    @RequiresPermissions("system:camera:edit")
+    @Log(title = "摄像头管理", businessType = BusinessType.UPDATE)
+    @PostMapping("/openapi/camera/setup")
+    @ResponseBody
+    public AjaxResult cameraSetup(@RequestBody CameraSetupRequest cameraSetupRequest)
+    {
+        String res = yuanJianApiClient.cameraSetup(cameraSetupRequest);
         return success(res);
     }
 

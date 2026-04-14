@@ -86,7 +86,6 @@ public class SysPost extends BaseEntity
         this.postName = postName;
     }
 
-    @NotBlank(message = "显示顺序不能为空")
     public String getPostSort()
     {
         return postSort;

@@ -6,11 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -27,7 +23,7 @@ import com.ruoyi.system.service.ISysPostService;
  * @author ruoyi
  */
 @Controller
-@RequestMapping("/system/post")
+@RequestMapping("/api/post")
 public class SysPostController extends BaseController
 {
     private String prefix = "system/post";
@@ -45,12 +41,14 @@ public class SysPostController extends BaseController
     @RequiresPermissions("system:post:list")
     @PostMapping("/list")
     @ResponseBody
-    public TableDataInfo list(SysPost post)
+    public AjaxResult list(SysPost post)
     {
-        startPage();
+
         List<SysPost> list = postService.selectPostList(post);
-        return getDataTable(list);
+        return success(list);
     }
+
+
 
     @Log(title = "岗位管理", businessType = BusinessType.EXPORT)
     @RequiresPermissions("system:post:export")
@@ -89,7 +87,7 @@ public class SysPostController extends BaseController
     @Log(title = "岗位管理", businessType = BusinessType.INSERT)
     @PostMapping("/add")
     @ResponseBody
-    public AjaxResult addSave(@Validated SysPost post)
+    public AjaxResult addSave(@RequestBody SysPost post)
     {
         if (!postService.checkPostNameUnique(post))
         {
