@@ -14,10 +14,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="xAxis"    column="x_axis"    />
         <result property="yAxis"    column="y_axis"    />
         <result property="remark"    column="remark"    />
+        <result property="latitude"    column="latitude"    />
+        <result property="longitude"    column="longitude"    />
+        <result property="streamURL"    column="stream_url"    />
+        <result property="userName"    column="user_name"    />
+        <result property="userPwd"    column="user_pwd"    />
+        <result property="cameraId"    column="camera_id"    />
+        <result property="cameraGroupId"    column="camera_group_id"    />
     </resultMap>
 
     <sql id="selectCameraVo">
-        select id, platform_no, name, ip, floor, status, x_axis, y_axis, remark
+        select id, platform_no, name, ip, floor, status, x_axis, y_axis, remark, latitude, longitude, stream_url, user_name, user_pwd, camera_id, camera_group_id
         from camera
     </sql>
 
@@ -49,7 +56,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <select id="checkIpUnique" parameterType="String" resultMap="CameraResult">
-        select id, ip from camera where ip = #{ip} and platform_no = #{platformNo} limit 1
+        select id, ip from camera where ip = #{ip}
+        <if test="platformNo != null and platformNo != ''">
+            AND platform_no = #{platformNo}
+        </if>
+        limit 1
     </select>
 
     <select id="selectCamerasByFloor" parameterType="String" resultMap="CameraResult">
@@ -68,8 +79,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="status != null">status,</if>
             <if test="xAxis != null">x_axis,</if>
             <if test="yAxis != null">y_axis,</if>
-
             <if test="remark != null">remark,</if>
+            <if test="latitude != null">latitude,</if>
+            <if test="longitude != null">longitude,</if>
+            <if test="streamURL != null">stream_url,</if>
+            <if test="userName != null">user_name,</if>
+            <if test="userPwd != null">user_pwd,</if>
+            <if test="cameraId != null">camera_id,</if>
+            <if test="cameraGroupId != null">camera_group_id,</if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="platformNo != null and platformNo != ''">#{platformNo},</if>
@@ -81,6 +98,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="yAxis != null">#{yAxis},</if>
 
             <if test="remark != null">#{remark},</if>
+            <if test="latitude != null">#{latitude},</if>
+            <if test="longitude != null">#{longitude},</if>
+            <if test="streamURL != null">#{streamURL},</if>
+            <if test="userName != null">#{userName},</if>
+            <if test="userPwd != null">#{userPwd},</if>
+            <if test="cameraId != null">#{cameraId},</if>
+            <if test="cameraGroupId != null">#{cameraGroupId},</if>
         </trim>
     </insert>
 
@@ -96,6 +120,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="yAxis != null">y_axis = #{yAxis},</if>
 
             <if test="remark != null">remark = #{remark},</if>
+            <if test="latitude != null">latitude = #{latitude},</if>
+            <if test="longitude != null">longitude = #{longitude},</if>
+            <if test="streamURL != null">stream_url = #{streamURL},</if>
+            <if test="userName != null">user_name = #{userName},</if>
+            <if test="userPwd != null">user_pwd = #{userPwd},</if>
+            <if test="cameraId != null">camera_id = #{cameraId},</if>
+            <if test="cameraGroupId != null">camera_group_id = #{cameraGroupId},</if>
         </trim>
         where id = #{id}
     </update>

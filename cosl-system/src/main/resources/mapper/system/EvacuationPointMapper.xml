@@ -39,7 +39,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         
     <select id="checkPointNameUnique" parameterType="String" resultMap="EvacuationPointResult">
         <include refid="selectEvacuationPointVo"/>
-        where point_name = #{pointName} and platform_no = #{platformNo} and deleted = 0 limit 1
+        where point_name = #{pointName}
+        <if test="platformNo != null and platformNo != ''">
+            AND platform_no = #{platformNo}
+        </if>
+        and deleted = 0 limit 1
     </select>
     
     <insert id="insertEvacuationPoint" parameterType="EvacuationPoint" useGeneratedKeys="true" keyProperty="id">

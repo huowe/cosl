@@ -43,7 +43,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <select id="checkRoomBedUnique" parameterType="RoomBed"   resultMap="RoomBedResult">
-        select id, room_id, bed_no from room_bed where room_id = #{roomId} and bed_no = #{bedNo} and platform_no = #{platformNo} limit 1
+        select id, room_id, bed_no from room_bed where room_id = #{roomId} and bed_no = #{bedNo}  <if test="platformNo != null and platformNo != ''">
+        AND platform_no = #{platformNo}
+    </if> limit 1
     </select>
 
     <select id="selectRoomBedsByRoomId" parameterType="Long" resultMap="RoomBedResult">

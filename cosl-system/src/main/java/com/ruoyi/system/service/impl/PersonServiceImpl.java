@@ -118,10 +118,14 @@ public class PersonServiceImpl implements IPersonService
         Person info = personMapper.checkMtsCardNoUnique(mtsCardNo);
         if (StringUtils.isNotNull(info))
         {
-            if (!person.getId().equals(info.getId())){
+            if (person.getId() != null){
+                if (!person.getId().equals(info.getId())){
+                    return UserConstants.NOT_UNIQUE;
+                }
+
+            }else{
                 return UserConstants.NOT_UNIQUE;
             }
-
         }
         return UserConstants.UNIQUE;
     }
@@ -139,9 +143,14 @@ public class PersonServiceImpl implements IPersonService
         Person info = personMapper.checkIdCardUnique(idCard);
         if (StringUtils.isNotNull(info))
         {
-            if (!person.getId().equals(info.getId())){
+            if (person.getId() != null){
+                if (!person.getId().equals(info.getId())){
+                    return UserConstants.NOT_UNIQUE;
+                }
+            }else{
                 return UserConstants.NOT_UNIQUE;
             }
+
         }
         return UserConstants.UNIQUE;
     }

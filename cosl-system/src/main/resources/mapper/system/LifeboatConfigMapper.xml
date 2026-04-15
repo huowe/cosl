@@ -42,7 +42,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         
     <select id="checkBoatNoUnique" parameterType="String" resultMap="LifeboatConfigResult">
         <include refid="selectLifeboatConfigVo"/>
-        where boat_no = #{boatNo} and platform_no = #{platformNo} and deleted = 0 limit 1
+        where boat_no = #{boatNo}  <if test="platformNo != null and platformNo != ''">
+        AND platform_no = #{platformNo}
+    </if> and deleted = 0 limit 1
     </select>
 
     <select id="selectLifeboatConfigsByPointId" parameterType="Long" resultMap="LifeboatConfigResult">

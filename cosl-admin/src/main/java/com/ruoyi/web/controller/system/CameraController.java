@@ -2,9 +2,11 @@ package com.ruoyi.web.controller.system;
 
 import java.util.List;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.ruoyi.common.core.domain.entity.CameraGroup;
 import com.ruoyi.common.core.domain.entity.CameraSetupRequest;
+import com.ruoyi.common.utils.PlatformContext;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.CameraQueryRequest;
 import com.ruoyi.web.controller.tool.YuanJianApiClient;
@@ -101,17 +103,61 @@ public class CameraController extends BaseController
         {
             return error("新增摄像头'" + camera.getName() + "'失败，IP 地址已存在");
         }
+        String platformNo = PlatformContext.getPlatformNo();
+        camera.setPlatformNo(platformNo);
         //调用远见添加摄像头的接口
         String res = yuanJianApiClient.addCamera(camera);
         JSONObject jsonObject = JSONObject.parseObject(res);
 
         if (jsonObject.getString("code").equals("SUCCESS")){
-            camera.setCameraId(jsonObject.getString("cameraId"));
+            camera.setCameraId(jsonObject.getJSONObject("data").getString("cameraId"));
         }
         camera.setCreateBy(getLoginName());
         return toAjax(cameraService.insertCamera(camera));
     }
 
+    /**
+     * 同步远见摄像头
+     */
+    @RequiresPermissions("system:camera:add")
+    @Log(title = "摄像头管理", businessType = BusinessType.INSERT)
+    @GetMapping("/sync")
+    @ResponseBody
+    public AjaxResult syncCamera()
+    {
+        String platformNo = PlatformContext.getPlatformNo();
+        CameraQueryRequest cameraQueryRequest = new CameraQueryRequest();
+        cameraQueryRequest.setPageNo(1);
+        cameraQueryRequest.setPageSize(1000);
+        String res = yuanJianApiClient.getCameraPage(cameraQueryRequest);
+        JSONObject jsonObject = JSONObject.parseObject(res);
+        if (jsonObject.getString("code").equals("SUCCESS")) {
+            JSONArray cameraList = jsonObject.getJSONObject("data").getJSONArray("records");
+            for (int i = 0; i < cameraList.size(); i++) {
+                Camera camera = new Camera();
+                JSONObject cameraJson = cameraList.getJSONObject(i);
+                camera.setName(cameraJson.getString("cameraName"));
+                camera.setIp(cameraJson.getString("ip"));
+                camera.setUserName(cameraJson.getString("userName"));
+                camera.setUserPwd(cameraJson.getString("userPwd"));
+                camera.setCameraId(cameraJson.getString("cameraId"));
+                camera.setLatitude(cameraJson.getBigDecimal("latitude"));
+                camera.setLongitude(cameraJson.getBigDecimal("longitude"));
+                camera.setCameraGroupId(cameraJson.getString("cameraGroupId"));
+                camera.setStreamURL(cameraJson.getString("streamURL"));
+                camera.setPlatformNo(platformNo);
+                camera.setStatus(cameraJson.getString("cameraStatus"));
+                camera.setCreateBy(getLoginName());
+                camera.setIsEnable(cameraJson.getBoolean("isEnable"));
+                if (!cameraService.checkIpUnique(camera))
+                {
+                    toAjax(cameraService.insertCamera(camera));
+                }
+
+            }
+        }
+        return success("同步成功");
+    }
     /**
      * 修改摄像头
      */
@@ -152,7 +198,7 @@ public class CameraController extends BaseController
         String res = yuanJianApiClient.editCamera(camera);
         JSONObject jsonObject = JSONObject.parseObject(res);
         if (jsonObject.getString("code").equals("SUCCESS")){
-            camera.setCameraId(jsonObject.getString("cameraId"));
+            camera.setCameraId(jsonObject.getJSONObject("data").getString("cameraId"));
         }
         camera.setUpdateBy(getLoginName());
         return toAjax(cameraService.updateCamera(camera));
@@ -215,7 +261,8 @@ public class CameraController extends BaseController
     public AjaxResult addGroup(@RequestBody CameraGroup cameraGroup)
     {
         String res = yuanJianApiClient.addCameraGroup(cameraGroup);
-        return success(res);
+        JSONObject jsonObject = JSONObject.parseObject(res);
+        return success(jsonObject);
     }
     /**
      * 修改摄像机分组树
@@ -226,30 +273,33 @@ public class CameraController extends BaseController
     public AjaxResult groupTree()
     {
         String res = yuanJianApiClient.getCameraGroupTree();
-        return success(res);
+        JSONObject jsonObject = JSONObject.parseObject(res);
+        return success(jsonObject);
     }
     /**
      * 获取摄像机列表
      */
     @RequiresPermissions("system:camera:view")
-    @GetMapping("/openapi/camera/page")
+    @GetMapping("/openapi/page")
     @ResponseBody
     public AjaxResult cameraPage(@RequestBody CameraQueryRequest cameraQueryRequest)
     {
         String res = yuanJianApiClient.getCameraPage(cameraQueryRequest);
-        return success(res);
+        JSONObject jsonObject = JSONObject.parseObject(res);
+        return success(jsonObject);
     }
     /**
      * 设置摄像机启停抓拍
      */
     @RequiresPermissions("system:camera:edit")
     @Log(title = "摄像头管理", businessType = BusinessType.UPDATE)
-    @PostMapping("/openapi/camera/setup")
+    @PostMapping("/openapi/setup")
     @ResponseBody
     public AjaxResult cameraSetup(@RequestBody CameraSetupRequest cameraSetupRequest)
     {
         String res = yuanJianApiClient.cameraSetup(cameraSetupRequest);
-        return success(res);
+        JSONObject jsonObject = JSONObject.parseObject(res);
+        return success(jsonObject);
     }
 
 

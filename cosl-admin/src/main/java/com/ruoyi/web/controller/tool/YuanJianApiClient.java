@@ -8,6 +8,7 @@ import com.ruoyi.common.core.domain.entity.CameraSetupRequest;
 import com.ruoyi.common.core.domain.entity.ImageAnalysisRequest;
 import com.ruoyi.common.core.domain.entity.MonitorBindFeatureRequest;
 import com.ruoyi.common.core.domain.entity.MonitorCreateRequest;
+import com.ruoyi.common.core.domain.entity.MonitorQueryRequest;
 import com.ruoyi.common.core.domain.entity.SnapComparisonRequest;
 import com.ruoyi.common.core.domain.entity.SnapFeaturePageRequest;
 import com.ruoyi.common.core.domain.entity.YuanJianCamera;
@@ -55,8 +56,6 @@ public class YuanJianApiClient {
         yuanJianCamera.setStreamURL(camera.getStreamURL());
         yuanJianCamera.setUserName(camera.getUserName());
         yuanJianCamera.setUserPwd(camera.getUserPwd());
-        yuanJianCamera.setCameraId(camera.getCameraId());
-        yuanJianCamera.setCameraType(camera.getCameraType());
         JSONObject jsonObject = JSON.parseObject(JSON.toJSONString(yuanJianCamera));
         
         return httpClientUtil.postJson(url, jsonObject);
@@ -78,7 +77,6 @@ public class YuanJianApiClient {
         yuanJianCamera.setUserName(camera.getUserName());
         yuanJianCamera.setUserPwd(camera.getUserPwd());
         yuanJianCamera.setCameraId(camera.getCameraId());
-        yuanJianCamera.setCameraType(camera.getCameraType());
         yuanJianCamera.setCameraId(camera.getCameraId());
         JSONObject jsonObject = JSON.parseObject(JSON.toJSONString(yuanJianCamera));
 
@@ -423,6 +421,60 @@ public class YuanJianApiClient {
         request.setReidThd(0.5);
         request.setGaitThd(0.5);
         return snapComparison(request);
+    }
+
+    /**
+     * 获取底库人员信息
+     * @param monitorId 底库人员id
+     * @return 响应结果
+     */
+    public String getMonitorInfo(String monitorId) {
+        StringBuilder urlBuilder = new StringBuilder(BASE_URL);
+        urlBuilder.append("/monitor/getInfo?monitorId=").append(monitorId);
+        return httpClientUtil.get(urlBuilder.toString());
+    }
+
+    /**
+     * 查询底库的底库人员
+     * @param request 查询请求对象
+     * @return 响应结果
+     */
+    public String queryMonitors(MonitorQueryRequest request) {
+        String url = BASE_URL + "/monitor/query";
+        JSONObject jsonObject = JSON.parseObject(JSON.toJSONString(request));
+        return httpClientUtil.postJson(url, jsonObject);
+    }
+
+    /**
+     * 查询底库人员（简化方法）
+     * @param repIds 底库ID列表
+     * @param page 页码
+     * @param size 每页数量
+     * @return 响应结果
+     */
+    public String queryMonitors(java.util.List<String> repIds, Integer page, Integer size) {
+        MonitorQueryRequest request = new MonitorQueryRequest();
+        request.setRepIds(repIds);
+        request.setPage(page);
+        request.setSize(size);
+        return queryMonitors(request);
+    }
+
+    /**
+     * 查询底库人员（带搜索条件）
+     * @param repIds 底库ID列表
+     * @param page 页码
+     * @param size 每页数量
+     * @param query 搜索条件（姓名/身份证）
+     * @return 响应结果
+     */
+    public String queryMonitorsWithSearch(java.util.List<String> repIds, Integer page, Integer size, String query) {
+        MonitorQueryRequest request = new MonitorQueryRequest();
+        request.setRepIds(repIds);
+        request.setPage(page);
+        request.setSize(size);
+        request.setQuery(query);
+        return queryMonitors(request);
     }
 
 

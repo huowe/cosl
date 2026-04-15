@@ -19,7 +19,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</delete>
 	
 	<delete id="deleteUserRoleByUserIdWithPlatform">
-		delete from sys_user_role where user_id = #{userId} and platform_no = #{platformNo}
+		delete from sys_user_role where user_id = #{userId}  <if test="platformNo != null and platformNo != ''">
+		AND platform_no = #{platformNo}
+	</if>
 	</delete>
 	
 	<select id="countUserRoleByRoleId" resultType="Integer">
@@ -27,7 +29,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="countUserRoleByRoleIdWithPlatform" resultType="Integer">
-	    select count(1) from sys_user_role where role_id = #{roleId} and platform_no = #{platformNo}
+	    select count(1) from sys_user_role where role_id = #{roleId}  <if test="platformNo != null and platformNo != ''">
+		AND platform_no = #{platformNo}
+	</if>
 	</select>
 	
 	<delete id="deleteUserRole" parameterType="Long">
@@ -42,7 +46,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  		<foreach collection="ids" item="userId" open="(" separator="," close=")">
  			#{userId}
         </foreach>
-        and platform_no = #{platformNo}
+		<if test="platformNo != null and platformNo != ''">
+			AND platform_no = #{platformNo}
+		</if>
  	</delete>
 	
 	<insert id="batchUserRole">

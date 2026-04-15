@@ -72,6 +72,16 @@ public class Camera extends BaseEntity
     private String cameraGroupId;
     private String cameraType;
 
+    private boolean isEnable;
+    public boolean getIsEnable()
+    {
+        return isEnable;
+    }
+    public void setIsEnable(boolean isEnable)
+    {
+        this.isEnable = isEnable;
+    }
+
     public String getCameraType()
     {
         return cameraType;

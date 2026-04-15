@@ -42,7 +42,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         
     <select id="checkFloorNoUnique" parameterType="String" resultMap="FloorConfigResult">
         <include refid="selectFloorConfigVo"/>
-        where floor_no = #{floorNo} and platform_no = #{platformNo} and deleted = 0 limit 1
+        where floor_no = #{floorNo}  <if test="platformNo != null and platformNo != ''">
+        AND platform_no = #{platformNo}
+    </if> and deleted = 0 limit 1
     </select>
 
     <select id="selectActiveFloorList" resultMap="FloorConfigResult">

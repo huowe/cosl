@@ -1,7 +1,9 @@
 package com.ruoyi.web.controller.system;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.ruoyi.common.core.domain.entity.*;
 import com.ruoyi.common.utils.PlatformContext;
@@ -99,6 +101,8 @@ public class PersonController extends BaseController
     @ResponseBody
     public AjaxResult addSave(@RequestBody Person person)
     {
+        String platformNo = PlatformContext.getPlatformNo();
+        person.setPlatformNo(platformNo);
         if (!personService.checkMtsCardNoUnique(person))
         {
             return error("新增人员'" + person.getName() + "'失败，MTS 卡号已存在");
@@ -120,13 +124,30 @@ public class PersonController extends BaseController
         MonitorCreateRequest monitorCreateRequest = new MonitorCreateRequest();
         monitorCreateRequest.setName(person.getName());
         monitorCreateRequest.setIdCard(person.getIdCard());
-        monitorCreateRequest.setRepId("");
-        String res = yuanJianApiClient.monitorCreate(monitorCreateRequest);
-        JSONObject jsonObject = JSONObject.parseObject(res);
-        if (jsonObject.getString("code").equals("SUCCESS"))
+        monitorCreateRequest.setRepId("69df3d66b3efc17c8d04bab5");
+        MonitorQueryRequest monitorQueryRequest = new MonitorQueryRequest();
+        List<String> repIds = new ArrayList<>();
+        repIds.add("69df3d66b3efc17c8d04bab5");
+        monitorQueryRequest.setRepIds(repIds);
+        monitorQueryRequest.setQuery(person.getIdCard());
+        String monitorQueryRes = yuanJianApiClient.queryMonitors(monitorQueryRequest);
+        JSONObject monitorQueryJsonObject = JSONObject.parseObject(monitorQueryRes);
+        if (monitorQueryJsonObject.getString("code").equals("SUCCESS"))
         {
-            person.setMonitorId(jsonObject.getJSONObject("data").getString("monitorId"));
+            JSONArray monitors = monitorQueryJsonObject.getJSONObject("data").getJSONArray("monitors");
+            if (monitors != null && !monitors.isEmpty())
+            {
+                person.setMonitorId(monitors.getJSONObject(0).getString("monitorId"));
+            }else{
+                String res = yuanJianApiClient.monitorCreate(monitorCreateRequest);
+                JSONObject jsonObject = JSONObject.parseObject(res);
+                if (jsonObject.getString("code").equals("SUCCESS"))
+                {
+                    person.setMonitorId(jsonObject.getJSONObject("data").getString("monitorId"));
+                }
+            }
         }
+
         return toAjax(personService.insertPerson(person));
     }
 
@@ -235,7 +256,8 @@ public class PersonController extends BaseController
     public AjaxResult repositoryTree()
     {
         String res = yuanJianApiClient.getRepositoryTree();
-        return success(res);
+        JSONObject jsonObject = JSONObject.parseObject(res);
+        return success(jsonObject);
     }
 
     @RequiresPermissions("system:person:add")
@@ -245,22 +267,51 @@ public class PersonController extends BaseController
     public AjaxResult repositoryAdd(@RequestBody YuanJianRepository repository)
     {
         String res = yuanJianApiClient.repositoryAdd(repository);
-        return success(res);
+        JSONObject jsonObject = JSONObject.parseObject(res);
+        return success(jsonObject);
     }
     /**
      * 上传图片同步解析
      */
-    @RequiresPermissions("system:person:view")
+    @RequiresPermissions("system:person:add")
     @Log(title = "上传图片同步解析", businessType = BusinessType.INSERT)
     @PostMapping("/imageAnalysis")
     @ResponseBody
     public AjaxResult imageAnalysis(@RequestBody ImageAnalysisRequest request)
     {
-        Person person = new Person();
-
-        personService.updatePerson(person);
         String res = yuanJianApiClient.imageAnalysis(request);
-        return success(res);
+        JSONObject jsonObject = JSONObject.parseObject(res);
+        return success(jsonObject);
     }
-    
+    /**
+     * 绑定底库人员特征
+     */
+    @RequiresPermissions("system:person:view")
+    @Log(title = "绑定底库人员特征", businessType = BusinessType.INSERT)
+    @PostMapping("/monitorBindFeature")
+    @ResponseBody
+    public AjaxResult monitorBindFeature(@RequestBody MonitorBindFeatureRequest request)
+    {
+        String res = yuanJianApiClient.monitorBindFeature(request);
+        JSONObject jsonObject = JSONObject.parseObject(res);
+        return success(jsonObject);
+    }
+
+    /**
+     * 和抓拍比对
+     */
+    @RequiresPermissions("system:person:view")
+    @Log(title = "和抓拍比对", businessType = BusinessType.INSERT)
+    @PostMapping("/snapComparison")
+    @ResponseBody
+    public AjaxResult snapComparison(@RequestBody SnapComparisonRequest request)
+    {
+        String res = yuanJianApiClient.snapComparison(request);
+        JSONObject jsonObject = JSONObject.parseObject(res);
+        return success(jsonObject);
+    }
+
+
+
+
 }

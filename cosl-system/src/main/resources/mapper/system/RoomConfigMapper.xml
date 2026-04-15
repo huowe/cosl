@@ -43,7 +43,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <select id="checkRoomNoUnique" parameterType="String" resultMap="RoomConfigResult">
-        select id, room_no from room_config where room_no = #{roomNo} and platform_no = #{platformNo} limit 1
+        select id, room_no from room_config where room_no = #{roomNo}  <if test="platformNo != null and platformNo != ''">
+        AND platform_no = #{platformNo}
+    </if> limit 1
     </select>
 
     <insert id="insertRoomConfig" parameterType="RoomConfig" useGeneratedKeys="true" keyProperty="id">

@@ -3,7 +3,6 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.system.mapper.PersonMapper">
-
     <resultMap type="Person" id="PersonResult">
         <result property="id"    column="id"    />
         <result property="platformNo"    column="platform_no"    />
@@ -23,10 +22,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="createTime"    column="create_time"    />
         <result property="updateTime"    column="update_time"    />
         <result property="deleted"    column="deleted"    />
+        <result property="monitorId"    column="monitor_id"    />
+        <result property="image"    column="image"    />
+        <result property="collectStartTime"    column="collect_start_time"    />
+        <result property="collectEndTime"    column="collect_end_time"    />
     </resultMap>
 
     <sql id="selectPersonVo">
-        select id, platform_no, name, mts_card_no, id_card, company, position, certificate_expire_date, onboard_date, leave_date, room_id, bed_id, lifeboat_id, status, blacklist_flag, create_time, update_time, deleted
+        select id, platform_no, name, mts_card_no, id_card, company, position, certificate_expire_date, onboard_date, leave_date, room_id, bed_id, lifeboat_id, status, blacklist_flag, create_time, update_time, deleted, monitor_id, image, collect_start_time, collect_end_time
         from person
     </sql>
 
@@ -96,6 +99,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="lifeboatId != null">lifeboat_id,</if>
             <if test="status != null">status,</if>
             <if test="blacklistFlag != null">blacklist_flag,</if>
+            <if test="monitorId != null">monitor_id,</if>
+            <if test="image != null">image,</if>
+            <if test="collectStartTime != null">collect_start_time,</if>
+            <if test="collectEndTime != null">collect_end_time,</if>
 
             create_time,
 
@@ -116,6 +123,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="lifeboatId != null">#{lifeboatId},</if>
             <if test="status != null">#{status},</if>
             <if test="blacklistFlag != null">#{blacklistFlag},</if>
+            <if test="monitorId != null">#{monitorId},</if>
+            <if test="image != null">#{image},</if>
+            <if test="collectStartTime != null">#{collectStartTime},</if>
+            <if test="collectEndTime != null">#{collectEndTime},</if>
 
             sysdate(),
 
@@ -140,6 +151,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="lifeboatId != null">lifeboat_id = #{lifeboatId},</if>
             <if test="status != null">status = #{status},</if>
             <if test="blacklistFlag != null">blacklist_flag = #{blacklistFlag},</if>
+            <if test="monitorId != null">monitor_id = #{monitorId},</if>
+            <if test="image != null">image = #{image},</if>
+            <if test="collectStartTime != null">collect_start_time = #{collectStartTime},</if>
+            <if test="collectEndTime != null">collect_end_time = #{collectEndTime},</if>
 
             update_time = sysdate(),
         </trim>

@@ -36,7 +36,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         
     <select id="checkSeatNoUnique" parameterType="map" resultMap="LifeboatSeatResult">
         <include refid="selectLifeboatSeatVo"/>
-        where lifeboat_id = #{lifeboatId} and seat_no = #{seatNo} and platform_no = #{platformNo} limit 1
+        where lifeboat_id = #{lifeboatId} and seat_no = #{seatNo}  <if test="platformNo != null and platformNo != ''">
+        AND platform_no = #{platformNo}
+    </if> limit 1
     </select>
 
     <select id="selectSeatsByLifeboatId" parameterType="Long" resultMap="LifeboatSeatResult">

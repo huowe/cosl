@@ -15,7 +15,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</delete>
 	
 	<delete id="deleteRoleMenuByRoleIdWithPlatform">
-		delete from sys_role_menu where role_id=#{roleId} and platform_no=#{platformNo}
+		delete from sys_role_menu where role_id=#{roleId}  <if test="platformNo != null and platformNo != ''">
+		AND platform_no = #{platformNo}
+	</if>
 	</delete>
 	
 	<select id="selectCountRoleMenuByMenuId" resultType="Integer">
@@ -23,7 +25,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="selectCountRoleMenuByMenuIdWithPlatform" resultType="Integer">
-	    select count(1) from sys_role_menu where menu_id=#{menuId} and platform_no=#{platformNo}
+	    select count(1) from sys_role_menu where menu_id=#{menuId}  <if test="platformNo != null and platformNo != ''">
+		AND platform_no = #{platformNo}
+	</if>
 	</select>
 	
 	<delete id="deleteRoleMenu" parameterType="Long">
@@ -38,7 +42,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  		<foreach collection="ids" item="roleId" open="(" separator="," close=")">
  			#{roleId}
         </foreach>
-        and platform_no = #{platformNo}
+		<if test="platformNo != null and platformNo != ''">
+			AND platform_no = #{platformNo}
+		</if>
  	</delete>
 	
 	<insert id="batchRoleMenu">
