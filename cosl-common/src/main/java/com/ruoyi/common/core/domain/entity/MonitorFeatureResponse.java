@@ -28,5 +28,5 @@ public class MonitorFeatureResponse implements Serializable
     private Boolean success;
 
     /** 返回数据 */
-    private List<MonitorFeatureData> data;
+    private MonitorFeatureData data;
 }

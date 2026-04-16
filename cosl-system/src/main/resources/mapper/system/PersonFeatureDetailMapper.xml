@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.PersonFeatureDetailMapper">
+    
+    <resultMap type="PersonFeatureDetail" id="PersonFeatureDetailResult">
+        <result property="id"    column="id"    />
+        <result property="platformNo"    column="platform_no"    />
+        <result property="monitorId"    column="monitor_id"    />
+        <result property="featureId"    column="feature_id"    />
+        <result property="angle"    column="angle"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="deviceId"    column="device_id"    />
+        <result property="facePath"    column="face_path"    />
+        <result property="masterOriginalImage"    column="master_original_image"    />
+        <result property="originalImage"    column="original_image"    />
+        <result property="previewImage"    column="preview_image"    />
+        <result property="sequenceCount"    column="sequence_count"    />
+        <result property="sequenceImgUrl"    column="sequence_img_url"    />
+        <result property="sequenceVideoUrl"    column="sequence_video_url"    />
+        <result property="sourceIdentify"    column="source_identify"    />
+        <result property="sourceType"    column="source_type"    />
+        <result property="targetType"    column="target_type"    />
+        <result property="videoSourceName"    column="video_source_name"    />
+        <result property="videoUrl"    column="video_url"    />
+        <result property="zipUrl"    column="zip_url"    />
+        <result property="recordCreateTime"    column="record_create_time"    />
+        <result property="deleted"    column="deleted"    />
+    </resultMap>
+
+    <sql id="selectPersonFeatureDetailVo">
+        select id, platform_no, monitor_id, feature_id, angle, create_time, device_id, 
+               face_path, master_original_image, original_image, preview_image, 
+               sequence_count, sequence_img_url, sequence_video_url, source_identify, 
+               source_type, target_type, video_source_name, video_url, zip_url, 
+               record_create_time, deleted
+        from person_feature_detail
+    </sql>
+
+    <select id="selectPersonFeatureDetailList" parameterType="PersonFeatureDetail" resultMap="PersonFeatureDetailResult">
+        <include refid="selectPersonFeatureDetailVo"/>
+        where deleted = 0
+        <if test="platformNo != null and platformNo != ''">
+            AND platform_no = #{platformNo}
+        </if>
+        <if test="monitorId != null and monitorId != ''">
+            AND monitor_id = #{monitorId}
+        </if>
+        <if test="featureId != null and featureId != ''">
+            AND feature_id = #{featureId}
+        </if>
+        order by record_create_time desc
+    </select>
+
+    <select id="selectPersonFeatureDetailById" parameterType="Long" resultMap="PersonFeatureDetailResult">
+        <include refid="selectPersonFeatureDetailVo"/>
+        where id = #{id} and deleted = 0
+    </select>
+
+    <select id="selectByMonitorIdAndFeatureId" resultMap="PersonFeatureDetailResult">
+        <include refid="selectPersonFeatureDetailVo"/>
+        where monitor_id = #{monitorId} and feature_id = #{featureId} and deleted = 0
+        limit 1
+    </select>
+
+    <insert id="insertPersonFeatureDetail" parameterType="PersonFeatureDetail" useGeneratedKeys="true" keyProperty="id">
+        insert into person_feature_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="platformNo != null and platformNo != ''">platform_no,</if>
+            <if test="monitorId != null and monitorId != ''">monitor_id,</if>
+            <if test="featureId != null and featureId != ''">feature_id,</if>
+            <if test="angle != null">angle,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="deviceId != null">device_id,</if>
+            <if test="facePath != null">face_path,</if>
+            <if test="masterOriginalImage != null">master_original_image,</if>
+            <if test="originalImage != null">original_image,</if>
+            <if test="previewImage != null">preview_image,</if>
+            <if test="sequenceCount != null">sequence_count,</if>
+            <if test="sequenceImgUrl != null">sequence_img_url,</if>
+            <if test="sequenceVideoUrl != null">sequence_video_url,</if>
+            <if test="sourceIdentify != null">source_identify,</if>
+            <if test="sourceType != null">source_type,</if>
+            <if test="targetType != null">target_type,</if>
+            <if test="videoSourceName != null">video_source_name,</if>
+            <if test="videoUrl != null">video_url,</if>
+            <if test="zipUrl != null">zip_url,</if>
+            <if test="recordCreateTime != null">record_create_time,</if>
+            <if test="deleted != null">deleted,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="platformNo != null and platformNo != ''">#{platformNo},</if>
+            <if test="monitorId != null and monitorId != ''">#{monitorId},</if>
+            <if test="featureId != null and featureId != ''">#{featureId},</if>
+            <if test="angle != null">#{angle},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="deviceId != null">#{deviceId},</if>
+            <if test="facePath != null">#{facePath},</if>
+            <if test="masterOriginalImage != null">#{masterOriginalImage},</if>
+            <if test="originalImage != null">#{originalImage},</if>
+            <if test="previewImage != null">#{previewImage},</if>
+            <if test="sequenceCount != null">#{sequenceCount},</if>
+            <if test="sequenceImgUrl != null">#{sequenceImgUrl},</if>
+            <if test="sequenceVideoUrl != null">#{sequenceVideoUrl},</if>
+            <if test="sourceIdentify != null">#{sourceIdentify},</if>
+            <if test="sourceType != null">#{sourceType},</if>
+            <if test="targetType != null">#{targetType},</if>
+            <if test="videoSourceName != null">#{videoSourceName},</if>
+            <if test="videoUrl != null">#{videoUrl},</if>
+            <if test="zipUrl != null">#{zipUrl},</if>
+            <if test="recordCreateTime != null">#{recordCreateTime},</if>
+            <if test="deleted != null">#{deleted},</if>
+         </trim>
+    </insert>
+
+    <insert id="batchInsertPersonFeatureDetail">
+        insert into person_feature_detail(platform_no, monitor_id, feature_id, angle, create_time, 
+                                          device_id, face_path, master_original_image, original_image, 
+                                          preview_image, sequence_count, sequence_img_url, sequence_video_url, 
+                                          source_identify, source_type, target_type, video_source_name, 
+                                          video_url, zip_url, record_create_time, deleted)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.platformNo}, #{item.monitorId}, #{item.featureId}, #{item.angle}, #{item.createTime},
+             #{item.deviceId}, #{item.facePath}, #{item.masterOriginalImage}, #{item.originalImage},
+             #{item.previewImage}, #{item.sequenceCount}, #{item.sequenceImgUrl}, #{item.sequenceVideoUrl},
+             #{item.sourceIdentify}, #{item.sourceType}, #{item.targetType}, #{item.videoSourceName},
+             #{item.videoUrl}, #{item.zipUrl}, #{item.recordCreateTime}, #{item.deleted})
+        </foreach>
+    </insert>
+
+    <update id="updatePersonFeatureDetail" parameterType="PersonFeatureDetail">
+        update person_feature_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="platformNo != null and platformNo != ''">platform_no = #{platformNo},</if>
+            <if test="monitorId != null and monitorId != ''">monitor_id = #{monitorId},</if>
+            <if test="featureId != null and featureId != ''">feature_id = #{featureId},</if>
+            <if test="angle != null">angle = #{angle},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="deviceId != null">device_id = #{deviceId},</if>
+            <if test="facePath != null">face_path = #{facePath},</if>
+            <if test="masterOriginalImage != null">master_original_image = #{masterOriginalImage},</if>
+            <if test="originalImage != null">original_image = #{originalImage},</if>
+            <if test="previewImage != null">preview_image = #{previewImage},</if>
+            <if test="sequenceCount != null">sequence_count = #{sequenceCount},</if>
+            <if test="sequenceImgUrl != null">sequence_img_url = #{sequenceImgUrl},</if>
+            <if test="sequenceVideoUrl != null">sequence_video_url = #{sequenceVideoUrl},</if>
+            <if test="sourceIdentify != null">source_identify = #{sourceIdentify},</if>
+            <if test="sourceType != null">source_type = #{sourceType},</if>
+            <if test="targetType != null">target_type = #{targetType},</if>
+            <if test="videoSourceName != null">video_source_name = #{videoSourceName},</if>
+            <if test="videoUrl != null">video_url = #{videoUrl},</if>
+            <if test="zipUrl != null">zip_url = #{zipUrl},</if>
+            <if test="deleted != null">deleted = #{deleted},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="deletePersonFeatureDetailById" parameterType="Long">
+        update person_feature_detail set deleted = 1 where id = #{id}
+    </update>
+
+    <update id="deletePersonFeatureDetailByIds" parameterType="String">
+        update person_feature_detail set deleted = 1 where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+    <update id="deleteByMonitorId" parameterType="String">
+        update person_feature_detail set deleted = 1 where monitor_id = #{monitorId}
+    </update>
+
+</mapper>

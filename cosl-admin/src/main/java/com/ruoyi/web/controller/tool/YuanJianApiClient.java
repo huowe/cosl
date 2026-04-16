@@ -477,6 +477,17 @@ public class YuanJianApiClient {
         return queryMonitors(request);
     }
 
+    /**
+     * 获取抓拍特征详情
+     * @param featureId 特征id
+     * @return 响应结果
+     */
+    public String getSnapFeatureDetail(String featureId) {
+        StringBuilder urlBuilder = new StringBuilder(BASE_URL);
+        urlBuilder.append("/feature/snapFeatureDetail?featureId=").append(featureId);
+        return httpClientUtil.get(urlBuilder.toString());
+    }
+
 
 
 

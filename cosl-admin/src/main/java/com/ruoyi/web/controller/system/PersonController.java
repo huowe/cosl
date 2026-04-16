@@ -9,6 +9,7 @@ import com.ruoyi.common.core.domain.entity.*;
 import com.ruoyi.common.utils.PlatformContext;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.SysPost;
+import com.ruoyi.system.service.IPersonFeatureDetailService;
 import com.ruoyi.system.service.IPersonService;
 import com.ruoyi.system.service.ISysPostService;
 import com.ruoyi.web.controller.tool.YuanJianApiClient;
@@ -22,6 +23,7 @@ import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.common.utils.ImageBase64Utils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 
 import javax.annotation.Resource;
@@ -42,6 +44,8 @@ public class PersonController extends BaseController
     private IPersonService personService;
     @Autowired
     private ISysPostService postService;
+    @Autowired
+    private IPersonFeatureDetailService personFeatureDetailService;
     @Resource
     private YuanJianApiClient yuanJianApiClient;
 
@@ -294,9 +298,106 @@ public class PersonController extends BaseController
     {
         String res = yuanJianApiClient.monitorBindFeature(request);
         JSONObject jsonObject = JSONObject.parseObject(res);
+        
+        // 如果绑定成功，查询特征详情并保存到数据库
+        if (jsonObject.getString("code").equals("SUCCESS")) {
+            try {
+                saveFeatureDetails(request.getMonitorId(), request.getFeatureIds());
+            } catch (Exception e) {
+                // 记录日志但不影响主流程
+                System.err.println("保存特征详情失败: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+        
         return success(jsonObject);
     }
 
+    /**
+     * 保存特征详情到数据库
+     * @param monitorId 底库人员id
+     * @param featureIds 特征id列表
+     */
+    private void saveFeatureDetails(String monitorId, List<String> featureIds) {
+        if (featureIds == null || featureIds.isEmpty()) {
+            return;
+        }
+
+        List<PersonFeatureDetail> detailList = new ArrayList<>();
+
+        for (String featureId : featureIds) {
+            try {
+                // 调用API获取特征详情
+                String response = yuanJianApiClient.getMonitorFeatureDetail(featureId);
+                MonitorFeatureResponse featureResponse = JSONObject.parseObject(response, MonitorFeatureResponse.class);
+
+                if (featureResponse.getSuccess() && featureResponse.getData() != null) {
+                    MonitorFeatureData data = featureResponse.getData();
+
+                    // 检查是否已存在
+                    PersonFeatureDetail existing = personFeatureDetailService.selectByMonitorIdAndFeatureId(monitorId, featureId);
+                    
+                    PersonFeatureDetail detail = new PersonFeatureDetail();
+                    detail.setMonitorId(monitorId);
+                    detail.setFeatureId(data.getGaitID());
+                    detail.setAngle(data.getAngle());
+                    detail.setCreateTime(data.getCreateTime());
+                    detail.setDeviceId(data.getDeviceId());
+                    
+                    // 将图片URL转换为Base64
+                    detail.setFacePath(convertImageToBase64(data.getFacePath()));
+                    detail.setMasterOriginalImage(convertImageToBase64(data.getMasterOriginalImage()));
+                    detail.setOriginalImage(convertImageToBase64(data.getOriginalImage()));
+                    detail.setPreviewImage(convertImageToBase64(data.getPreviewImage()));
+                    
+                    detail.setSequenceCount(data.getSequenceCount());
+                    detail.setSequenceImgUrl(convertImageToBase64(data.getSequenceImgUrl()));
+                    detail.setSequenceVideoUrl(data.getSequenceVideoUrl()); // 视频保持URL
+                    detail.setSourceIdentify(data.getSourceIdentify());
+                    detail.setSourceType(data.getSourceType());
+                    detail.setTargetType(data.getTargetType());
+                    detail.setVideoSourceName(data.getVideoSourceName());
+                    detail.setVideoUrl(data.getVideoUrl()); // 视频保持URL
+                    detail.setZipUrl(data.getZipUrl()); // ZIP保持URL
+
+                    if (existing != null) {
+                        // 更新已有记录
+                        detail.setId(existing.getId());
+                        personFeatureDetailService.updatePersonFeatureDetail(detail);
+                    } else {
+                        // 新增记录
+                        detailList.add(detail);
+                    }
+                }
+            } catch (Exception e) {
+                System.err.println("获取特征详情失败，featureId: " + featureId + ", 错误: " + e.getMessage());
+            }
+        }
+
+        // 批量插入新记录
+        if (!detailList.isEmpty()) {
+            personFeatureDetailService.batchInsertPersonFeatureDetail(detailList);
+        }
+    }
+
+    /**
+     * 将图片URL转换为Base64
+     * @param imageUrl 图片URL
+     * @return Base64字符串，如果URL为空或转换失败则返回原值
+     */
+    private String convertImageToBase64(String imageUrl) {
+        if (imageUrl == null || imageUrl.isEmpty()) {
+            return imageUrl;
+        }
+        
+        try {
+            String base64 = ImageBase64Utils.imageUrlToBase64(imageUrl);
+            return base64 != null ? base64 : imageUrl; // 如果转换失败，保留原URL
+        } catch (Exception e) {
+            System.err.println("图片转Base64失败，URL: " + imageUrl + ", 错误: " + e.getMessage());
+            return imageUrl; // 转换失败时保留原URL
+        }
+    }
     /**
      * 和抓拍比对
      */
