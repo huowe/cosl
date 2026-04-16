@@ -11,7 +11,7 @@
  Target Server Version : 80045
  File Encoding         : 65001
 
- Date: 15/04/2026 18:28:43
+ Date: 16/04/2026 18:44:07
 */
 
 SET NAMES utf8mb4;
@@ -343,7 +343,7 @@ CREATE TABLE `person`  (
   INDEX `idx_onboard_date`(`onboard_date`) USING BTREE,
   INDEX `idx_certificate_expire`(`certificate_expire_date`) USING BTREE,
   INDEX `idx_platform_no`(`platform_no`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of person
@@ -372,6 +372,45 @@ CREATE TABLE `person_face`  (
 -- ----------------------------
 -- Records of person_face
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for person_feature_detail
+-- ----------------------------
+DROP TABLE IF EXISTS `person_feature_detail`;
+CREATE TABLE `person_feature_detail`  (
+  `id` bigint(0) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `platform_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '钻井平台编号',
+  `monitor_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '底库人员id',
+  `feature_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '特征id',
+  `angle` int(0) NULL DEFAULT NULL COMMENT '拍摄角度',
+  `create_time` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '创建时间',
+  `device_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '设备id',
+  `face_path` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '人脸图片base64',
+  `master_original_image` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '主控服务器特征预览图base64',
+  `original_image` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '特征预览图base64',
+  `preview_image` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '预览图base64',
+  `sequence_count` int(0) NULL DEFAULT NULL COMMENT '序列数量(帧数)',
+  `sequence_img_url` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT '步态序列图base64',
+  `sequence_video_url` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '步态序列视频',
+  `source_identify` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '视频源ID',
+  `source_type` int(0) NULL DEFAULT NULL COMMENT '视频源类型(0:摄像头,1:离线视频)',
+  `target_type` int(0) NULL DEFAULT NULL COMMENT '特征类型(1:人体,2:人脸,7:步态等)',
+  `video_source_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '来源名称',
+  `video_url` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '视频片段',
+  `zip_url` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'zip压缩',
+  `record_create_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '记录创建时间',
+  `deleted` tinyint(1) NULL DEFAULT 0 COMMENT '删除标志 0-未删除 1-已删除',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `uk_monitor_feature`(`monitor_id`, `feature_id`, `deleted`) USING BTREE,
+  INDEX `idx_monitor_id`(`monitor_id`) USING BTREE,
+  INDEX `idx_feature_id`(`feature_id`) USING BTREE,
+  INDEX `idx_platform_no`(`platform_no`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '人员特征详情表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of person_feature_detail
+-- ----------------------------
+INSERT INTO `person_feature_detail` VALUES (1, 'PLATFORM-A01', '69df4f72b3efc17c8d04bab6', '963714320825323905____3__967768409__1776247041__', -1, '2026-04-15 17:59:22', '967768409', 'http://192.168.1.49:82/gait-boot/v1/file/feature/monitor/f2db6fa320234ee388fd1298e6b50e6e/963714320825323905_face.png?p=monitor,f2db6fa320234ee388fd1298e6b50e6e,0,5859&rid=38b3eff8baf56627478ec76a704e9b52&nid=69a58c93b3efc17a5c231d8f&fid=963714320825323905&typ=0', NULL, 'http://192.168.1.49:82/gait-boot/v1/file/feature/monitor/69df617ab3efc17c8d04babc/785811d2db8f448186973fb344be5f42.jpg?p=monitor,69df617ab3efc17c8d04babc&rid=38b3eff8baf56627478ec76a704e9b52&nid=69a58c93b3efc17a5c231d8f&fid=963714320825323905&typ=0', '', 0, '', NULL, '967768409', 3, 2, '785811d2db8f448186973fb344be5f42.jpg', '', '', '2026-04-16 15:54:16', 0);
 
 -- ----------------------------
 -- Table structure for person_gait
@@ -712,7 +751,7 @@ CREATE TABLE `sys_logininfor`  (
   PRIMARY KEY (`info_id`) USING BTREE,
   INDEX `idx_sys_logininfor_s`(`status`) USING BTREE,
   INDEX `idx_sys_logininfor_lt`(`login_time`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 243 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '系统访问记录' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 246 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '系统访问记录' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_logininfor
@@ -860,6 +899,9 @@ INSERT INTO `sys_logininfor` VALUES (239, 'admin', '127.0.0.1', '内网IP', 'Api
 INSERT INTO `sys_logininfor` VALUES (240, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-15 17:40:39', 'PLATFORM-A01');
 INSERT INTO `sys_logininfor` VALUES (241, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-15 17:57:09', 'PLATFORM-A01');
 INSERT INTO `sys_logininfor` VALUES (242, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-15 18:06:02', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (243, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-16 15:36:13', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (244, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-16 15:53:55', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (245, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-16 18:39:42', 'PLATFORM-A01');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -1027,7 +1069,7 @@ CREATE TABLE `sys_oper_log`  (
   INDEX `idx_sys_oper_log_bt`(`business_type`) USING BTREE,
   INDEX `idx_sys_oper_log_s`(`status`) USING BTREE,
   INDEX `idx_sys_oper_log_ot`(`oper_time`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 300 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '操作日志记录' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 306 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '操作日志记录' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_oper_log
@@ -1232,6 +1274,12 @@ INSERT INTO `sys_oper_log` VALUES (296, '和抓拍比对', 1, 'com.ruoyi.web.con
 INSERT INTO `sys_oper_log` VALUES (297, '和抓拍比对', 1, 'com.ruoyi.web.controller.system.PersonController.snapComparison()', 'POST', 1, 'admin', '研发部门', '/cosl/api/person/snapComparison', '127.0.0.1', '内网IP', '{\"endTime\":\"2026-04-15 18:00\",\"faceThd\":0.75,\"featureIds\":[\"963714320825323905____3__967768409__1776247041__\"],\"gaitIDs\":[],\"gaitThd\":0.7,\"ignoreFeatureIds\":[\"\"],\"isMonitor\":true,\"page\":1,\"reidThd\":0.75,\"size\":20,\"sourceIds\":[\"638290461\"],\"sourceType\":10,\"startTime\":\"2026-04-15 15:00\",\"topN\":10} ', '{\"msg\":\"操作成功\",\"code\":0,\"data\":{\"msg\":\"服务异常 [参数错误！]\",\"code\":\"SERVICE_ERROR\",\"success\":false}}', 0, NULL, '2026-04-15 18:25:46', 140, 'PLATFORM-A01');
 INSERT INTO `sys_oper_log` VALUES (298, '和抓拍比对', 1, 'com.ruoyi.web.controller.system.PersonController.snapComparison()', 'POST', 1, 'admin', '研发部门', '/cosl/api/person/snapComparison', '127.0.0.1', '内网IP', '{\"endTime\":\"2026-04-15 18:00:00\",\"featureIds\":[\"963714320825323905____3__967768409__1776247041__\"],\"gaitThd\":0.7,\"isMonitor\":false,\"page\":1,\"size\":20,\"sourceIds\":[],\"sourceType\":10,\"startTime\":\"2026-04-15 15:00:00\",\"topN\":100} ', '{\"msg\":\"操作成功\",\"code\":0,\"data\":{\"msg\":\"请求成功\",\"code\":\"SUCCESS\",\"data\":{\"gaitCount\":88,\"reidCount\":92,\"page\":{\"records\":[{\"keyframes\":false,\"isGBHistory\":0,\"deviceId\":\"687327101\",\"hasBike\":false,\"totalFrame\":88,\"longitude\":116.34282980975641,\"anglesArr\":[-100],\"zipUrl\":\"http://192.168.1.49:82/gait-boot/v1/file/feature/20260415-multiple/963714320826115073_images/963714320826115073_images.zip?t=mp4&p=20260415-multiple,69df3aeab3efc17d1bc60e56,164457446,164710569&rid=38b3eff8baf56627478ec76a704e9b52&nid=69a58c93b3efc17a5c231d8f&fid=963714320826115073&casid=&typ=0\",\"version\":8,\"sequenceCount\":88,\"sourceType\":0,\"gaitSim\":0.0,\"videoSourceName\":\"192.168.1.12\",\"realTargetType\":103,\"originalGender\":1,\"facePath\":\"http://192.168.1.49:82/gait-boot/v1/file/feature/20260415-multiple/963714320826115073_face/963714320826115073_face.png?p=20260415-multiple,69df3aeab3efc17d1bc60e56,164783677,164802874&rid=38b3eff8baf56627478ec76a704e9b52&nid=69a58c93b3efc17a5c231d8f&fid=963714320826115073&casid=&typ=0\",\"nodeId\":\"69a58c93b3efc17a5c231d8f\",\"reidSim\":0.0,\"privateOriginalPreviewImage\":\"20260415-multiple/963714320826115073_preview/963714320826115073_preview.png?p=20260415-multiple,69df3aeab3efc17d1bc60e56,164710570,164783676\",\"gender\":1,\"privateOriginalFacePath\":\"20260415-multiple/963714320826115073_face/963714320826115073_face.png?p=20260415-multiple,69df3aeab3efc17d1bc60e56,164783677,164802874\",\"latitude\":39.97525167545353,\"mainVideoSourceId\":\"687327101\",\"sequenceVideoUrl\":\"http://192.168.1.49:82/gait-boot/v1/file/feature/20260415-multiple/963714320826115073_images/all.mp4?t=mp4&p=20260415-multiple,69df3aeab3efc17d1bc60e56,164457446,164710569&rid=38b3eff8baf56627478ec76a704e9b52&nid=69a58c93b3efc17a5c231d8f&fid=963714320826115073&casid=&typ=1\",\"privateOriginalImagesPath\":\"20260415-multiple/963714320826115073_images/963714320826115073_images.zip?t=mp4&p=20260415-multiple,69df3aeab3efc17d1bc60e56,164457446,164710569\",\"videoUrl\":\"http://192.168.1.49:82/gait-boot/v1/file/feature/20260415-multi', 0, NULL, '2026-04-15 18:26:10', 201, 'PLATFORM-A01');
 INSERT INTO `sys_oper_log` VALUES (299, '和抓拍比对', 1, 'com.ruoyi.web.controller.system.PersonController.snapComparison()', 'POST', 1, 'admin', '研发部门', '/cosl/api/person/snapComparison', '127.0.0.1', '内网IP', '{\"endTime\":\"2026-04-15 18:00:00\",\"featureIds\":[\"963714320825323905____3__967768409__1776247041__\"],\"gaitThd\":0.7,\"isMonitor\":false,\"page\":1,\"size\":20,\"sourceIds\":[],\"sourceType\":10,\"startTime\":\"2026-04-15 15:00:00\",\"topN\":100} ', '{\"msg\":\"操作成功\",\"code\":0,\"data\":{\"msg\":\"请求成功\",\"code\":\"SUCCESS\",\"data\":{\"gaitCount\":88,\"reidCount\":92,\"page\":{\"records\":[{\"keyframes\":false,\"isGBHistory\":0,\"deviceId\":\"687327101\",\"hasBike\":false,\"totalFrame\":88,\"longitude\":116.34282980975641,\"anglesArr\":[-100],\"zipUrl\":\"http://192.168.1.49:82/gait-boot/v1/file/feature/20260415-multiple/963714320826115073_images/963714320826115073_images.zip?t=mp4&p=20260415-multiple,69df3aeab3efc17d1bc60e56,164457446,164710569&rid=38b3eff8baf56627478ec76a704e9b52&nid=69a58c93b3efc17a5c231d8f&fid=963714320826115073&casid=&typ=0\",\"version\":8,\"sequenceCount\":88,\"sourceType\":0,\"gaitSim\":0.0,\"videoSourceName\":\"192.168.1.12\",\"realTargetType\":103,\"originalGender\":1,\"facePath\":\"http://192.168.1.49:82/gait-boot/v1/file/feature/20260415-multiple/963714320826115073_face/963714320826115073_face.png?p=20260415-multiple,69df3aeab3efc17d1bc60e56,164783677,164802874&rid=38b3eff8baf56627478ec76a704e9b52&nid=69a58c93b3efc17a5c231d8f&fid=963714320826115073&casid=&typ=0\",\"nodeId\":\"69a58c93b3efc17a5c231d8f\",\"reidSim\":0.0,\"privateOriginalPreviewImage\":\"20260415-multiple/963714320826115073_preview/963714320826115073_preview.png?p=20260415-multiple,69df3aeab3efc17d1bc60e56,164710570,164783676\",\"gender\":1,\"privateOriginalFacePath\":\"20260415-multiple/963714320826115073_face/963714320826115073_face.png?p=20260415-multiple,69df3aeab3efc17d1bc60e56,164783677,164802874\",\"latitude\":39.97525167545353,\"mainVideoSourceId\":\"687327101\",\"sequenceVideoUrl\":\"http://192.168.1.49:82/gait-boot/v1/file/feature/20260415-multiple/963714320826115073_images/all.mp4?t=mp4&p=20260415-multiple,69df3aeab3efc17d1bc60e56,164457446,164710569&rid=38b3eff8baf56627478ec76a704e9b52&nid=69a58c93b3efc17a5c231d8f&fid=963714320826115073&casid=&typ=1\",\"privateOriginalImagesPath\":\"20260415-multiple/963714320826115073_images/963714320826115073_images.zip?t=mp4&p=20260415-multiple,69df3aeab3efc17d1bc60e56,164457446,164710569\",\"videoUrl\":\"http://192.168.1.49:82/gait-boot/v1/file/feature/20260415-multi', 0, NULL, '2026-04-15 18:26:50', 247, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (300, '绑定底库人员特征', 1, 'com.ruoyi.web.controller.system.PersonController.monitorBindFeature()', 'POST', 1, 'admin', '研发部门', '/cosl/api/person/monitorBindFeature', '127.0.0.1', '内网IP', '{\"featureIds\":[\"963714320825323905____3__967768409__1776247041__\"],\"gaitIDs\":[],\"monitorId\":\"69df4f72b3efc17c8d04bab6\"} ', '{\"msg\":\"操作成功\",\"code\":0,\"data\":{\"msg\":\"请求成功\",\"code\":\"SUCCESS\",\"success\":true}}', 0, NULL, '2026-04-16 15:36:20', 619, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (301, '绑定底库人员特征', 1, 'com.ruoyi.web.controller.system.PersonController.monitorBindFeature()', 'POST', 1, 'admin', '研发部门', '/cosl/api/person/monitorBindFeature', '127.0.0.1', '内网IP', '{\"featureIds\":[\"963714320825323905____3__967768409__1776247041__\"],\"gaitIDs\":[],\"monitorId\":\"69df4f72b3efc17c8d04bab6\"} ', '{\"msg\":\"操作成功\",\"code\":0,\"data\":{\"msg\":\"请求成功\",\"code\":\"SUCCESS\",\"success\":true}}', 0, NULL, '2026-04-16 15:38:06', 44902, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (302, '绑定底库人员特征', 1, 'com.ruoyi.web.controller.system.PersonController.monitorBindFeature()', 'POST', 1, 'admin', '研发部门', '/cosl/api/person/monitorBindFeature', '127.0.0.1', '内网IP', '{\"featureIds\":[\"963714320825323905____3__967768409__1776247041__\"],\"gaitIDs\":[],\"monitorId\":\"69df4f72b3efc17c8d04bab6\"} ', '{\"msg\":\"操作成功\",\"code\":0,\"data\":{\"msg\":\"请求成功\",\"code\":\"SUCCESS\",\"success\":true}}', 0, NULL, '2026-04-16 15:39:12', 63803, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (303, '绑定底库人员特征', 1, 'com.ruoyi.web.controller.system.PersonController.monitorBindFeature()', 'POST', 1, 'admin', '研发部门', '/cosl/api/person/monitorBindFeature', '127.0.0.1', '内网IP', '{\"featureIds\":[\"963714320825323905____3__967768409__1776247041__\"],\"gaitIDs\":[],\"monitorId\":\"69df4f72b3efc17c8d04bab6\"} ', '{\"msg\":\"操作成功\",\"code\":0,\"data\":{\"msg\":\"请求成功\",\"code\":\"SUCCESS\",\"success\":true}}', 0, NULL, '2026-04-16 15:51:21', 678952, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (304, '绑定底库人员特征', 1, 'com.ruoyi.web.controller.system.PersonController.monitorBindFeature()', 'POST', 1, 'admin', '研发部门', '/cosl/api/person/monitorBindFeature', '127.0.0.1', '内网IP', '{\"featureIds\":[\"963714320825323905____3__967768409__1776247041__\"],\"gaitIDs\":[],\"monitorId\":\"69df4f72b3efc17c8d04bab6\"} ', '{\"msg\":\"操作成功\",\"code\":0,\"data\":{\"msg\":\"请求成功\",\"code\":\"SUCCESS\",\"success\":true}}', 0, NULL, '2026-04-16 15:54:15', 19733, 'PLATFORM-A01');
+INSERT INTO `sys_oper_log` VALUES (305, '绑定底库人员特征', 1, 'com.ruoyi.web.controller.system.PersonController.monitorBindFeature()', 'POST', 1, 'admin', '研发部门', '/cosl/api/person/monitorBindFeature', '127.0.0.1', '内网IP', '{\"featureIds\":[\"963714320825323905____3__967768409__1776247041__\"],\"gaitIDs\":[],\"monitorId\":\"69df4f72b3efc17c8d04bab6\"} ', '{\"msg\":\"操作成功\",\"code\":0,\"data\":{\"msg\":\"请求成功\",\"code\":\"SUCCESS\",\"success\":true}}', 0, NULL, '2026-04-16 18:40:00', 14089, 'PLATFORM-A01');
 
 -- ----------------------------
 -- Table structure for sys_post
@@ -1250,7 +1298,7 @@ CREATE TABLE `sys_post`  (
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '备注',
   `platform_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '钻井平台编号',
   PRIMARY KEY (`post_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 12 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '岗位信息表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 16 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '岗位信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_post
@@ -1449,7 +1497,7 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 103, 'admin', '管理员', '00', 'ry@163.com', '15888888888', '1', '', '29c67a30398638269fe600f73a054934', '111111', '0', '0', '127.0.0.1', '2026-04-15 18:05:58', NULL, 'admin', '2026-03-05 22:17:41', '', NULL, '管理员', 'PLATFORM-A01');
+INSERT INTO `sys_user` VALUES (1, 103, 'admin', '管理员', '00', 'ry@163.com', '15888888888', '1', '', '29c67a30398638269fe600f73a054934', '111111', '0', '0', '127.0.0.1', '2026-04-16 18:39:43', NULL, 'admin', '2026-03-05 22:17:41', '', NULL, '管理员', 'PLATFORM-A01');
 INSERT INTO `sys_user` VALUES (2, 105, 'ry', '若依', '00', 'ry@qq.com', '15666666666', '1', '', '8e6d98b90472783cc73c17047ddccf36', '222222', '0', '0', '127.0.0.1', NULL, NULL, 'admin', '2026-03-05 22:17:41', '', NULL, '测试员', 'PLATFORM-A01');
 INSERT INTO `sys_user` VALUES (100, NULL, 'test', '测试', '00', '', '13666663333', '0', '', 'ba3191792f8b5c3d255ddae5f78c1b6e', 'be1d7b', '0', '0', '', NULL, '2026-03-07 11:04:15', 'admin', '2026-03-07 11:04:14', '', NULL, NULL, 'PLATFORM-A01');
 INSERT INTO `sys_user` VALUES (101, NULL, 'kaihang', '凯航', '00', '', '13899995555', '0', '', '452d76a1b03d0242da919d993720f9a8', '131523', '0', '0', '', NULL, '2026-03-07 11:08:20', 'admin', '2026-03-07 11:08:19', '', NULL, NULL, 'PLATFORM-A01');
@@ -1480,7 +1528,7 @@ CREATE TABLE `sys_user_online`  (
 -- ----------------------------
 -- Records of sys_user_online
 -- ----------------------------
-INSERT INTO `sys_user_online` VALUES ('66294db3-0d6c-4c1c-b23d-d6f390c4dbcb', 'admin', '研发部门', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', 'on_line', '2026-04-15 14:45:14', '2026-04-15 18:26:50', 1800000, 'PLATFORM-A01');
+INSERT INTO `sys_user_online` VALUES ('ac61f758-eb21-483d-892c-c82fa9648528', 'admin', '研发部门', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', 'on_line', '2026-04-16 18:39:28', '2026-04-16 18:39:46', 1800000, 'PLATFORM-A01');
 
 -- ----------------------------
 -- Table structure for sys_user_post
