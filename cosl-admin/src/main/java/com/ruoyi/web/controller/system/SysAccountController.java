@@ -11,6 +11,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.PlatformContext;
 import com.ruoyi.common.utils.ShiroUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
@@ -128,6 +129,8 @@ public class SysAccountController extends BaseController
     @ResponseBody
     public AjaxResult addSave(@RequestBody SysUser user)
     {
+        String platformNo = PlatformContext.getPlatformNo();
+        user.setPlatformNo(platformNo);
         deptService.checkDeptDataScope(user.getDeptId());
         roleService.checkRoleDataScope(user.getRoleIds());
         if (!userService.checkLoginNameUnique(user))

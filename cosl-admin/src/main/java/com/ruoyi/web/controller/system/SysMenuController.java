@@ -1,6 +1,8 @@
 package com.ruoyi.web.controller.system;
 
 import java.util.List;
+
+import com.ruoyi.common.utils.PlatformContext;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -106,6 +108,8 @@ public class SysMenuController extends BaseController
     @ResponseBody
     public AjaxResult addSave(@Validated SysMenu menu)
     {
+        String platformNo = PlatformContext.getPlatformNo();
+        menu.setPlatformNo(platformNo);
         if (!menuService.checkMenuNameUnique(menu))
         {
             return error("新增菜单'" + menu.getMenuName() + "'失败，菜单名称已存在");

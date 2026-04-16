@@ -3,6 +3,7 @@ package com.ruoyi.web.controller.system;
 import java.util.List;
 
 import com.ruoyi.common.core.domain.entity.RoomBed;
+import com.ruoyi.common.utils.PlatformContext;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -87,6 +88,8 @@ public class RoomBedController extends BaseController
     @ResponseBody
     public AjaxResult addSave(@RequestBody RoomBed roomBed)
     {
+        String platformNo = PlatformContext.getPlatformNo();
+        roomBed.setPlatformNo(platformNo);
         if (!roomBedService.checkRoomBedUnique(roomBed))
         {
             return error("新增床位失败，该房间已存在相同床位号");

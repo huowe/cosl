@@ -89,6 +89,8 @@ public class SysPostController extends BaseController
     @ResponseBody
     public AjaxResult addSave(@RequestBody SysPost post)
     {
+        String platformNo = PlatformContext.getPlatformNo();
+        post.setPlatformNo(platformNo);
         if (!postService.checkPostNameUnique(post))
         {
             return error("新增岗位'" + post.getPostName() + "'失败，岗位名称已存在");

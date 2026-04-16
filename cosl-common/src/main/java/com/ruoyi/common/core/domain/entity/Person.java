@@ -41,6 +41,8 @@ public class Person implements Serializable
     /** 职位 */
     private String position;
 
+    private List<String> positions;
+
     /** 证书到期日期 */
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date certificateExpireDate;

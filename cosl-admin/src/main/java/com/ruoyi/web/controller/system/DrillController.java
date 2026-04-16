@@ -2,6 +2,7 @@ package com.ruoyi.web.controller.system;
 
 import java.util.List;
 
+import com.ruoyi.common.utils.PlatformContext;
 import com.ruoyi.common.utils.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,6 +82,8 @@ public class DrillController extends BaseController
     @ResponseBody
     public AjaxResult addSave(@RequestBody Drill drill)
     {
+        String platformNo = PlatformContext.getPlatformNo();
+        drill.setPlatformNo(platformNo);
         drill.setCreateBy(getLoginName());
         return toAjax(drillService.insertDrill(drill));
     }

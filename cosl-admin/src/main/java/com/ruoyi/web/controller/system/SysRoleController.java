@@ -94,6 +94,8 @@ public class SysRoleController extends BaseController
     @ResponseBody
     public AjaxResult addSave(@Validated SysRole role)
     {
+        String platformNo = PlatformContext.getPlatformNo();
+        role.setPlatformNo(platformNo);
         if (!roleService.checkRoleNameUnique(role))
         {
             return error("新增角色'" + role.getRoleName() + "'失败，角色名称已存在");

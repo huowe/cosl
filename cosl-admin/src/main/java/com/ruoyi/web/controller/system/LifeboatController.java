@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
+import com.ruoyi.common.utils.PlatformContext;
 import com.ruoyi.common.utils.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,6 +84,8 @@ public class LifeboatController extends BaseController
     @ResponseBody
     public AjaxResult addEvacuationPoint(@RequestBody EvacuationPoint evacuationPoint)
     {
+        String platformNo = PlatformContext.getPlatformNo();
+        evacuationPoint.setPlatformNo(platformNo);
         if (!evacuationPointService.checkPointNameUnique(evacuationPoint))
         {
             return error("新增撤离点'" + evacuationPoint.getPointName() + "'失败，撤离点名称已存在");

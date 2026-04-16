@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.ruoyi.common.core.domain.entity.RoomConfig;
+import com.ruoyi.common.utils.PlatformContext;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -90,6 +91,8 @@ public class RoomConfigController extends BaseController
     @ResponseBody
     public AjaxResult addSave(@RequestBody RoomConfig roomConfig)
     {
+        String platformNo = PlatformContext.getPlatformNo();
+        roomConfig.setPlatformNo(platformNo);
         if (!roomConfigService.checkRoomNoUnique(roomConfig))
         {
             return error("新增房间'" + roomConfig.getRoomNo() + "'失败，房间号已存在");

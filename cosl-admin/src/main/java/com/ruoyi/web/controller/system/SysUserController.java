@@ -132,6 +132,8 @@ public class SysUserController extends BaseController
     @ResponseBody
     public AjaxResult addSave(@Validated SysUser user)
     {
+        String platformNo = PlatformContext.getPlatformNo();
+        user.setPlatformNo(platformNo);
         deptService.checkDeptDataScope(user.getDeptId());
         roleService.checkRoleDataScope(user.getRoleIds());
         if (!userService.checkLoginNameUnique(user))

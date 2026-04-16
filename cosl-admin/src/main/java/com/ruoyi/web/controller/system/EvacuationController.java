@@ -3,6 +3,7 @@ package com.ruoyi.web.controller.system;
 import java.util.List;
 import java.util.Date;
 
+import com.ruoyi.common.utils.PlatformContext;
 import com.ruoyi.common.utils.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,6 +84,8 @@ public class EvacuationController extends BaseController
     @ResponseBody
     public AjaxResult addSave(@RequestBody Evacuation evacuation)
     {
+        String platformNo = PlatformContext.getPlatformNo();
+        evacuation.setPlatformNo(platformNo);
         evacuation.setCreateBy(getLoginName());
         return toAjax(evacuationService.insertEvacuation(evacuation));
     }

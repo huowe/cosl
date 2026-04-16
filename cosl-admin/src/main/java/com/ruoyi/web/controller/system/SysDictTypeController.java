@@ -1,6 +1,8 @@
 package com.ruoyi.web.controller.system;
 
 import java.util.List;
+
+import com.ruoyi.common.utils.PlatformContext;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -83,6 +85,8 @@ public class SysDictTypeController extends BaseController
     @ResponseBody
     public AjaxResult addSave(@Validated SysDictType dict)
     {
+        String platformNo = PlatformContext.getPlatformNo();
+        dict.setPlatformNo(platformNo);
         if (!dictTypeService.checkDictTypeUnique(dict))
         {
             return error("新增字典'" + dict.getDictName() + "'失败，字典类型已存在");
