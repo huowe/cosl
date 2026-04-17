@@ -11,7 +11,7 @@
  Target Server Version : 80045
  File Encoding         : 65001
 
- Date: 16/04/2026 18:44:07
+ Date: 17/04/2026 15:59:09
 */
 
 SET NAMES utf8mb4;
@@ -405,7 +405,7 @@ CREATE TABLE `person_feature_detail`  (
   INDEX `idx_monitor_id`(`monitor_id`) USING BTREE,
   INDEX `idx_feature_id`(`feature_id`) USING BTREE,
   INDEX `idx_platform_no`(`platform_no`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '人员特征详情表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '人员特征详情表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of person_feature_detail
@@ -651,6 +651,8 @@ INSERT INTO `sys_dict_data` VALUES (26, 8, '生成代码', '8', 'sys_oper_type',
 INSERT INTO `sys_dict_data` VALUES (27, 9, '清空数据', '9', 'sys_oper_type', '', 'danger', 'N', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '清空操作', 'PLATFORM-A01');
 INSERT INTO `sys_dict_data` VALUES (28, 1, '成功', '0', 'sys_common_status', '', 'primary', 'N', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '正常状态', 'PLATFORM-A01');
 INSERT INTO `sys_dict_data` VALUES (29, 2, '失败', '1', 'sys_common_status', '', 'danger', 'N', '0', 'admin', '2026-03-05 22:17:42', '', NULL, '停用状态', 'PLATFORM-A01');
+INSERT INTO `sys_dict_data` VALUES (100, 1, 'cameraGroupId', '69def6b07455ad498a370b13', 'yuanjian_config', NULL, NULL, 'Y', '0', 'system', '2026-04-17 14:44:59', '', NULL, NULL, 'PLATFORM-A01');
+INSERT INTO `sys_dict_data` VALUES (101, 2, 'repId', '69b8ce2fb3efc11bd7a6ea74', 'yuanjian_config', NULL, NULL, 'Y', '0', 'system', '2026-04-17 14:45:00', '', NULL, NULL, 'PLATFORM-A01');
 
 -- ----------------------------
 -- Table structure for sys_dict_type
@@ -902,6 +904,7 @@ INSERT INTO `sys_logininfor` VALUES (242, 'admin', '127.0.0.1', '内网IP', 'Api
 INSERT INTO `sys_logininfor` VALUES (243, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-16 15:36:13', 'PLATFORM-A01');
 INSERT INTO `sys_logininfor` VALUES (244, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-16 15:53:55', 'PLATFORM-A01');
 INSERT INTO `sys_logininfor` VALUES (245, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-16 18:39:42', 'PLATFORM-A01');
+INSERT INTO `sys_logininfor` VALUES (246, 'admin', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', '0', '登录成功', '2026-04-17 10:42:43', 'PLATFORM-A01');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -1497,7 +1500,7 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 103, 'admin', '管理员', '00', 'ry@163.com', '15888888888', '1', '', '29c67a30398638269fe600f73a054934', '111111', '0', '0', '127.0.0.1', '2026-04-16 18:39:43', NULL, 'admin', '2026-03-05 22:17:41', '', NULL, '管理员', 'PLATFORM-A01');
+INSERT INTO `sys_user` VALUES (1, 103, 'admin', '管理员', '00', 'ry@163.com', '15888888888', '1', '', '29c67a30398638269fe600f73a054934', '111111', '0', '0', '127.0.0.1', '2026-04-17 10:42:44', NULL, 'admin', '2026-03-05 22:17:41', '', NULL, '管理员', 'PLATFORM-A01');
 INSERT INTO `sys_user` VALUES (2, 105, 'ry', '若依', '00', 'ry@qq.com', '15666666666', '1', '', '8e6d98b90472783cc73c17047ddccf36', '222222', '0', '0', '127.0.0.1', NULL, NULL, 'admin', '2026-03-05 22:17:41', '', NULL, '测试员', 'PLATFORM-A01');
 INSERT INTO `sys_user` VALUES (100, NULL, 'test', '测试', '00', '', '13666663333', '0', '', 'ba3191792f8b5c3d255ddae5f78c1b6e', 'be1d7b', '0', '0', '', NULL, '2026-03-07 11:04:15', 'admin', '2026-03-07 11:04:14', '', NULL, NULL, 'PLATFORM-A01');
 INSERT INTO `sys_user` VALUES (101, NULL, 'kaihang', '凯航', '00', '', '13899995555', '0', '', '452d76a1b03d0242da919d993720f9a8', '131523', '0', '0', '', NULL, '2026-03-07 11:08:20', 'admin', '2026-03-07 11:08:19', '', NULL, NULL, 'PLATFORM-A01');
@@ -1528,7 +1531,6 @@ CREATE TABLE `sys_user_online`  (
 -- ----------------------------
 -- Records of sys_user_online
 -- ----------------------------
-INSERT INTO `sys_user_online` VALUES ('ac61f758-eb21-483d-892c-c82fa9648528', 'admin', '研发部门', '127.0.0.1', '内网IP', 'Apifox 1.0.0', '', 'on_line', '2026-04-16 18:39:28', '2026-04-16 18:39:46', 1800000, 'PLATFORM-A01');
 
 -- ----------------------------
 -- Table structure for sys_user_post

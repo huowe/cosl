@@ -11,6 +11,7 @@ import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.domain.SysPost;
 import com.ruoyi.system.service.IPersonFeatureDetailService;
 import com.ruoyi.system.service.IPersonService;
+import com.ruoyi.system.service.ISysDictDataService;
 import com.ruoyi.system.service.ISysPostService;
 import com.ruoyi.web.controller.tool.YuanJianApiClient;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -46,6 +47,8 @@ public class PersonController extends BaseController
     private ISysPostService postService;
     @Autowired
     private IPersonFeatureDetailService personFeatureDetailService;
+    @Autowired
+    private ISysDictDataService dictDataService;
     @Resource
     private YuanJianApiClient yuanJianApiClient;
 
@@ -128,10 +131,14 @@ public class PersonController extends BaseController
         MonitorCreateRequest monitorCreateRequest = new MonitorCreateRequest();
         monitorCreateRequest.setName(person.getName());
         monitorCreateRequest.setIdCard(person.getIdCard());
-        monitorCreateRequest.setRepId("69df3d66b3efc17c8d04bab5");
+        
+        // 从字典表获取默认的 repId
+        String defaultRepId = getDefaultRepId();
+        monitorCreateRequest.setRepId(defaultRepId);
+        
         MonitorQueryRequest monitorQueryRequest = new MonitorQueryRequest();
         List<String> repIds = new ArrayList<>();
-        repIds.add("69df3d66b3efc17c8d04bab5");
+        repIds.add(defaultRepId);
         monitorQueryRequest.setRepIds(repIds);
         monitorQueryRequest.setQuery(person.getIdCard());
         String monitorQueryRes = yuanJianApiClient.queryMonitors(monitorQueryRequest);
@@ -206,7 +213,7 @@ public class PersonController extends BaseController
         return personService.checkIdCardUnique(person);
     }
     /**
-     * 修改人员
+     * 获取人员详情
      */
     @RequiresPermissions("system:person:view")
     @GetMapping("/getStats")
@@ -215,6 +222,19 @@ public class PersonController extends BaseController
     {
         Person person = personService.selectPersonById(id);
         person.setStatus(person.getStatus());
+        
+        // 根据monitorId查询所有特征数据
+        if (person.getMonitorId() != null && !person.getMonitorId().isEmpty()) {
+            PersonFeatureDetail queryParam = new PersonFeatureDetail();
+            queryParam.setMonitorId(person.getMonitorId());
+            List<PersonFeatureDetail> featureDetails = personFeatureDetailService.selectPersonFeatureDetailList(queryParam);
+            
+            // 将特征数据添加到返回结果中
+            JSONObject result = JSONObject.parseObject(JSONObject.toJSONString(person));
+            result.put("featureDetails", featureDetails);
+            return success(result);
+        }
+        
         return success(person);
     }
 
@@ -397,6 +417,50 @@ public class PersonController extends BaseController
             System.err.println("图片转Base64失败，URL: " + imageUrl + ", 错误: " + e.getMessage());
             return imageUrl; // 转换失败时保留原URL
         }
+    }
+
+    /**
+     * 从字典表获取默认的 repId
+     * @return 默认的 repId
+     */
+    private String getDefaultRepId() {
+        String platformNo = PlatformContext.getPlatformNo();
+        
+        SysDictData queryParam = new SysDictData();
+        queryParam.setDictType("yuanjian_config");
+        queryParam.setDictLabel("repId");
+        queryParam.setPlatformNo(platformNo);
+        
+        List<SysDictData> list = dictDataService.selectDictDataList(queryParam);
+        
+        if (list != null && !list.isEmpty()) {
+            return list.get(0).getDictValue();
+        }
+        
+        // 如果字典表中没有，返回默认值
+        return "69df3d66b3efc17c8d04bab5";
+    }
+
+    /**
+     * 从字典表获取默认的 cameraGroupId
+     * @return 默认的 cameraGroupId
+     */
+    private String getDefaultCameraGroupId() {
+        String platformNo = PlatformContext.getPlatformNo();
+        
+        SysDictData queryParam = new SysDictData();
+        queryParam.setDictType("yuanjian_config");
+        queryParam.setDictLabel("cameraGroupId");
+        queryParam.setPlatformNo(platformNo);
+        
+        List<SysDictData> list = dictDataService.selectDictDataList(queryParam);
+        
+        if (list != null && !list.isEmpty()) {
+            return list.get(0).getDictValue();
+        }
+        
+        // 如果字典表中没有，返回null
+        return null;
     }
     /**
      * 和抓拍比对

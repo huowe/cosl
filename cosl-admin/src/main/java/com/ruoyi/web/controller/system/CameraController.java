@@ -19,10 +19,12 @@ import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.entity.Camera;
+import com.ruoyi.common.core.domain.entity.SysDictData;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.service.ICameraService;
+import com.ruoyi.system.service.ISysDictDataService;
 
 import javax.annotation.Resource;
 
@@ -40,6 +42,8 @@ public class CameraController extends BaseController
 
     @Autowired
     private ICameraService cameraService;
+    @Autowired
+    private ISysDictDataService dictDataService;
     @Resource
     private YuanJianApiClient yuanJianApiClient;
 
@@ -105,7 +109,15 @@ public class CameraController extends BaseController
         }
         String platformNo = PlatformContext.getPlatformNo();
         camera.setPlatformNo(platformNo);
+        
+        // 从字典表获取默认的 cameraGroupId
+        String defaultCameraGroupId = getDefaultCameraGroupId();
+        if (defaultCameraGroupId != null && !defaultCameraGroupId.isEmpty()) {
+            camera.setCameraGroupId(defaultCameraGroupId);
+        }
+        
         //调用远见添加摄像头的接口
+
         String res = yuanJianApiClient.addCamera(camera);
         JSONObject jsonObject = JSONObject.parseObject(res);
 
@@ -250,6 +262,28 @@ public class CameraController extends BaseController
     public AjaxResult clearPosition(@RequestParam Long id)
     {
         return toAjax(cameraService.clearPosition(id));
+    }
+
+    /**
+     * 从字典表获取默认的 cameraGroupId
+     * @return 默认的 cameraGroupId
+     */
+    private String getDefaultCameraGroupId() {
+        String platformNo = PlatformContext.getPlatformNo();
+        
+        SysDictData queryParam = new SysDictData();
+        queryParam.setDictType("yuanjian_config");
+        queryParam.setDictLabel("cameraGroupId");
+        queryParam.setPlatformNo(platformNo);
+        
+        List<SysDictData> list = dictDataService.selectDictDataList(queryParam);
+        
+        if (list != null && !list.isEmpty()) {
+            return list.get(0).getDictValue();
+        }
+        
+        // 如果字典表中没有，返回null
+        return null;
     }
     /**
      * 新建摄像机分组
