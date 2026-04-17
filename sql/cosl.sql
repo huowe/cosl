@@ -11,7 +11,7 @@
  Target Server Version : 80045
  File Encoding         : 65001
 
- Date: 17/04/2026 15:59:09
+ Date: 17/04/2026 19:05:40
 */
 
 SET NAMES utf8mb4;
@@ -334,6 +334,7 @@ CREATE TABLE `person`  (
   `update_time` datetime(0) NOT NULL,
   `deleted` tinyint(0) NULL DEFAULT 0,
   `monitor_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '底库人员id',
+  `gait_feature_confirmed` tinyint(1) NULL DEFAULT 0 COMMENT '是否已确认步态特征 0-未确认 1-已确认',
   `image` longblob NULL COMMENT '证件照',
   `collect_start_time` datetime(0) NULL DEFAULT NULL COMMENT '采集开始时间',
   `collect_end_time` datetime(0) NULL DEFAULT NULL COMMENT '采集结束时间',
@@ -342,18 +343,19 @@ CREATE TABLE `person`  (
   INDEX `idx_status`(`status`) USING BTREE,
   INDEX `idx_onboard_date`(`onboard_date`) USING BTREE,
   INDEX `idx_certificate_expire`(`certificate_expire_date`) USING BTREE,
-  INDEX `idx_platform_no`(`platform_no`) USING BTREE
+  INDEX `idx_platform_no`(`platform_no`) USING BTREE,
+  INDEX `idx_gait_confirmed`(`gait_feature_confirmed`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of person
 -- ----------------------------
-INSERT INTO `person` VALUES (1, 'PLATFORM-A01', '张鱼', 'MTS1234567894', '110101179001011234', 'XX海洋工程有限公司', '轮机长', '2025-12-31', '2023-06-01 08:00:00', NULL, 101, 202, 5, 'ONBOARD', 0, '2026-03-07 13:22:28', '2026-04-05 15:08:37', 0, NULL, NULL, NULL, NULL);
-INSERT INTO `person` VALUES (2, 'PLATFORM-A01', '电饭锅', 'MTS1453456789', '110105199001011234', 'XX海洋工程有限公司', '轮机长', '2025-12-31', '2023-06-01 08:00:00', NULL, 101, 202, 5, 'ONBOARD', 0, '2026-03-07 13:53:16', '2026-04-02 22:53:02', 0, NULL, NULL, NULL, NULL);
-INSERT INTO `person` VALUES (3, 'PLATFORM-A01', '金银花', 'MTS5566522245', '1234567890', 'XX海杨工程有限公司', '船长', '2026-04-25', '2026-04-01 08:00:00', NULL, 102, 101, 1, 'ONBOARD', 0, '2026-04-05 13:28:47', '2026-04-05 13:28:50', 0, NULL, NULL, NULL, NULL);
-INSERT INTO `person` VALUES (4, NULL, '蔡文姬', 'MTS333456789', '110101189001011234', 'XX海洋工程有限公司', '新岗位', '2025-12-31', '2023-06-01 08:00:00', NULL, 101, 203, 5, 'ONBOARD', 0, '2026-04-15 15:29:52', '2026-04-15 15:29:52', 0, NULL, NULL, NULL, NULL);
-INSERT INTO `person` VALUES (5, NULL, '李白', 'MTS3334567892', '110101189001010234', 'XX海洋工程有限公司', '新岗位', '2025-12-31', '2023-06-01 08:00:00', NULL, 101, 203, 5, 'ONBOARD', 0, '2026-04-15 16:10:26', '2026-04-15 16:10:26', 0, NULL, NULL, NULL, NULL);
-INSERT INTO `person` VALUES (8, 'PLATFORM-A01', '李白1', 'MTS3394567892', '110101089001010234', 'XX海洋工程有限公司', '新岗位', '2025-12-31', '2023-06-01 08:00:00', NULL, 101, 203, 5, 'ONBOARD', 0, '2026-04-15 16:47:43', '2026-04-15 16:47:43', 0, '69df4f72b3efc17c8d04bab6', NULL, NULL, NULL);
+INSERT INTO `person` VALUES (1, 'PLATFORM-A01', '张鱼', 'MTS1234567894', '110101179001011234', 'XX海洋工程有限公司', '轮机长', '2025-12-31', '2023-06-01 08:00:00', NULL, 101, 202, 5, 'ONBOARD', 0, '2026-03-07 13:22:28', '2026-04-05 15:08:37', 0, NULL, 0, NULL, NULL, NULL);
+INSERT INTO `person` VALUES (2, 'PLATFORM-A01', '电饭锅', 'MTS1453456789', '110105199001011234', 'XX海洋工程有限公司', '轮机长', '2025-12-31', '2023-06-01 08:00:00', NULL, 101, 202, 5, 'ONBOARD', 0, '2026-03-07 13:53:16', '2026-04-02 22:53:02', 0, NULL, 0, NULL, NULL, NULL);
+INSERT INTO `person` VALUES (3, 'PLATFORM-A01', '金银花', 'MTS5566522245', '1234567890', 'XX海杨工程有限公司', '船长', '2026-04-25', '2026-04-01 08:00:00', NULL, 102, 101, 1, 'ONBOARD', 0, '2026-04-05 13:28:47', '2026-04-05 13:28:50', 0, NULL, 0, NULL, NULL, NULL);
+INSERT INTO `person` VALUES (4, NULL, '蔡文姬', 'MTS333456789', '110101189001011234', 'XX海洋工程有限公司', '新岗位', '2025-12-31', '2023-06-01 08:00:00', NULL, 101, 203, 5, 'ONBOARD', 0, '2026-04-15 15:29:52', '2026-04-15 15:29:52', 0, NULL, 0, NULL, NULL, NULL);
+INSERT INTO `person` VALUES (5, NULL, '李白', 'MTS3334567892', '110101189001010234', 'XX海洋工程有限公司', '新岗位', '2025-12-31', '2023-06-01 08:00:00', NULL, 101, 203, 5, 'ONBOARD', 0, '2026-04-15 16:10:26', '2026-04-15 16:10:26', 0, NULL, 0, NULL, NULL, NULL);
+INSERT INTO `person` VALUES (8, 'PLATFORM-A01', '李白1', 'MTS3394567892', '110101089001010234', 'XX海洋工程有限公司', '新岗位', '2025-12-31', '2023-06-01 08:00:00', NULL, 101, 203, 5, 'ONBOARD', 0, '2026-04-15 16:47:43', '2026-04-15 16:47:43', 0, '69df4f72b3efc17c8d04bab6', 0, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for person_face
@@ -617,7 +619,7 @@ CREATE TABLE `sys_dict_data`  (
   `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '备注',
   `platform_no` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL DEFAULT NULL COMMENT '钻井平台编号',
   PRIMARY KEY (`dict_code`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '字典数据表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 102 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '字典数据表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_dict_data
@@ -753,7 +755,7 @@ CREATE TABLE `sys_logininfor`  (
   PRIMARY KEY (`info_id`) USING BTREE,
   INDEX `idx_sys_logininfor_s`(`status`) USING BTREE,
   INDEX `idx_sys_logininfor_lt`(`login_time`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 246 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '系统访问记录' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 247 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_bin COMMENT = '系统访问记录' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_logininfor
