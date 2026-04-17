@@ -239,6 +239,70 @@ public class PersonController extends BaseController
     }
 
     /**
+     * 确认步态特征已采集
+     */
+    @RequiresPermissions("system:person:edit")
+    @Log(title = "人员管理", businessType = BusinessType.UPDATE)
+    @PostMapping("/confirmGaitFeature")
+    @ResponseBody
+    public AjaxResult confirmGaitFeature(@RequestBody JSONObject params)
+    {
+        Long id = params.getLong("id");
+        
+        if (id == null) {
+            return error("人员 ID 不能为空");
+        }
+        
+        Person person = personService.selectPersonById(id);
+        if (person == null) {
+            return error("人员不存在");
+        }
+        
+        // 更新步态特征确认状态为已确认
+        person.setGaitFeatureConfirmed(1);
+        
+        int result = personService.updatePerson(person);
+        
+        if (result > 0) {
+            return success("步态特征确认成功");
+        } else {
+            return error("步态特征确认失败");
+        }
+    }
+
+    /**
+     * 取消步态特征确认
+     */
+    @RequiresPermissions("system:person:edit")
+    @Log(title = "人员管理", businessType = BusinessType.UPDATE)
+    @PostMapping("/cancelGaitFeatureConfirm")
+    @ResponseBody
+    public AjaxResult cancelGaitFeatureConfirm(@RequestBody JSONObject params)
+    {
+        Long id = params.getLong("id");
+        
+        if (id == null) {
+            return error("人员 ID 不能为空");
+        }
+        
+        Person person = personService.selectPersonById(id);
+        if (person == null) {
+            return error("人员不存在");
+        }
+        
+        // 更新步态特征确认状态为未确认
+        person.setGaitFeatureConfirmed(0);
+        
+        int result = personService.updatePerson(person);
+        
+        if (result > 0) {
+            return success("取消步态特征确认成功");
+        } else {
+            return error("取消步态特征确认失败");
+        }
+    }
+
+    /**
      * 批量更新人员房间信息
      */
     @RequiresPermissions("system:person:edit")
@@ -308,7 +372,67 @@ public class PersonController extends BaseController
         return success(jsonObject);
     }
     /**
-     * 绑定底库人员特征
+     * 绑定底库人员特征并确认步态采集
+     */
+    @RequiresPermissions("system:person:edit")
+    @Log(title = "绑定底库人员特征", businessType = BusinessType.INSERT)
+    @PostMapping("/bindFeatureAndConfirm")
+    @ResponseBody
+    public AjaxResult bindFeatureAndConfirm(@RequestBody MonitorBindFeatureRequest request)
+    {
+        String res = yuanJianApiClient.monitorBindFeature(request);
+        JSONObject jsonObject = JSONObject.parseObject(res);
+        
+        // 如果绑定成功，执行后续操作
+        if (jsonObject.getString("code").equals("SUCCESS")) {
+            try {
+                // 1. 查询特征详情并保存到数据库
+                saveFeatureDetails(request.getMonitorId(), request.getFeatureIds());
+                
+                // 2. 根据 monitorId 查找对应的人员，确认步态特征
+                confirmGaitFeatureByMonitorId(request.getMonitorId());
+                
+            } catch (Exception e) {
+                // 记录日志但不影响主流程
+                System.err.println("保存特征详情或确认步态失败: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+        
+        return success(jsonObject);
+    }
+
+    /**
+     * 根据 monitorId 确认人员的步态特征
+     * @param monitorId 底库人员ID
+     */
+    private void confirmGaitFeatureByMonitorId(String monitorId) {
+        if (monitorId == null || monitorId.isEmpty()) {
+            return;
+        }
+        
+        // 根据 monitorId 查询人员
+        Person queryParam = new Person();
+        queryParam.setMonitorId(monitorId);
+        List<Person> personList = personService.selectPersonList(queryParam);
+        
+        if (personList != null && !personList.isEmpty()) {
+            Person person = personList.get(0);
+            
+            // 如果还未确认，则确认为已确认
+            if (person.getGaitFeatureConfirmed() == null || person.getGaitFeatureConfirmed() != 1) {
+                person.setGaitFeatureConfirmed(1);
+                personService.updatePerson(person);
+                
+                System.out.println("人员 " + person.getName() + " (ID: " + person.getId() + ") 的步态特征已自动确认");
+            }
+        } else {
+            System.err.println("未找到 monitorId 为 " + monitorId + " 的人员");
+        }
+    }
+
+    /**
+     * 绑定底库人员特征（原接口，保留兼容）
      */
     @RequiresPermissions("system:person:view")
     @Log(title = "绑定底库人员特征", businessType = BusinessType.INSERT)

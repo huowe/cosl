@@ -23,13 +23,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateTime"    column="update_time"    />
         <result property="deleted"    column="deleted"    />
         <result property="monitorId"    column="monitor_id"    />
+        <result property="gaitFeatureConfirmed"    column="gait_feature_confirmed"    />
         <result property="image"    column="image"    />
         <result property="collectStartTime"    column="collect_start_time"    />
         <result property="collectEndTime"    column="collect_end_time"    />
     </resultMap>
 
     <sql id="selectPersonVo">
-        select id, platform_no, name, mts_card_no, id_card, company, position, certificate_expire_date, onboard_date, leave_date, room_id, bed_id, lifeboat_id, status, blacklist_flag, create_time, update_time, deleted, monitor_id, image, collect_start_time, collect_end_time
+        select id, platform_no, name, mts_card_no, id_card, company, position, certificate_expire_date, onboard_date, leave_date, room_id, bed_id, lifeboat_id, status, blacklist_flag, create_time, update_time, deleted, monitor_id, gait_feature_confirmed, image, collect_start_time, collect_end_time
         from person
     </sql>
 
@@ -100,6 +101,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="status != null">status,</if>
             <if test="blacklistFlag != null">blacklist_flag,</if>
             <if test="monitorId != null">monitor_id,</if>
+            <if test="gaitFeatureConfirmed != null">gait_feature_confirmed,</if>
             <if test="image != null">image,</if>
             <if test="collectStartTime != null">collect_start_time,</if>
             <if test="collectEndTime != null">collect_end_time,</if>
@@ -124,6 +126,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="status != null">#{status},</if>
             <if test="blacklistFlag != null">#{blacklistFlag},</if>
             <if test="monitorId != null">#{monitorId},</if>
+            <if test="gaitFeatureConfirmed != null">#{gaitFeatureConfirmed},</if>
             <if test="image != null">#{image},</if>
             <if test="collectStartTime != null">#{collectStartTime},</if>
             <if test="collectEndTime != null">#{collectEndTime},</if>
@@ -152,6 +155,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="status != null">status = #{status},</if>
             <if test="blacklistFlag != null">blacklist_flag = #{blacklistFlag},</if>
             <if test="monitorId != null">monitor_id = #{monitorId},</if>
+            <if test="gaitFeatureConfirmed != null">gait_feature_confirmed = #{gaitFeatureConfirmed},</if>
             <if test="image != null">image = #{image},</if>
             <if test="collectStartTime != null">collect_start_time = #{collectStartTime},</if>
             <if test="collectEndTime != null">collect_end_time = #{collectEndTime},</if>

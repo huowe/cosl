@@ -83,6 +83,9 @@ public class Person implements Serializable
 
     private String monitorId;
 
+    /** 是否已确认步态特征 0-未确认 1-已确认 */
+    private Integer gaitFeatureConfirmed;
+
     private String image;
 
     private String collectStartTime;
