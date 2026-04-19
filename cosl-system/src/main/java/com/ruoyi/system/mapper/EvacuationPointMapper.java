@@ -2,6 +2,8 @@ package com.ruoyi.system.mapper;
 
 import java.util.List;
 import com.ruoyi.system.domain.EvacuationPoint;
+import com.ruoyi.system.domain.LifeboatConfig;
+import com.ruoyi.system.domain.SimplePersonInfo;
 
 /**
  * 撤离点 Mapper 接口
@@ -65,5 +67,21 @@ public interface EvacuationPointMapper
      * @return 结果
      */
     public EvacuationPoint checkPointNameUnique(String pointName);
+
+    /**
+     * 根据撤离点ID查询救生艇列表
+     *
+     * @param evacuationPointId 撤离点ID
+     * @return 救生艇列表
+     */
+    public List<LifeboatConfig> selectLifeboatsByEvacuationPointId(Long evacuationPointId);
+
+    /**
+     * 根据救生艇ID查询简化人员信息
+     *
+     * @param lifeboatId 救生艇ID
+     * @return 简化人员信息列表
+     */
+    public List<SimplePersonInfo> selectSimplePersonsByLifeboatId(Long lifeboatId);
 
 }

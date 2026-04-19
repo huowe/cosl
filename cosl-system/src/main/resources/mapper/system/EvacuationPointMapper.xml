@@ -11,14 +11,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="floor"    column="floor"    />
         <result property="xAxis"    column="x_axis"    />
         <result property="yAxis"    column="y_axis"    />
+        <result property="cameraId"    column="camera_id"    />
         <result property="remark"    column="remark"    />
         <result property="createTime"    column="create_time"    />
         <result property="updateTime"    column="update_time"    />
         <result property="deleted"    column="deleted"    />
+        <!-- 关联查询救生艇列表 -->
+        <collection property="lifeboats" ofType="LifeboatConfig" column="id" select="selectLifeboatsByEvacuationPointId" />
+    </resultMap>
+
+    <resultMap type="LifeboatConfig" id="LifeboatConfigResult">
+        <id     property="id"                column="lifeboat_id"          />
+        <result property="platformNo"        column="platform_no"          />
+        <result property="boatNo"            column="boat_no"              />
+        <result property="boatName"          column="boat_name"            />
+        <result property="maxCapacity"       column="max_capacity"         />
+        <result property="evacuationPointId" column="evacuation_point_id"  />
+        <result property="status"            column="lifeboat_status"      />
+        <result property="remark"            column="lifeboat_remark"      />
+        <result property="deleted"           column="deleted"              />
+        <!-- 关联查询简化人员信息 -->
+        <collection property="personList" ofType="SimplePersonInfo" column="lifeboat_id" select="selectSimplePersonsByLifeboatId" />
     </resultMap>
 
     <sql id="selectEvacuationPointVo">
-        select id, platform_no, point_name, floor, x_axis, y_axis, remark, create_time, update_time, deleted from evacuation_point
+        select id, platform_no, point_name, floor, x_axis, y_axis, camera_id, remark, create_time, update_time, deleted from evacuation_point
     </sql>
 
     <select id="selectEvacuationPointList" parameterType="EvacuationPoint" resultMap="EvacuationPointResult">
@@ -54,6 +71,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="floor != null">floor,</if>
             <if test="xAxis != null">x_axis,</if>
             <if test="yAxis != null">y_axis,</if>
+            <if test="cameraId != null and cameraId != ''">camera_id,</if>
             <if test="remark != null">remark,</if>
             <if test="createTime != null">create_time,</if>
             <if test="updateTime != null">update_time,</if>
@@ -65,6 +83,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="floor != null">#{floor},</if>
             <if test="xAxis != null">#{xAxis},</if>
             <if test="yAxis != null">#{yAxis},</if>
+            <if test="cameraId != null and cameraId != ''">#{cameraId},</if>
             <if test="remark != null">#{remark},</if>
             <if test="createTime != null">#{createTime},</if>
             <if test="updateTime != null">#{updateTime},</if>
@@ -80,6 +99,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="floor != null">floor = #{floor},</if>
             <if test="xAxis != null">x_axis = #{xAxis},</if>
             <if test="yAxis != null">y_axis = #{yAxis},</if>
+            <if test="cameraId != null and cameraId != ''">camera_id = #{cameraId},</if>
             <if test="remark != null">remark = #{remark},</if>
             <if test="updateTime != null">update_time = #{updateTime},</if>
             <if test="deleted != null">deleted = #{deleted},</if>
@@ -97,5 +117,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+
+    <!-- 根据撤离点ID查询救生艇列表 -->
+    <select id="selectLifeboatsByEvacuationPointId" parameterType="Long" resultMap="LifeboatConfigResult">
+        select lc.id as lifeboat_id, lc.platform_no, lc.boat_no, lc.boat_name, 
+               lc.max_capacity, lc.evacuation_point_id, lc.status as lifeboat_status,
+               lc.remark as lifeboat_remark, lc.deleted
+        from lifeboat_config lc
+        where lc.evacuation_point_id = #{id} and lc.deleted = 0
+        order by lc.boat_no
+    </select>
+
+    <!-- 根据救生艇ID查询简化人员信息 -->
+    <select id="selectSimplePersonsByLifeboatId" parameterType="Long" resultType="SimplePersonInfo">
+        select p.id, p.name, p.monitor_id as monitorId
+        from person p
+
+        where p.lifeboat_id = #{lifeboatId} and p.deleted = 0
+        order by p.name
+    </select>
     
 </mapper>

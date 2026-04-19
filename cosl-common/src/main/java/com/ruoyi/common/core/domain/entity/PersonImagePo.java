@@ -2,8 +2,6 @@ package com.ruoyi.common.core.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -16,7 +14,7 @@ import java.util.List;
  * @date 2026-03-07
  */
 @Data
-public class Person implements Serializable
+public class PersonImagePo implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
@@ -91,8 +89,6 @@ public class Person implements Serializable
 
     /** 床位名称（关联查询） */
     private String bedName;
-
-    private String image;
 
     private String collectStartTime;
 

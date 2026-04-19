@@ -163,4 +163,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
 
+    <!-- 根据摄像机ID查询摄像机 -->
+    <select id="selectCameraByCameraId" parameterType="String" resultMap="CameraResult">
+        <include refid="selectCameraVo"/>
+        where camera_id = #{cameraId}
+        limit 1
+    </select>
+
 </mapper>

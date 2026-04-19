@@ -20,6 +20,42 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="createTime"   column="create_time" />
         <result property="updateBy"     column="update_by"   />
         <result property="updateTime"   column="update_time" />
+        <!-- 关联查询撤离点列表 -->
+        <collection property="evacuationPoints" ofType="EvacuationPoint" column="id" select="selectEvacuationPointsByEvacuationId" />
+    </resultMap>
+
+    <resultMap type="EvacuationPoint" id="EvacuationPointWithLifeboatsResult">
+        <id     property="id"           column="point_id"          />
+        <result property="platformNo"   column="platform_no"       />
+        <result property="pointName"    column="point_name"        />
+        <result property="floor"        column="floor"             />
+        <result property="xAxis"        column="x_axis"            />
+        <result property="yAxis"        column="y_axis"            />
+        <result property="cameraId"     column="camera_id"         />
+        <result property="remark"       column="point_remark"      />
+        <result property="createTime"   column="create_time"       />
+        <result property="updateTime"   column="update_time"       />
+        <result property="deleted"      column="deleted"           />
+        <!-- 关联查询救生艇列表，传递 evacuation_id -->
+        <collection property="lifeboats" ofType="LifeboatConfig" 
+                    column="{pointId=point_id, evacuationId=evacuation_id}" 
+                    select="selectLifeboatsByEvacuationPointIdForEvacuation" />
+    </resultMap>
+
+    <resultMap type="LifeboatConfig" id="LifeboatConfigWithPersonsResult">
+        <id     property="id"                column="lifeboat_id"          />
+        <result property="platformNo"        column="platform_no"          />
+        <result property="boatNo"            column="boat_no"              />
+        <result property="boatName"          column="boat_name"            />
+        <result property="maxCapacity"       column="max_capacity"         />
+        <result property="evacuationPointId" column="evacuation_point_id"  />
+        <result property="status"            column="lifeboat_status"      />
+        <result property="remark"            column="lifeboat_remark"      />
+        <result property="deleted"           column="deleted"              />
+        <!-- 关联查询参与演习的人员信息，传递 evacuation_id 和 lifeboat_id -->
+        <collection property="personList" ofType="SimplePersonInfo" 
+                    column="{evacuationId=evacuation_id, lifeboatId=lifeboat_id}"
+                    select="selectPersonsByLifeboatIdForEvacuation" />
     </resultMap>
 
     <resultMap type="EvacuationRecord" id="EvacuationRecordResult">
@@ -215,5 +251,73 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+
+    <!-- ==================== 嵌套查询相关 SQL ==================== -->
+
+    <!-- 根据撤离事件 ID 查询撤离点列表（包含救生艇） -->
+    <select id="selectEvacuationPointsByEvacuationId" parameterType="Long" resultMap="EvacuationPointWithLifeboatsResult">
+        select distinct ep.id as point_id, ep.platform_no, ep.point_name, ep.floor,
+               ep.x_axis, ep.y_axis, ep.camera_id, ep.remark as point_remark,
+               ep.create_time, ep.update_time, ep.deleted,
+               #{id} as evacuation_id
+        from evacuation_point ep
+        where ep.deleted = 0
+        order by ep.point_name
+    </select>
+
+    <!-- 根据撤离点 ID 查询救生艇列表（用于撤离事件） -->
+    <select id="selectLifeboatsByEvacuationPointIdForEvacuation" resultMap="LifeboatConfigWithPersonsResult">
+        select lc.id as lifeboat_id, lc.platform_no, lc.boat_no, lc.boat_name,
+               lc.max_capacity, lc.evacuation_point_id, lc.status as lifeboat_status,
+               lc.remark as lifeboat_remark, lc.deleted,
+               #{evacuationId} as evacuation_id
+        from lifeboat_config lc
+        where lc.evacuation_point_id = #{pointId} and lc.deleted = 0
+        order by lc.boat_no
+    </select>
+
+    <!-- 根据救生艇 ID 查询参与演习的人员（用于撤离事件） -->
+    <select id="selectPersonsByLifeboatIdForEvacuation" resultType="SimplePersonInfo">
+        SELECT DISTINCT
+            p.id,
+            p.name,
+            p.monitor_id AS monitorId
+        FROM
+            person p
+                INNER JOIN evacuation_record er ON p.id = er.person_id
+        WHERE
+            er.evacuation_id = #{evacuationId}
+          AND p.lifeboat_id = #{lifeboatId}
+          AND p.deleted = 0
+        ORDER BY
+            p.name
+    </select>
+
+    <!-- 查询未满员的救生艇列表 -->
+    <select id="selectAvailableLifeboats" parameterType="Long" resultMap="LifeboatConfigWithPersonsResult">
+        SELECT 
+            lc.id as lifeboat_id, 
+            lc.platform_no, 
+            lc.boat_no, 
+            lc.boat_name,
+            lc.max_capacity, 
+            lc.evacuation_point_id, 
+            lc.status as lifeboat_status,
+            lc.remark as lifeboat_remark, 
+            lc.deleted,
+            #{evacuationId} as evacuation_id
+        FROM lifeboat_config lc
+        WHERE lc.deleted = 0
+          AND (
+              lc.max_capacity IS NULL 
+              OR lc.max_capacity > (
+                  SELECT COUNT(DISTINCT er.person_id)
+                  FROM evacuation_record er
+                  WHERE er.lifeboat_id = lc.id
+                    AND er.evacuation_id = #{evacuationId}
+              )
+          )
+        ORDER BY lc.boat_no
+    </select>
     
 </mapper>

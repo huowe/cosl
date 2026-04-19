@@ -1,7 +1,10 @@
 package com.ruoyi.system.domain;
 
 import java.util.Date;
+import java.util.List;
 import javax.validation.constraints.*;
+
+import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
@@ -13,6 +16,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * 
  * @author ruoyi
  */
+@Data
 public class LifeboatConfig extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
@@ -50,112 +54,6 @@ public class LifeboatConfig extends BaseEntity
 
     private Integer deleted;
 
-    public Integer getDeleted(){
-        return deleted;
-    }
-    public void setDeleted(Integer deleted){
-        this.deleted = deleted;
-    }
-
-    public void setPlatformNo(String platformNo)
-    {
-        this.platformNo = platformNo;
-    }
-
-    public String getPlatformNo()
-    {
-        return platformNo;
-    }
-
-    public Long getId()
-    {
-        return id;
-    }
-
-    public void setId(Long id)
-    {
-        this.id = id;
-    }
-
-    @Size(min = 0, max = 50, message = "救生艇编号不能超过 50 个字符")
-    @NotBlank(message = "救生艇编号不能为空")
-    public String getBoatNo()
-    {
-        return boatNo;
-    }
-
-    public void setBoatNo(String boatNo)
-    {
-        this.boatNo = boatNo;
-    }
-
-    @Size(min = 0, max = 100, message = "救生艇名称不能超过 100 个字符")
-    public String getBoatName()
-    {
-        return boatName;
-    }
-
-    public void setBoatName(String boatName)
-    {
-        this.boatName = boatName;
-    }
-
-    @NotNull(message = "最大容量不能为空")
-    @Min(value = 0, message = "最大容量不能小于 0")
-    public Integer getMaxCapacity()
-    {
-        return maxCapacity;
-    }
-
-    public void setMaxCapacity(Integer maxCapacity)
-    {
-        this.maxCapacity = maxCapacity;
-    }
-
-    public Long getEvacuationPointId()
-    {
-        return evacuationPointId;
-    }
-
-    public void setEvacuationPointId(Long evacuationPointId)
-    {
-        this.evacuationPointId = evacuationPointId;
-    }
-
-    public String getStatus()
-    {
-        return status;
-    }
-
-    public void setStatus(String status)
-    {
-        this.status = status;
-    }
-
-    @Size(min = 0, max = 255, message = "备注不能超过 255 个字符")
-    public String getRemark()
-    {
-        return remark;
-    }
-
-    public void setRemark(String remark)
-    {
-        this.remark = remark;
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("id", getId())
-            .append("boatNo", getBoatNo())
-            .append("boatName", getBoatName())
-            .append("maxCapacity", getMaxCapacity())
-            .append("evacuationPointId", getEvacuationPointId())
-            .append("status", getStatus())
-            .append("remark", getRemark())
-            .append("createTime", getCreateTime())
-            .append("updateTime", getUpdateTime())
-            .append("deleted", getDeleted())
-            .toString();
-    }
+    /** 人员列表（简化信息：id, name, monitorId） */
+    private List<SimplePersonInfo> personList;
 }

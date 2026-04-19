@@ -161,7 +161,7 @@ public class CameraController extends BaseController
                 camera.setStatus(cameraJson.getString("cameraStatus"));
                 camera.setCreateBy(getLoginName());
                 camera.setIsEnable(cameraJson.getBoolean("isEnable"));
-                if (!cameraService.checkIpUnique(camera))
+                if (cameraService.checkIpUnique(camera))
                 {
                     toAjax(cameraService.insertCamera(camera));
                 }

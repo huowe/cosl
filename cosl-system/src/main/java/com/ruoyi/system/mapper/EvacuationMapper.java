@@ -3,6 +3,9 @@ package com.ruoyi.system.mapper;
 import java.util.List;
 import com.ruoyi.system.domain.Evacuation;
 import com.ruoyi.system.domain.EvacuationRecord;
+import com.ruoyi.system.domain.EvacuationPoint;
+import com.ruoyi.system.domain.LifeboatConfig;
+import com.ruoyi.system.domain.SimplePersonInfo;
 
 /**
  * 紧急撤离 Mapper 接口
@@ -107,4 +110,36 @@ public interface EvacuationMapper
      * @return 结果
      */
     public int deleteEvacuationRecordByIds(Long[] ids);
+
+    /**
+     * 根据撤离事件 ID 查询撤离点列表（包含救生艇）
+     *
+     * @param evacuationId 撤离事件 ID
+     * @return 撤离点列表
+     */
+    public List<EvacuationPoint> selectEvacuationPointsByEvacuationId(Long evacuationId);
+
+    /**
+     * 根据撤离点 ID 查询救生艇列表（用于撤离事件）
+     *
+     * @param pointId 撤离点 ID
+     * @return 救生艇列表
+     */
+    public List<LifeboatConfig> selectLifeboatsByEvacuationPointIdForEvacuation(Long pointId);
+
+    /**
+     * 根据救生艇 ID 查询参与演习的人员（用于撤离事件）
+     *
+     * @param lifeboatId 救生艇 ID
+     * @return 人员列表
+     */
+    public List<SimplePersonInfo> selectPersonsByLifeboatIdForEvacuation(Long lifeboatId);
+
+    /**
+     * 查询未满员的救生艇列表
+     *
+     * @param evacuationId 撤离事件 ID
+     * @return 未满员的救生艇列表
+     */
+    public List<LifeboatConfig> selectAvailableLifeboats(Long evacuationId);
 }

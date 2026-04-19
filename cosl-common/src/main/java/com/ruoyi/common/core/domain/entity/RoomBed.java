@@ -35,12 +35,12 @@ public class RoomBed extends BaseEntity
     @Excel(name = "状态", readConverterExp = "FREE=空闲，OCCUPIED=已占用，LOCKED=锁定")
     private String status;
 
-    private Person person;
+    private PersonImagePo person;
 
-    public Person getPerson() {
+    public PersonImagePo getPerson() {
         return person;
     }
-    public void setPerson(Person person) {
+    public void setPerson(PersonImagePo person) {
         this.person = person;
     }
 

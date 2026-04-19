@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>紧急撤离 - 包含全部人员功能演示</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .form-section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 20px;
+            border-left: 4px solid #667eea;
+            padding-left: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .required {
+            color: #f44336;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .result-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .result-section.show {
+            display: block;
+        }
+
+        .result-section h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .result-content {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .result-content pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: 'Consolas', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .success {
+            color: #4caf50;
+            font-weight: 600;
+        }
+
+        .error {
+            color: #f44336;
+            font-weight: 600;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .info-box h4 {
+            color: #1976d2;
+            margin-bottom: 10px;
+        }
+
+        .info-box ul {
+            margin-left: 20px;
+            color: #555;
+        }
+
+        .info-box li {
+            margin-bottom: 5px;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚨 紧急撤离事件创建</h1>
+            <p>新建紧急撤离时，自动包含全部人员信息</p>
+        </div>
+
+        <div class="content">
+            <div class="info-box">
+                <h4>📋 功能说明</h4>
+                <ul>
+                    <li>创建新的紧急撤离事件时，系统会自动将当前平台的所有人员添加到撤离记录中</li>
+                    <li>所有人员的初始状态为 "PENDING"（待撤离）</li>
+                    <li>系统会自动计算并更新预计撤离人数</li>
+                    <li>使用事务保证数据一致性，失败会自动回滚</li>
+                </ul>
+            </div>
+
+            <div class="form-section">
+                <h2>基本信息</h2>
+                
+                <div class="form-group">
+                    <label>撤离事件名称 <span class="required">*</span></label>
+                    <input type="text" id="name" placeholder="例如：消防演习-2026-04-17" required>
+                </div>
+
+                <div class="form-group">
+                    <label>撤离类型</label>
+                    <select id="type">
+                        <option value="">请选择</option>
+                        <option value="FIRE">火灾 (FIRE)</option>
+                        <option value="COLLISION">碰撞 (COLLISION)</option>
+                        <option value="GAS_LEAK">气体泄漏 (GAS_LEAK)</option>
+                        <option value="ABANDON_SHIP">弃船 (ABANDON_SHIP)</option>
+                        <option value="OTHER">其他 (OTHER)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>警报级别</label>
+                    <select id="alarmLevel">
+                        <option value="">请选择</option>
+                        <option value="LEVEL1">一级 (LEVEL1)</option>
+                        <option value="LEVEL2">二级 (LEVEL2)</option>
+                        <option value="LEVEL3">三级 (LEVEL3)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>集合点位置</label>
+                    <input type="text" id="assemblyPoint" placeholder="例如：主甲板集合点A">
+                </div>
+
+                <div class="form-group">
+                    <label>备注</label>
+                    <textarea id="remark" placeholder="请输入备注信息..."></textarea>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="createEvacuation()">
+                    🚀 创建撤离事件（包含全部人员）
+                </button>
+                <button class="btn btn-secondary" onclick="resetForm()">
+                    🔄 重置表单
+                </button>
+            </div>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>正在创建撤离事件...</p>
+            </div>
+
+            <div class="result-section" id="resultSection">
+                <h3>📊 执行结果</h3>
+                <div class="result-content">
+                    <pre id="resultContent"></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // API 基础地址
+        const API_BASE_URL = 'http://localhost:8080';
+
+        /**
+         * 创建撤离事件（包含全部人员）
+         */
+        async function createEvacuation() {
+            // 获取表单数据
+            const name = document.getElementById('name').value.trim();
+            
+            if (!name) {
+                alert('请填写撤离事件名称！');
+                return;
+            }
+
+            const data = {
+                name: name,
+                type: document.getElementById('type').value || null,
+                alarmLevel: document.getElementById('alarmLevel').value || null,
+                assemblyPoint: document.getElementById('assemblyPoint').value.trim() || null,
+                remark: document.getElementById('remark').value.trim() || null
+            };
+
+            // 显示加载状态
+            showLoading(true);
+            hideResult();
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/evacuation/addWithAllPersons`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        // 如果需要认证，添加 token
+                        // 'Authorization': 'Bearer YOUR_TOKEN'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+                
+                // 显示结果
+                showResult(result);
+
+                if (result.code === 200) {
+                    showMessage('✅ 撤离事件创建成功！已自动添加全部人员到撤离记录中。', 'success');
+                    
+                    // 可选：清空表单
+                    // resetForm();
+                } else {
+                    showMessage('❌ 创建失败：' + (result.msg || '未知错误'), 'error');
+                }
+
+            } catch (error) {
+                console.error('请求失败:', error);
+                showMessage('❌ 网络请求失败：' + error.message, 'error');
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        /**
+         * 重置表单
+         */
+        function resetForm() {
+            document.getElementById('name').value = '';
+            document.getElementById('type').value = '';
+            document.getElementById('alarmLevel').value = '';
+            document.getElementById('assemblyPoint').value = '';
+            document.getElementById('remark').value = '';
+            hideResult();
+        }
+
+        /**
+         * 显示加载状态
+         */
+        function showLoading(show) {
+            const loading = document.getElementById('loading');
+            if (show) {
+                loading.classList.add('show');
+            } else {
+                loading.classList.remove('show');
+            }
+        }
+
+        /**
+         * 显示结果
+         */
+        function showResult(result) {
+            const resultSection = document.getElementById('resultSection');
+            const resultContent = document.getElementById('resultContent');
+            
+            resultContent.textContent = JSON.stringify(result, null, 2);
+            resultSection.classList.add('show');
+        }
+
+        /**
+         * 隐藏结果
+         */
+        function hideResult() {
+            const resultSection = document.getElementById('resultSection');
+            resultSection.classList.remove('show');
+        }
+
+        /**
+         * 显示消息
+         */
+        function showMessage(message, type) {
+            const resultContent = document.getElementById('resultContent');
+            const currentContent = resultContent.textContent;
+            resultContent.textContent = message + '\n\n' + currentContent;
+            
+            if (type === 'success') {
+                resultContent.className = 'success';
+            } else {
+                resultContent.className = 'error';
+            }
+        }
+
+        // 页面加载完成后的初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('紧急撤离创建页面已加载');
+            console.log('API 地址:', `${API_BASE_URL}/api/evacuation/addWithAllPersons`);
+        });
+    </script>
+</body>
+</html>

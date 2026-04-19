@@ -15,6 +15,7 @@ import com.ruoyi.system.service.ISysDictDataService;
 import com.ruoyi.system.service.ISysPostService;
 import com.ruoyi.web.controller.tool.YuanJianApiClient;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -51,6 +52,8 @@ public class PersonController extends BaseController
     private ISysDictDataService dictDataService;
     @Resource
     private YuanJianApiClient yuanJianApiClient;
+    @Autowired
+    private com.ruoyi.system.mapper.CameraMapper cameraMapper;
 
     @RequiresPermissions("system:person:view")
     @GetMapping()
@@ -65,7 +68,7 @@ public class PersonController extends BaseController
     public TableDataInfo list( @RequestBody  Person person)
     {
         startPage();
-        List<Person> list = personService.selectPersonList(person);
+        List<PersonImagePo> list = personService.selectPersonList(person);
         return getDataTable(list);
     }
 
@@ -75,8 +78,8 @@ public class PersonController extends BaseController
     @ResponseBody
     public AjaxResult export(Person person)
     {
-        List<Person> list = personService.selectPersonList(person);
-        ExcelUtil<Person> util = new ExcelUtil<Person>(Person.class);
+        List<PersonImagePo> list = personService.selectPersonList(person);
+        ExcelUtil<PersonImagePo> util = new ExcelUtil<PersonImagePo>(PersonImagePo.class);
         return util.exportExcel(list, "人员数据");
     }
 
@@ -158,8 +161,8 @@ public class PersonController extends BaseController
                 }
             }
         }
-
-        return toAjax(personService.insertPerson(person));
+        personService.insertPerson(person);
+        return success(person);
     }
 
     /**
@@ -190,7 +193,9 @@ public class PersonController extends BaseController
         {
             return error("修改人员'" + person.getName() + "'失败，身份证号已存在");
         }
-        return toAjax(personService.updatePerson(person));
+        personService.updatePerson(person);
+        Person resPerson = personService.selectPersonById(person.getId());
+        return success(resPerson);
     }
 
     /**
@@ -216,7 +221,7 @@ public class PersonController extends BaseController
      * 获取人员详情
      */
     @RequiresPermissions("system:person:view")
-    @GetMapping("/getStats")
+    @GetMapping("/getById")
     @ResponseBody
     public AjaxResult getStats(@RequestParam Long id)
     {
@@ -259,7 +264,7 @@ public class PersonController extends BaseController
         }
         
         // 更新步态特征确认状态为已确认
-        person.setGaitFeatureConfirmed(1);
+        person.setGaitFeatureConfirmed("confirmed");
         
         int result = personService.updatePerson(person);
         
@@ -291,7 +296,7 @@ public class PersonController extends BaseController
         }
         
         // 更新步态特征确认状态为未确认
-        person.setGaitFeatureConfirmed(0);
+        person.setGaitFeatureConfirmed("notcollected");
         
         int result = personService.updatePerson(person);
         
@@ -414,14 +419,18 @@ public class PersonController extends BaseController
         // 根据 monitorId 查询人员
         Person queryParam = new Person();
         queryParam.setMonitorId(monitorId);
-        List<Person> personList = personService.selectPersonList(queryParam);
+        List<PersonImagePo> personList = personService.selectPersonList(queryParam);
         
         if (personList != null && !personList.isEmpty()) {
-            Person person = personList.get(0);
+            PersonImagePo personImage = personList.get(0);
+            //copy person
+            Person person = new Person();
+            person.setId(personImage.getId());
+            person.setGaitFeatureConfirmed(personImage.getGaitFeatureConfirmed());
             
             // 如果还未确认，则确认为已确认
-            if (person.getGaitFeatureConfirmed() == null || person.getGaitFeatureConfirmed() != 1) {
-                person.setGaitFeatureConfirmed(1);
+            if (person.getGaitFeatureConfirmed() == null || "confirmed".equals(person.getGaitFeatureConfirmed())) {
+                person.setGaitFeatureConfirmed("confirmed");
                 personService.updatePerson(person);
                 
                 System.out.println("人员 " + person.getName() + " (ID: " + person.getId() + ") 的步态特征已自动确认");
@@ -593,12 +602,82 @@ public class PersonController extends BaseController
     @Log(title = "和抓拍比对", businessType = BusinessType.INSERT)
     @PostMapping("/snapComparison")
     @ResponseBody
+    public AjaxResult snapComparison(@RequestBody SnapFeaturePageRequest request)
+    {
+        String res = yuanJianApiClient.snapFeaturePage(request);
+        JSONObject jsonObject = JSONObject.parseObject(res);
+        
+        // 处理返回数据，添加摄像机坐标信息
+        if (jsonObject != null && jsonObject.getBooleanValue("success")) {
+            JSONObject data = jsonObject.getJSONObject("data");
+            if (data != null) {
+                JSONArray features = data.getJSONArray("features");
+                if (features != null && !features.isEmpty()) {
+                    for (int i = 0; i < features.size(); i++) {
+                        JSONObject feature = features.getJSONObject(i);
+                        String deviceId = feature.getString("deviceId");
+                        
+                        // 如果 deviceId 不为空，查询摄像机坐标
+                        if (StringUtils.isNotEmpty(deviceId)) {
+                             Camera camera = cameraMapper.selectCameraByCameraId(deviceId);
+                            if (camera != null) {
+                                // 添加 xAxis、yAxis 和 cameraName 到记录中，与 deviceId 平级
+                                feature.put("xAxis", camera.getxAxis());
+                                feature.put("yAxis", camera.getyAxis());
+                                feature.put("cameraName", camera.getName());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        return success(jsonObject);
+    }
+
+    /**
+     * 根据特征查抓拍
+     */
+    @RequiresPermissions("system:person:view")
+    @Log(title = "根据特征查抓拍", businessType = BusinessType.INSERT)
+    @PostMapping("/snapComparisonByfeatureId")
+    @ResponseBody
     public AjaxResult snapComparison(@RequestBody SnapComparisonRequest request)
     {
         String res = yuanJianApiClient.snapComparison(request);
         JSONObject jsonObject = JSONObject.parseObject(res);
+
+        // 处理返回数据，添加摄像机坐标信息
+        if (jsonObject != null && jsonObject.getBooleanValue("success")) {
+            JSONObject data = jsonObject.getJSONObject("data");
+            if (data != null) {
+                JSONObject page = data.getJSONObject("page");
+                if (page != null) {
+                    JSONArray records = page.getJSONArray("records");
+                    if (records != null && !records.isEmpty()) {
+                        for (int i = 0; i < records.size(); i++) {
+                            JSONObject record = records.getJSONObject(i);
+                            String deviceId = record.getString("deviceId");
+                            
+                            // 如果 deviceId 不为空，查询摄像机坐标
+                            if (StringUtils.isNotEmpty(deviceId)) {
+                                Camera camera = cameraMapper.selectCameraByCameraId(deviceId);
+                                if (camera != null) {
+                                    // 添加 xAxis、yAxis 和 cameraName 到记录中，与 deviceId 平级
+                                    record.put("xAxis", camera.getxAxis());
+                                    record.put("yAxis", camera.getyAxis());
+                                    record.put("cameraName", camera.getName());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         return success(jsonObject);
     }
+
 
 
 

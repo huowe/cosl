@@ -88,4 +88,12 @@ public interface CameraMapper
      * @return 开启的摄像头数
      */
     public int countCameraOnline();
+
+    /**
+     * 根据摄像机ID查询摄像机
+     * 
+     * @param cameraId 摄像机ID
+     * @return 摄像机
+     */
+    public Camera selectCameraByCameraId(String cameraId);
 }

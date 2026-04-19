@@ -18,6 +18,7 @@ import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.domain.Evacuation;
 import com.ruoyi.system.domain.EvacuationRecord;
+import com.ruoyi.system.domain.LifeboatConfig;
 import com.ruoyi.system.service.IEvacuationService;
 
 /**
@@ -87,7 +88,23 @@ public class EvacuationController extends BaseController
         String platformNo = PlatformContext.getPlatformNo();
         evacuation.setPlatformNo(platformNo);
         evacuation.setCreateBy(getLoginName());
-        return toAjax(evacuationService.insertEvacuation(evacuation));
+        evacuationService.insertEvacuationWithAllPersons(evacuation);
+        return success(evacuation);
+    }
+
+    /**
+     * 新增保存紧急撤离（包含全部人员）
+     */
+    @RequiresPermissions("system:evacuation:add")
+    @Log(title = "", businessType = BusinessType.INSERT)
+    @PostMapping("/addWithAllPersons")
+    @ResponseBody
+    public AjaxResult addWithAllPersons(@RequestBody Evacuation evacuation)
+    {
+        String platformNo = PlatformContext.getPlatformNo();
+        evacuation.setPlatformNo(platformNo);
+        evacuation.setCreateBy(getLoginName());
+        return toAjax(evacuationService.insertEvacuationWithAllPersons(evacuation));
     }
 
     /**
@@ -111,7 +128,8 @@ public class EvacuationController extends BaseController
     public AjaxResult editSave(@RequestBody Evacuation evacuation)
     {
         evacuation.setUpdateBy(getLoginName());
-        return toAjax(evacuationService.updateEvacuation(evacuation));
+        evacuationService.updateEvacuation(evacuation);
+        return success(evacuation);
     }
 
     /**
@@ -204,6 +222,31 @@ public class EvacuationController extends BaseController
     public AjaxResult updateBoardTime(@RequestParam Long recordId)
     {
         return toAjax(evacuationService.updateBoardTime(recordId));
+    }
+
+    /**
+     * 更新人员撤离状态
+     */
+    @RequiresPermissions("system:evacuation:edit")
+    @Log(title = "紧急撤离管理", businessType = BusinessType.UPDATE)
+    @PostMapping("/updateRecordStatus")
+    @ResponseBody
+    public AjaxResult updateRecordStatus(@RequestParam Long recordId,
+                                         @RequestParam String status)
+    {
+        return toAjax(evacuationService.updateEvacuationRecordStatus(recordId, status));
+    }
+
+    /**
+     * 查询未满员的救生艇列表
+     */
+    @RequiresPermissions("system:evacuation:view")
+    @GetMapping("/availableLifeboats/{evacuationId}")
+    @ResponseBody
+    public AjaxResult availableLifeboats(@PathVariable("evacuationId") Long evacuationId)
+    {
+        List<LifeboatConfig> list = evacuationService.selectAvailableLifeboats(evacuationId);
+        return success(list);
     }
 
     /**

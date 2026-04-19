@@ -24,21 +24,61 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="deleted"    column="deleted"    />
         <result property="monitorId"    column="monitor_id"    />
         <result property="gaitFeatureConfirmed"    column="gait_feature_confirmed"    />
+        <result property="roomName"    column="room_name"    />
+        <result property="bedName"    column="bed_name"    />
         <result property="image"    column="image"    />
         <result property="collectStartTime"    column="collect_start_time"    />
         <result property="collectEndTime"    column="collect_end_time"    />
+        <result property="cameraId" column="camera_id"></result>
+    </resultMap>
+
+
+    <resultMap type="PersonImagePo" id="PersonImageResult">
+        <result property="id"    column="id"    />
+        <result property="platformNo"    column="platform_no"    />
+        <result property="name"    column="name"    />
+        <result property="mtsCardNo"    column="mts_card_no"    />
+        <result property="idCard"    column="id_card"    />
+        <result property="company"    column="company"    />
+        <result property="position"    column="position"    />
+        <result property="certificateExpireDate"    column="certificate_expire_date"    />
+        <result property="onboardDate"    column="onboard_date"    />
+        <result property="leaveDate"    column="leave_date"    />
+        <result property="roomId"    column="room_id"    />
+        <result property="bedId"    column="bed_id"    />
+        <result property="lifeboatId"    column="lifeboat_id"    />
+        <result property="status"    column="status"    />
+        <result property="blacklistFlag"    column="blacklist_flag"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="deleted"    column="deleted"    />
+        <result property="monitorId"    column="monitor_id"    />
+        <result property="gaitFeatureConfirmed"    column="gait_feature_confirmed"    />
+        <result property="roomName"    column="room_name"    />
+        <result property="bedName"    column="bed_name"    />
+        <result property="collectStartTime"    column="collect_start_time"    />
+        <result property="collectEndTime"    column="collect_end_time"    />
+        <result property="cameraId" column="camera_id"></result>
     </resultMap>
 
     <sql id="selectPersonVo">
-        select id, platform_no, name, mts_card_no, id_card, company, position, certificate_expire_date, onboard_date, leave_date, room_id, bed_id, lifeboat_id, status, blacklist_flag, create_time, update_time, deleted, monitor_id, gait_feature_confirmed, image, collect_start_time, collect_end_time
-        from person
+        select p.id, p.platform_no, p.name, p.mts_card_no, p.id_card, p.company, p.position, 
+               p.certificate_expire_date, p.onboard_date, p.leave_date, p.room_id, p.bed_id, 
+               p.lifeboat_id, p.status, p.blacklist_flag, p.create_time, p.update_time, 
+               p.deleted, p.monitor_id, p.gait_feature_confirmed, p.image, 
+               p.collect_start_time, p.collect_end_time, p.camera_id,
+               r.room_no as room_name,
+               b.bed_no as bed_name
+        from person p
+        left join room_config r on p.room_id = r.id
+        left join room_bed b on p.bed_id = b.id
     </sql>
 
-    <select id="selectPersonList" parameterType="Person" resultMap="PersonResult">
+    <select id="selectPersonList" parameterType="Person" resultMap="PersonImageResult">
         <include refid="selectPersonVo"/>
         where deleted = 0
         <if test="platformNo != null and platformNo != ''">
-            AND platform_no = #{platformNo}
+            AND p.platform_no = #{platformNo}
         </if>
         <if test="name != null and name != ''">
             AND name like concat('%', #{name}, '%')
@@ -72,7 +112,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectPersonById" parameterType="Long" resultMap="PersonResult">
         <include refid="selectPersonVo"/>
-        where id = #{id} and deleted = 0
+        where p.id = #{id} and deleted = 0
+    </select>
+
+    <select id="selectPersonByIds" resultMap="PersonImageResult">
+        <include refid="selectPersonVo"/>
+        where p.id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        and deleted = 0
     </select>
 
     <select id="checkMtsCardNoUnique" parameterType="String" resultMap="PersonResult">
@@ -105,6 +154,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="image != null">image,</if>
             <if test="collectStartTime != null">collect_start_time,</if>
             <if test="collectEndTime != null">collect_end_time,</if>
+            <if test="cameraId != null">camera_id,</if>
 
             create_time,
 
@@ -130,6 +180,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="image != null">#{image},</if>
             <if test="collectStartTime != null">#{collectStartTime},</if>
             <if test="collectEndTime != null">#{collectEndTime},</if>
+            <if test="cameraId != null">#{cameraId},</if>
 
             sysdate(),
 
@@ -159,6 +210,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="image != null">image = #{image},</if>
             <if test="collectStartTime != null">collect_start_time = #{collectStartTime},</if>
             <if test="collectEndTime != null">collect_end_time = #{collectEndTime},</if>
+            <if test="cameraId != null">camera_id = #{cameraId},</if>
 
             update_time = sysdate(),
         </trim>

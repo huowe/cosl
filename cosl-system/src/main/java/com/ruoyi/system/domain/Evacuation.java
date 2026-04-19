@@ -1,7 +1,10 @@
 package com.ruoyi.system.domain;
 
 import java.util.Date;
+import java.util.List;
 import javax.validation.constraints.*;
+
+import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
@@ -13,6 +16,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * 
  * @author ruoyi
  */
+@Data
 public class Evacuation extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
@@ -64,149 +68,10 @@ public class Evacuation extends BaseEntity
     @Excel(name = "备注")
     private String remark;
 
-    public Long getId()
-    {
-        return id;
-    }
+    /** 参与演习的人员列表（关联查询） */
+    private List<SimplePersonInfo> personList;
 
-    public void setId(Long id)
-    {
-        this.id = id;
-    }
+    /** 撤离点列表（关联查询） */
+    private List<EvacuationPoint> evacuationPoints;
 
-    @Size(min = 0, max = 100, message = "撤离事件名称不能超过 100 个字符")
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName(String name)
-    {
-        this.name = name;
-    }
-
-    @Size(min = 0, max = 50, message = "撤离类型长度不能超过 50 个字符")
-    public String getType()
-    {
-        return type;
-    }
-
-    public void setType(String type)
-    {
-        this.type = type;
-    }
-
-    @Size(min = 0, max = 20, message = "警报级别长度不能超过 20 个字符")
-    public String getAlarmLevel()
-    {
-        return alarmLevel;
-    }
-
-    public void setAlarmLevel(String alarmLevel)
-    {
-        this.alarmLevel = alarmLevel;
-    }
-
-    public Date getStartTime()
-    {
-        return startTime;
-    }
-
-    public void setStartTime(Date startTime)
-    {
-        this.startTime = startTime;
-    }
-
-    public Date getEndTime()
-    {
-        return endTime;
-    }
-
-    public void setEndTime(Date endTime)
-    {
-        this.endTime = endTime;
-    }
-
-    public Integer getExpectedCount()
-    {
-        return expectedCount;
-    }
-
-    public void setExpectedCount(Integer expectedCount)
-    {
-        this.expectedCount = expectedCount;
-    }
-
-    public Integer getActualCount()
-    {
-        return actualCount;
-    }
-
-    public void setActualCount(Integer actualCount)
-    {
-        this.actualCount = actualCount;
-    }
-
-    @Size(min = 0, max = 200, message = "集合点位置长度不能超过 200 个字符")
-    public String getAssemblyPoint()
-    {
-        return assemblyPoint;
-    }
-
-    public void setAssemblyPoint(String assemblyPoint)
-    {
-        this.assemblyPoint = assemblyPoint;
-    }
-
-    @Size(min = 0, max = 20, message = "状态长度不能超过 20 个字符")
-    public String getStatus()
-    {
-        return status;
-    }
-
-    public void setStatus(String status)
-    {
-        this.status = status;
-    }
-
-    @Size(min = 0, max = 500, message = "备注长度不能超过 500 个字符")
-    public String getRemark()
-    {
-        return remark;
-    }
-
-    public void setRemark(String remark)
-    {
-        this.remark = remark;
-    }
-
-    public void setPlatformNo(String platformNo)
-    {
-        this.platformNo = platformNo;
-    }
-
-    public String getPlatformNo()
-    {
-        return platformNo;
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("id", getId())
-            .append("name", getName())
-            .append("type", getType())
-            .append("alarmLevel", getAlarmLevel())
-            .append("startTime", getStartTime())
-            .append("endTime", getEndTime())
-            .append("expectedCount", getExpectedCount())
-            .append("actualCount", getActualCount())
-            .append("assemblyPoint", getAssemblyPoint())
-            .append("status", getStatus())
-            .append("remark", getRemark())
-            .append("createTime", getCreateTime())
-            .append("updateBy", getUpdateBy())
-            .append("updateTime", getUpdateTime())
-            .toString();
-    }
 }

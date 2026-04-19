@@ -2,6 +2,7 @@ package com.ruoyi.system.service.impl;
 
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.domain.entity.Person;
+import com.ruoyi.common.core.domain.entity.PersonImagePo;
 import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.StringUtils;
@@ -47,7 +48,7 @@ public class PersonServiceImpl implements IPersonService
      * @return 人员
      */
     @Override
-    public List<Person> selectPersonList(Person person)
+    public List<PersonImagePo> selectPersonList(Person person)
     {
         return personMapper.selectPersonList(person);
     }

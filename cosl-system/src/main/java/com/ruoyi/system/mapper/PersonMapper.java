@@ -2,6 +2,7 @@ package com.ruoyi.system.mapper;
 
 
 import com.ruoyi.common.core.domain.entity.Person;
+import com.ruoyi.common.core.domain.entity.PersonImagePo;
 
 import java.util.List;
 
@@ -22,12 +23,20 @@ public interface PersonMapper
     public Person selectPersonById(Long id);
 
     /**
+     * 根据 ID 列表查询人员
+     * 
+     * @param ids 人员 ID 数组
+     * @return 人员集合
+     */
+    public List<PersonImagePo> selectPersonByIds(Long[] ids);
+
+    /**
      * 查询人员列表
      * 
      * @param person 人员信息
      * @return 人员集合
      */
-    public List<Person> selectPersonList(Person person);
+    public List<PersonImagePo> selectPersonList(Person person);
 
     /**
      * 新增人员

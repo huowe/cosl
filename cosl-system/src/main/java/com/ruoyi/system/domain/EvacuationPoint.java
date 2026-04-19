@@ -2,7 +2,10 @@ package com.ruoyi.system.domain;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import javax.validation.constraints.*;
+
+import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
@@ -14,6 +17,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * 
  * @author ruoyi
  */
+@Data
 public class EvacuationPoint extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
@@ -41,102 +45,18 @@ public class EvacuationPoint extends BaseEntity
     @Excel(name = "地图坐标 Y", cellType = ColumnType.NUMERIC)
     private BigDecimal yAxis;
 
+    /** 摄像机ID */
+    @Excel(name = "摄像机ID")
+    private String cameraId;
+
     /** 备注 */
     @Excel(name = "备注")
     private String remark;
 
     private  Integer deleted;
 
-    public Integer getDeleted() {
-        return deleted;
-    }
-    public void setDeleted(Integer deleted) {
-        this.deleted = deleted;
-    }
+    /** 救生艇列表（关联查询） */
+    private List<LifeboatConfig> lifeboats;
 
-    public void setPlatformNo(String platformNo)
-    {
-        this.platformNo = platformNo;
-    }
 
-    public String getPlatformNo()
-    {
-        return platformNo;
-    }
-
-    public Long getId()
-    {
-        return id;
-    }
-
-    public void setId(Long id)
-    {
-        this.id = id;
-    }
-
-    @Size(min = 0, max = 100, message = "撤离点名称不能超过 100 个字符")
-    @NotBlank(message = "撤离点名称不能为空")
-    public String getPointName()
-    {
-        return pointName;
-    }
-
-    public void setPointName(String pointName)
-    {
-        this.pointName = pointName;
-    }
-
-    @Size(min = 0, max = 10, message = "楼层不能超过 10 个字符")
-    public String getFloor()
-    {
-        return floor;
-    }
-
-    public void setFloor(String floor)
-    {
-        this.floor = floor;
-    }
-
-    public BigDecimal getxAxis()
-    {
-        return xAxis;
-    }
-
-    public void setxAxis(BigDecimal xAxis)
-    {
-        this.xAxis = xAxis;
-    }
-    public BigDecimal getyAxis()
-    {
-        return yAxis;
-    }
-    public void setyAxis(BigDecimal yAxis)
-    {
-        this.yAxis = yAxis;
-    }
-
-    @Size(min = 0, max = 255, message = "备注不能超过 255 个字符")
-    public String getRemark()
-    {
-        return remark;
-    }
-
-    public void setRemark(String remark)
-    {
-        this.remark = remark;
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("id", getId())
-            .append("pointName", getPointName())
-            .append("floor", getFloor())
-            .append("xAxis", getxAxis())
-            .append("yAxis", getyAxis())
-            .append("remark", getRemark())
-            .append("createTime", getCreateTime())
-            .append("updateTime", getUpdateTime())
-            .toString();
-    }
 }

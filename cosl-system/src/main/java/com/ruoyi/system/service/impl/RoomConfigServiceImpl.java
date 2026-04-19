@@ -3,10 +3,7 @@ package com.ruoyi.system.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.ruoyi.common.core.domain.entity.Person;
-import com.ruoyi.common.core.domain.entity.RoomBed;
-import com.ruoyi.common.core.domain.entity.RoomConfig;
-import com.ruoyi.common.core.domain.entity.RoomStats;
+import com.ruoyi.common.core.domain.entity.*;
 import com.ruoyi.system.service.IPersonService;
 import com.ruoyi.system.service.IRoomBedService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -149,7 +146,7 @@ public class RoomConfigServiceImpl implements IRoomConfigService
                 //查询床位关联的人员信息
                 Person query = new Person();
                 query.setBedId(bed.getId());
-                List<Person> person = personService.selectPersonList(query);
+                List<PersonImagePo> person = personService.selectPersonList(query);
                 if (person != null && person.size() > 0){
                     bed.setPerson(person.get(0));
                 }

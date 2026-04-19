@@ -3,6 +3,7 @@ package com.ruoyi.system.service;
 import java.util.List;
 import com.ruoyi.system.domain.Evacuation;
 import com.ruoyi.system.domain.EvacuationRecord;
+import com.ruoyi.system.domain.LifeboatConfig;
 
 /**
  * 紧急撤离 Service 接口
@@ -111,6 +112,15 @@ public interface IEvacuationService
     public int updateBoardTime(Long recordId);
 
     /**
+     * 更新人员撤离状态
+     *
+     * @param recordId 记录 ID
+     * @param status 状态（EVACUATED:已撤离，MISSING:失踪，INJURED:受伤）
+     * @return 结果
+     */
+    public int updateEvacuationRecordStatus(Long recordId, String status);
+
+    /**
      * 根据撤离事件 ID 查询人员记录列表
      *
      * @param evacuationId 撤离事件 ID
@@ -133,4 +143,20 @@ public interface IEvacuationService
      * @return 结果
      */
     public int deleteEvacuationRecordByIds(String ids);
+
+    /**
+     * 新增紧急撤离并包含全部人员
+     *
+     * @param evacuation 紧急撤离信息
+     * @return 结果
+     */
+    public int insertEvacuationWithAllPersons(Evacuation evacuation);
+
+    /**
+     * 查询未满员的救生艇列表
+     *
+     * @param evacuationId 撤离事件 ID
+     * @return 未满员的救生艇列表
+     */
+    public List<LifeboatConfig> selectAvailableLifeboats(Long evacuationId);
 }

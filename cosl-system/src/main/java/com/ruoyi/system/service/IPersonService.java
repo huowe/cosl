@@ -1,6 +1,7 @@
 package com.ruoyi.system.service;
 
 import com.ruoyi.common.core.domain.entity.Person;
+import com.ruoyi.common.core.domain.entity.PersonImagePo;
 
 import java.util.List;
 
@@ -26,7 +27,7 @@ public interface IPersonService
      * @param person 人员信息
      * @return 人员集合
      */
-    public List<Person> selectPersonList(Person person);
+    public List<PersonImagePo> selectPersonList(Person person);
 
     /**
      * 新增人员
