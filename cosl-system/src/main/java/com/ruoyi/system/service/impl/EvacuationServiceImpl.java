@@ -124,9 +124,11 @@ public class EvacuationServiceImpl implements IEvacuationService
      * @return 撤离事件信息
      */
     @Override
-    public Evacuation getActiveEvacuation()
+    public Evacuation getActiveEvacuation(Long id)
     {
-        List<Evacuation> evacuations = evacuationMapper.selectEvacuationList(new Evacuation());
+        Evacuation queryEvacuation = new Evacuation();
+        queryEvacuation.setId(id);
+        List<Evacuation> evacuations = evacuationMapper.selectEvacuationList(queryEvacuation);
         if (evacuations != null && !evacuations.isEmpty())
         {
             for (Evacuation evacuation : evacuations)
@@ -283,7 +285,7 @@ public class EvacuationServiceImpl implements IEvacuationService
     public int insertEvacuationWithAllPersons(Evacuation evacuation)
     {
         // 0. 检查是否存在进行中的撤离任务
-        Evacuation activeEvacuation = getActiveEvacuation();
+        Evacuation activeEvacuation = getActiveEvacuation(null);
         if (activeEvacuation != null)
         {
             throw new RuntimeException("当前存在进行中的撤离任务【" + activeEvacuation.getName() + "】，请先结束该任务后再创建新任务");

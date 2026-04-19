@@ -625,6 +625,8 @@ public class PersonController extends BaseController
                                 feature.put("xAxis", camera.getxAxis());
                                 feature.put("yAxis", camera.getyAxis());
                                 feature.put("cameraName", camera.getName());
+                                feature.put("coslCameraId",camera.getId());
+                                feature.put("floor",camera.getFloor());
                             }
                         }
                     }
@@ -667,6 +669,8 @@ public class PersonController extends BaseController
                                     record.put("xAxis", camera.getxAxis());
                                     record.put("yAxis", camera.getyAxis());
                                     record.put("cameraName", camera.getName());
+                                    record.put("coslCameraId",camera.getId());
+                                    record.put("floor",camera.getFloor());
                                 }
                             }
                         }

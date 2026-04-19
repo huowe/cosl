@@ -73,7 +73,7 @@ public interface IEvacuationService
      *
      * @return 撤离事件信息
      */
-    public Evacuation getActiveEvacuation();
+    public Evacuation getActiveEvacuation(Long id);
 
     /**
      * 结束撤离

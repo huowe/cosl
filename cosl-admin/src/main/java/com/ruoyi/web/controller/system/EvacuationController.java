@@ -2,9 +2,13 @@ package com.ruoyi.web.controller.system;
 
 import java.util.List;
 import java.util.Date;
+import java.util.ArrayList;
 
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.JSONArray;
 import com.ruoyi.common.utils.PlatformContext;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.common.core.domain.entity.Person;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +24,8 @@ import com.ruoyi.system.domain.Evacuation;
 import com.ruoyi.system.domain.EvacuationRecord;
 import com.ruoyi.system.domain.LifeboatConfig;
 import com.ruoyi.system.service.IEvacuationService;
+import com.ruoyi.system.mapper.PersonMapper;
+import com.ruoyi.web.controller.tool.YuanJianApiClient;
 
 /**
  * 紧急撤离 信息操作处理
@@ -34,6 +40,12 @@ public class EvacuationController extends BaseController
 
     @Autowired
     private IEvacuationService evacuationService;
+
+    @Autowired
+    private PersonMapper personMapper;
+
+    @Autowired
+    private YuanJianApiClient yuanJianApiClient;
 
     @RequiresPermissions("system:evacuation:view")
     @GetMapping()
@@ -162,9 +174,9 @@ public class EvacuationController extends BaseController
     @RequiresPermissions("system:evacuation:view")
     @GetMapping("/getActiveEvacuation")
     @ResponseBody
-    public AjaxResult getActiveEvacuation()
+    public AjaxResult getActiveEvacuation(@RequestParam Long id)
     {
-        Evacuation activeEvacuation = evacuationService.getActiveEvacuation();
+        Evacuation activeEvacuation = evacuationService.getActiveEvacuation(id);
         if (StringUtils.isNull(activeEvacuation))
         {
             return error("当前没有进行中的撤离事件");
@@ -247,6 +259,110 @@ public class EvacuationController extends BaseController
     {
         List<LifeboatConfig> list = evacuationService.selectAvailableLifeboats(evacuationId);
         return success(list);
+    }
+
+    /**
+     * 自动检测并更新撤离人员状态
+     */
+    @RequiresPermissions("system:evacuation:edit")
+    @Log(title = "紧急撤离管理", businessType = BusinessType.UPDATE)
+    @PostMapping("/autoUpdateStatus")
+    @ResponseBody
+    public AjaxResult autoUpdateStatus(@RequestParam Long evacuationId,
+                                       @RequestParam String startTime,
+                                       @RequestParam String endTime)
+    {
+        try {
+            // 1. 查询撤离事件的所有人员记录
+            List<EvacuationRecord> records = evacuationService.selectEvacuationRecordsByEvacuationId(evacuationId);
+            if (records == null || records.isEmpty())
+            {
+                return error("没有找到撤离人员记录");
+            }
+
+            // 2. 对每个人员调用 API 检测
+            int updatedCount = 0;
+            for (EvacuationRecord record : records)
+            {
+                if (record.getPersonId() == null)
+                {
+                    continue;
+                }
+
+                Person person = personMapper.selectPersonById(record.getPersonId());
+                if (person == null || person.getMonitorId() == null || person.getMonitorId().isEmpty())
+                {
+                    continue;
+                }
+
+                try
+                {
+                    // 2.1 获取人员的 featureId
+                    String monitorFeatureRes = yuanJianApiClient.getMonitorFeature(person.getMonitorId());
+                    JSONObject monitorFeatureJson = JSONObject.parseObject(monitorFeatureRes);
+
+                    if (!"SUCCESS".equals(monitorFeatureJson.getString("code")))
+                    {
+                        continue;
+                    }
+
+                    JSONObject data = monitorFeatureJson.getJSONObject("data");
+                    if (data == null)
+                    {
+                        continue;
+                    }
+
+                    String featureId = data.getString("featureId");
+                    if (featureId == null || featureId.isEmpty())
+                    {
+                        continue;
+                    }
+
+                    // 2.2 调用 /comparison/snap 接口检测抓拍
+                    List<String> featureIds = new ArrayList<>();
+                    featureIds.add(featureId);
+
+                    String comparisonRes = yuanJianApiClient.snapComparisonForMonitor(featureIds, startTime, endTime);
+                    JSONObject comparisonJson = JSONObject.parseObject(comparisonRes);
+
+                    if (!"SUCCESS".equals(comparisonJson.getString("code")))
+                    {
+                        continue;
+                    }
+
+                    JSONObject comparisonData = comparisonJson.getJSONObject("data");
+                    if (comparisonData == null)
+                    {
+                        continue;
+                    }
+
+                    // 2.3 检查返回结果数量
+                    JSONArray page = comparisonData.getJSONArray("page");
+                    if (page != null && !page.isEmpty())
+                    {
+                        JSONArray recordsArray = page.getJSONObject(0).getJSONArray("records");
+                        if (recordsArray != null && recordsArray.size() >= 1)
+                        {
+                            // 2.4 更新状态为已撤离
+                            evacuationService.updateEvacuationRecordStatus(record.getId(), "EVACUATED");
+                            updatedCount++;
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    // 记录错误但不中断流程
+                    System.err.println("处理人员 " + person.getName() + " 时出错: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+
+            return success("成功更新 " + updatedCount + " 条记录的状态");
+        }
+        catch (Exception e)
+        {
+            return error("自动更新状态失败: " + e.getMessage());
+        }
     }
 
     /**

@@ -281,7 +281,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         SELECT DISTINCT
             p.id,
             p.name,
-            p.monitor_id AS monitorId
+            p.monitor_id AS monitorId,
+            er.id as recordId
         FROM
             person p
                 INNER JOIN evacuation_record er ON p.id = er.person_id
